@@ -1,0 +1,29 @@
+<!-- templates/home.html -->
+{% include 'base.html' %}
+  {% load static %}
+<link href="{% static 'css/margins.css' %}" rel="stylesheet">
+{% block title %}
+    <div>
+        <h1 style="text-align:center">
+        Welcome to EventsAndMore!
+    </h1>
+    </div>
+{% endblock title %}
+{% block content %}
+    <p style="text-align:center">
+       <img style="text-align: center" src="../static/images/unknown.png"  alt="">
+    </p>
+    <h2 class = "margins">Upcoming Events</h2>
+    <div class="margins">
+        <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
+    <br><br>
+{% endblock content %}
+
