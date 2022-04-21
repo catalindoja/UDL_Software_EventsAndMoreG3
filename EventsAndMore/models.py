@@ -9,9 +9,13 @@ from django.contrib.auth.models import AbstractUser
 #         return str(self.username)
 
 #TODO: nos ha dicho que podemos poner dentro de webuser al cliente y al visitante, que no es una guarrada si para uno de los roles tenemos atributos sin usar
+from django.utils.datetime_safe import date
+
+
 class WebUser(AbstractUser):
     is_client = models.BooleanField(default=False)
     is_visitor = models.BooleanField(default=False)
+    is_gestor = models.BooleanField(default=False)
 
 
 class Cliente(models.Model): #WebUser
@@ -35,10 +39,20 @@ class Cliente(models.Model): #WebUser
 #     def __str__(self):
 #         return f'{self.role} --- {self.Name}'
 
+
+class Event(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombe = models.CharField(max_length=50, blank=False, null=False)
+    descripcion = models.CharField(max_length=200, blank=False, null=False)
+    fecha_ini = models.DateField(default=date.today)
+    fecha_fin = models.DateField(default=date.today)
+
+
 class PeticionStand(models.Model):
-    idStand =
-    clientUsername =
-    gestorUsername =
-    idEvento =
-    fecha =
-    estado =
+    id = models.AutoField(primary_key=True)
+    idStand = models.ForeignKey(Stand, on_delete=models.CASCADE)
+    clientUsername = models.ForeignKey(WebUser, on_delete=models.CASCADE, blank=False, null=False)
+    gestorUsername = models.ForeignKey(WebUser, on_delete=models.CASCADE, blank=False, null=False)
+    idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE, blank=False, null=False)
+    fecha = models.DateField(default=date.today, blank=False, null=False)
+    estado = models.BooleanField(editable=False, default=False)
