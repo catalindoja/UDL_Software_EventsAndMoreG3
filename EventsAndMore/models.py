@@ -22,15 +22,23 @@ class Cliente(models.Model): #WebUser
         return str(self.User)
 
 
-class Staff(models.Model): #WebUser
-    ROLES = (
-        ("Gestor", "Gestor de stands"),
-        ("Direccion", "Personal de direccion"),
-        ("Serv Adicionales", "Departamento de servicios adicionales"),
-        ("Org Events", "Organizador de eventos")
-    )
-    role = models.CharField(choices=ROLES, max_length=100)
-    Name = models.CharField(max_length=20)
+# class Staff(models.Model): #WebUser
+#     ROLES = (
+#         ("Gestor", "Gestor de stands"),
+#         ("Direccion", "Personal de direccion"),
+#        ("Serv Adicionales", "Departamento de servicios adicionales"),
+#         ("Org Events", "Organizador de eventos")
+#      )
+#     role = models.CharField(choices=ROLES, max_length=100)
+#     Name = models.CharField(max_length=20)
+#
+#     def __str__(self):
+#         return f'{self.role} --- {self.Name}'
 
-    def __str__(self):
-        return f'{self.role} --- {self.Name}'
+class PeticionStand(models.Model):
+    idStand =
+    clientUsername =
+    gestorUsername =
+    idEvento =
+    fecha =
+    estado =

@@ -1,4 +1,3 @@
-from tkinter import N
 from django.urls import path
 from .views import *
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
