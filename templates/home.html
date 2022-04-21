@@ -3,11 +3,26 @@
   {% load static %}
 <link href="{% static 'css/margins.css' %}" rel="stylesheet">
 {% block title %}
-    <div>
-        <h1 style="text-align:center">
-        Welcome to EventsAndMore!
-    </h1>
-    </div>
+
+    {% if user.is_authenticated %}
+        <div>
+            <h1 style="text-align:center">
+            Welcome to EventsAndMore, {{user}}!
+        </h1>
+        </div>
+    {% else %}
+
+        <div>
+            <h1 style="text-align:center">
+                Welcome to EventsAndMore!
+                <hr>
+                You are not logged in.
+            </h1>
+        </div>
+
+    {% endif %}
+
+
 {% endblock title %}
 {% block content %}
     <p style="text-align:center">
