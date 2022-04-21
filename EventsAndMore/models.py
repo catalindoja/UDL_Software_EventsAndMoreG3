@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date
 
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
@@ -34,3 +35,10 @@ class Staff(models.Model): #WebUser
 
     def __str__(self):
         return f'{self.role} --- {self.Name}'
+
+class event(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombe = models.CharField(max_length=50, blank=False, null=False)
+    descripcion = models.CharField(max_length=200, blank=False, null=False)
+    fecha_ini = models.DateField(default=date.today)
+    fecha_fin = models.DateField(default=date.today)
