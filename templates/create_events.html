@@ -1,0 +1,26 @@
+<!-- templates/home.html -->
+
+{% include 'base.html' %}
+  {% load static %}
+{% block title %}
+    <div>
+        <h1 style="text-align:center">
+            Events
+        </h1>
+    </div>
+{% endblock title %}
+
+{% block content %}
+Aqui se crea un nuevo Evento
+    <br> </br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">
+            Crear Evento
+        </button>
+    </form>
+
+{% endblock content %}
+
+
