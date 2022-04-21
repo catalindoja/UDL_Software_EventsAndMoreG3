@@ -1,28 +1,36 @@
 from django.db import models
 
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
-class User(models.Model):
-    username = models.CharField(primary_key=True, max_length=30)
+# class User(models.Model):
+#     username = models.CharField(primary_key=True, max_length=30)
+
+#     def __str__(self):
+#         return str(self.username)
+
+#TODO: nos ha dicho que podemos poner dentro de webuser al cliente y al visitante, que no es una guarrada si para uno de los roles tenemos atributos sin usar
+class WebUser(AbstractUser):
+    is_client = models.BooleanField(default=False)
+    is_visitor = models.BooleanField(default=False)
+
+
+class Cliente(models.Model): #WebUser
+    User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+    CIF = models.CharField(unique=True, max_length=9)
 
     def __str__(self):
-        return str(self.username)
+        return str(self.User)
 
 
-class Cliente(User):
-    CIF = models.CharField(primary_key=True, max_length=9)
-
-    def __str__(self):
-        return str(self.CIF)
-
-
-class Admin(User):
+class Staff(models.Model): #WebUser
     ROLES = (
         ("Gestor", "Gestor de stands"),
         ("Direccion", "Personal de direccion"),
-        ("Serv Adicionales", "Departamento de servicios adicionales")
+        ("Serv Adicionales", "Departamento de servicios adicionales"),
+        ("Org Events", "Organizador de eventos")
     )
     role = models.CharField(choices=ROLES, max_length=100)
+    Name = models.CharField(max_length=20)
 
     def __str__(self):
-        return str(self.role)
+        return f'{self.role} --- {self.Name}'

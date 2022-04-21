@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    Bueno pues aqui tendremos para elegir si vamos a ser cliente o visitante.
+    <br>
+
+    Who are you?
+    <br>
+    <a href="{% url 'signup_client' %}">
+        Client
+    </a>
+    <br>
+    <a>
+        Visitor
+    </a>
+
+{% endblock %}
