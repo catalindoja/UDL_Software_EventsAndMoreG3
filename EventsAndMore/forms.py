@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
+from django import forms
 
 from .models import *
 
@@ -23,3 +24,9 @@ class ClientSignupForm(UserCreationForm):
         print(client.CIF)
         # client.CIF.add(*self.cleaned_data.get('CIF'))
         return web_user# web_user
+
+
+class PeticionStandForm(forms.ModelForm):
+    class Meta:
+        model = PeticionStand
+        exclude = ['gestorUsername']

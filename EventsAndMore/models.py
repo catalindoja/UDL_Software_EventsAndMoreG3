@@ -26,6 +26,10 @@ class Cliente(models.Model): #WebUser
         return str(self.User)
 
 
+class Gestor(models.Model):
+    models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+
+
 # class Staff(models.Model): #WebUser
 #     ROLES = (
 #         ("Gestor", "Gestor de stands"),
@@ -42,17 +46,28 @@ class Cliente(models.Model): #WebUser
 
 class Event(models.Model):
     id = models.AutoField(primary_key=True)
-    nombe = models.CharField(max_length=50, blank=False, null=False)
+    nombre = models.CharField(max_length=50, blank=False, null=False)
     descripcion = models.CharField(max_length=200, blank=False, null=False)
     fecha_ini = models.DateField(default=date.today)
     fecha_fin = models.DateField(default=date.today)
 
 
+class Stand(models.Model):
+    id = models.AutoField(primary_key=True)
+    idEvento = models.ForeignKey(Event, on_delete=models.CASCADE)
+    occupied = models.BooleanField(blank=False, null=False)
+    description = models.CharField(max_length=200, blank=False, null=False)
+
+    def __str__(self):
+        return str(self.description)
+
+
 class PeticionStand(models.Model):
     id = models.AutoField(primary_key=True)
     idStand = models.ForeignKey(Stand, on_delete=models.CASCADE)
-    clientUsername = models.ForeignKey(WebUser, on_delete=models.CASCADE, blank=False, null=False)
-    gestorUsername = models.ForeignKey(WebUser, on_delete=models.CASCADE, blank=False, null=False)
-    idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE, blank=False, null=False)
+    clientUsername = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    gestorUsername = models.ForeignKey(Gestor, on_delete=models.CASCADE, blank=True, null=True)
+    idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
     fecha = models.DateField(default=date.today, blank=False, null=False)
     estado = models.BooleanField(editable=False, default=False)
+    revisado = models.BooleanField(editable=False, default=False)

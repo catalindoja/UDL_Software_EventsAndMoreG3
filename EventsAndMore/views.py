@@ -35,3 +35,13 @@ class SignupClientView(CreateView):
         web_user = form.save()
         login(self.request, web_user)
         return redirect('home')
+
+
+class PeticionStandClienteView(CreateView):
+    model = PeticionStand
+    form_class = PeticionStandForm
+    template_name = 'peticion_stand_cliente.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(PeticionStandClienteView, self).form_valid(form)
