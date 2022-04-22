@@ -51,6 +51,9 @@ class Event(models.Model):
     fecha_ini = models.DateField(default=date.today)
     fecha_fin = models.DateField(default=date.today)
 
+    def __str__(self):
+        return str(self.nombre)
+
 
 class Stand(models.Model):
     id = models.AutoField(primary_key=True)
