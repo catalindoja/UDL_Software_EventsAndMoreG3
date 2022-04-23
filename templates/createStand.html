@@ -1,0 +1,19 @@
+{% include 'base.html' %}
+  {% load static %}
+<link href="{% static 'css/margins.css' %}" rel="stylesheet">
+{% block title %}
+
+    <div>
+        <h1 style="text-align:center">
+            Create stand for event {{ event_name }}
+        </h1>
+    </div>
+
+
+{% endblock title %}
+{% block content %}
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save">
+</form>
+{% endblock content %}

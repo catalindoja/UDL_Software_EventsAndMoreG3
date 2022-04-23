@@ -1,0 +1,22 @@
+{% include 'base.html' %}
+  {% load static %}
+<link href="{% static 'css/margins.css' %}" rel="stylesheet">
+{% block title %}
+
+    <div>
+        <h1 style="text-align:center">
+            List stands for event {{ event_name }}
+        </h1>
+    </div>
+
+
+{% endblock title %}
+{% block content %}
+<ul>
+{% for stand in object_list %}
+    <li><p>{{ stand.description}}   {{ stand.occupied }}</p></li>
+{% empty %}
+    <li>  </li>
+{% endfor %}
+</ul>
+{% endblock content %}
