@@ -70,11 +70,11 @@ def updatePeticionStand(request, pk):
     form = PeticionStandGestorForm(instance=peticion)
 
     if request.method == 'POST':
-        form = PeticionStandGestorForm(request, instance=peticion)
+        form = PeticionStandGestorForm(request.POST, instance=peticion)
         if form.is_valid():
             form.save()
             return redirect('/')
 
     context = {'form':form}
-    return render(request, '/peticion_stand_gestor.html', context)
+    return render(request, 'peticion_stand_gestor.html', context)
 
