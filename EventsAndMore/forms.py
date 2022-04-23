@@ -26,7 +26,13 @@ class ClientSignupForm(UserCreationForm):
         return web_user# web_user
 
 
-class PeticionStandForm(forms.ModelForm):
+class PeticionStandClienteForm(forms.ModelForm):
     class Meta:
         model = PeticionStand
-        exclude = ['gestorUsername']
+        exclude = ['gestorUsername', 'estado', 'revisado']
+
+
+class PeticionStandGestorForm(forms.ModelForm):
+    class Meta:
+        model = PeticionStand
+        fields = '__all__'

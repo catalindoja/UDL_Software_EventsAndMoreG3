@@ -39,9 +39,42 @@ class SignupClientView(CreateView):
 
 class PeticionStandClienteView(CreateView):
     model = PeticionStand
-    form_class = PeticionStandForm
+    form_class = PeticionStandClienteForm
     template_name = 'peticion_stand_cliente.html'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(PeticionStandClienteView, self).form_valid(form)
+
+
+class PeticionStandGestorView(CreateView):
+    model = PeticionStand
+    form_class = PeticionStandGestorForm
+    template_name = 'peticion_stand_cliente.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(PeticionStandGestorView, self).form_valid(form)
+
+    #def update_peticon_stand(self, form, pk):
+
+
+def peticionStandGestorList(request):
+    peticiones = PeticionStand.objects.all()
+    dictionary = {'peticiones': peticiones}
+    return render(request, 'lista_peticiones_stand.html', dictionary)
+
+
+def updatePeticionStand(request, pk):
+    peticion = PeticionStand.objects.get(id=pk)
+    form = PeticionStandGestorForm(instance=peticion)
+
+    if request.method == 'POST':
+        form = PeticionStandGestorForm(request, instance=peticion)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form':form}
+    return render(request, '/peticion_stand_gestor.html', context)
+

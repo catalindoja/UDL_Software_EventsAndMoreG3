@@ -27,7 +27,10 @@ class Cliente(models.Model): #WebUser
 
 
 class Gestor(models.Model):
-    models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+    User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return str(self.User)
 
 
 # class Staff(models.Model): #WebUser
@@ -72,5 +75,5 @@ class PeticionStand(models.Model):
     gestorUsername = models.ForeignKey(Gestor, on_delete=models.CASCADE, blank=True, null=True)
     idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
     fecha = models.DateField(default=date.today, blank=False, null=False)
-    estado = models.BooleanField(editable=False, default=False)
-    revisado = models.BooleanField(editable=False, default=False)
+    estado = models.BooleanField(default=False)
+    revisado = models.BooleanField(default=False)
