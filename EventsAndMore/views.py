@@ -3,6 +3,7 @@ from datetime import date
 from django.shortcuts import redirect, render
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
@@ -38,20 +39,48 @@ class SignupClientView(CreateView):
         login(self.request, web_user)
         return redirect('home')
 
-def crear_nuevo_evento(request):
+#def CreateNewEvent(request):
+    #   form = CreateEvents()
+    #   return render(request, "create_events.html", {'form': form})
+
+def CreateNewEvent(request):
     if request.method == "POST":
-        form = Create_events(request.POST)
+        form = CreateEvents(request.POST)
         if form.is_valid():
             nombre = form.cleaned_data['nombre']
             descripcion = form.cleaned_data['descripcion']
-            #fecha_ini = form.cleaned_data['fecha_ini']
-            #fecha_fin = form.cleaned_data['fecha_fin']
-            id = len(event.objects.all()) +1
-            fecha_ini = date.today()
-            fecha_fin = date.today()
-            new_event = event(id,nombre,descripcion,fecha_fin,fecha_fin)
+            fecha_ini = form.cleaned_data['fecha_ini']
+            fecha_fin = form.cleaned_data['fecha_fin']
+            id = len(Event.objects.all()) +1
+            #fecha_ini = date.today()
+            #fecha_fin = date.today()
+            new_event = Event(id,nombre,descripcion,fecha_fin,fecha_fin)
             print(new_event)
-            new_event.save()
+            form.save()
+            return redirect('events')
+            #return super(CreateNewEvent).form_valid(form)
     else:
-        form = Create_events()
+        form = CreateEvents()
     return render(request, "create_events.html", {'form': form})
+
+def EventsViewlist(request):
+    eventos = Event.objects.all()
+    dictionary = {'eventos': eventos}
+    return render(request, 'events.html', dictionary)
+
+#class EventsView(CreateView):
+    #model = Event
+    #eventos = Event.objects.all()
+    #dictionary = {'eventos': eventos}
+    #template_name = 'create_events.html'
+        #return render(request, 'events.html', dictionary)
+
+#class CreateNewEvent(CreateView):
+        #model = Event
+        #form_class = CreateEvents
+        #template_name = 'create_events.html'
+
+        #def form_valid(self, form):
+           #form.instance.user = self.request.user
+           #print("HHHHHHHHHHHHHHHHHHHH")
+           #return super(CreateNewEvent, self).form_valid(form)

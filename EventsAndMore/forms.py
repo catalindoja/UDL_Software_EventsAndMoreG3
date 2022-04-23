@@ -1,9 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
-import datetime
+from django import forms
 from .models import *
-from django.forms import ModelForm
 
 class ClientSignupForm(UserCreationForm):
     CIF = forms.CharField(max_length=8, widget=forms.TextInput, required=True)
@@ -25,20 +24,18 @@ class ClientSignupForm(UserCreationForm):
         # client.CIF.add(*self.cleaned_data.get('CIF'))
         return web_user# web_user
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
-
-class Create_events(forms.Form):
+class CreateEvents(forms.ModelForm):
     class Meta:
-        model = event
+        model = Event
         fields = ['nombre', 'descripcion', 'fecha_ini','fecha_fin']
         widgets = {
-            'fecha_ini': DateInput(),
-            'fecha_fin': DateInput(),
+            #'fecha_ini': DateInput(),
+            #'fecha_fin': DateInput(),
         }
+        exclude = ['gestorUsername']
 
-    nombre = forms.CharField(label='Nombre del evento: ', required=True)
-    descripcion = forms.CharField(label='Descripción del evento: ', required=True)
+    #nombre = forms.CharField(label='Nombre del evento: ', required=True)
+    #descripcion = forms.CharField(label='Descripción del evento: ', required=True)
     #data_ini = forms.CharField(label='Data de inició: ', required=True)
     #data_fin = forms.DateField(label='Data de finalización: ', required=True)
     #data_test = forms.DateField(label='TEST: ', required=True)
