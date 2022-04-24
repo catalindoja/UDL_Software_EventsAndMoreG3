@@ -11,18 +11,29 @@
 {% endblock title %}
 
 {% block content %}
-    {% for evento in eventos %}
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">
+                Buscar Evento
+            </button>
+        </form>
+    </div>
+    <div>
+        {% for evento in eventos %}
          <div class="margins" style="float: left;margin: 0 1em 0 1em;">
             <div class="card" style="width: 18rem;">
                 <img src="..." class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title">{{ evento.nombre }}</h5>
                     <p class="card-text">{{ evento.descripcion }}</p>
-                    <a href="{{ evento.id }}" class="btn btn-primary">Go somewhere</a>
+                    <a href="event/{{ evento.id }}" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock content %}
 
 

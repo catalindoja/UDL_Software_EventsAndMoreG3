@@ -34,6 +34,16 @@ class CreateEvents(forms.ModelForm):
         }
         exclude = ['gestorUsername']
 
+class FilterEvents(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = fields = ['nombre', 'fecha_ini','fecha_fin']
+        widgets = {
+            # 'fecha_ini': DateInput(),
+            # 'fecha_fin': DateInput(),
+        }
+        exclude = ['gestorUsername','descripcion']
+
     #nombre = forms.CharField(label='Nombre del evento: ', required=True)
     #descripcion = forms.CharField(label='Descripción del evento: ', required=True)
     #data_ini = forms.CharField(label='Data de inició: ', required=True)

@@ -64,9 +64,27 @@ def CreateNewEvent(request):
     return render(request, "create_events.html", {'form': form})
 
 def EventsViewlist(request):
-    eventos = Event.objects.all()
-    dictionary = {'eventos': eventos}
-    return render(request, 'events.html', dictionary)
+    if request.method == "POST":
+        form = FilterEvents(request.POST)
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            fecha_ini = form.cleaned_data['fecha_ini']
+            fecha_fin = form.cleaned_data['fecha_fin']
+            #if nombre != null:
+            #if form.is_valid():
+            eventos = Event.objects.filter(nombre__contains=nombre)
+            dictionary = {'eventos': eventos, 'form': form}
+            return render(request, 'events.html', dictionary)
+    else:
+        form = FilterEvents()
+        eventos = Event.objects.all()
+        dictionary = {'eventos': eventos, 'form': form }
+        return render(request, 'events.html',  dictionary)
+
+def EventViewSpecific(request,idEvent):
+    evento = Event.objects.get(pk=int(idEvent))
+    dictionary = {'evento': evento}
+    return render(request, 'eventSpecific.html', dictionary)
 
 #class EventsView(CreateView):
     #model = Event
@@ -79,7 +97,6 @@ def EventsViewlist(request):
         #model = Event
         #form_class = CreateEvents
         #template_name = 'create_events.html'
-
         #def form_valid(self, form):
            #form.instance.user = self.request.user
            #print("HHHHHHHHHHHHHHHHHHHH")
