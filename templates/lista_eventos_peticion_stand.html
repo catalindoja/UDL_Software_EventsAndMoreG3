@@ -15,8 +15,10 @@
         <ul>
         {% for evento in eventos %}
             <li>
-                <a href="../lista_peticiones_stand/{{evento.id}}/">idEvento: {{ evento.id }}. nombre: {{ evento.nombre }}.</a>
-
+                <a href="../lista_peticiones_stand/{{evento.id}}/">Nombre del evento: {{ evento.nombre }}.
+                Descripcion: {{ evento.descripcion }}. Fecha de inicio: {{ evento.fecha_ini }}.
+                    Fecha de finalizacion: {{ evento.fecha_fin }}
+                </a>
             </li>
         {% endfor %}
     </ul>
