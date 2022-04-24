@@ -53,7 +53,7 @@ class StandsView(CreateView):
 
     def form_valid(self, form):
         form.instance.idEvento = get_object_or_404(Event, pk=self.kwargs['pk'])
-        form.instance.ocupied = False
+        form.instance.occupied = False
         return super(StandsView, self).form_valid(form)
 
 
@@ -63,4 +63,4 @@ class StandsListView(ListView):
     template_name = "standsList.html"
 
     def get_queryset(self):
-        return Stand.objects.filter(pk=self.kwargs['pk'])
+        return Stand.objects.filter(idEvento__stand__id=self.kwargs['pk'])
