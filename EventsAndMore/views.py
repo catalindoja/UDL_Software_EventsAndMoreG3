@@ -1,26 +1,34 @@
 from re import template
+
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, FormView
 from .models import *
 from .forms import *
-from django.contrib.auth import login #eto que éh?
+from django.contrib.auth import login  # eto que éh?
+
+
 
 # Create your views here.
 class HomePageView(TemplateView):
     template_name = 'home.html'
 
+
 class EventsView(TemplateView):
     template_name = 'events.html'
+
 
 class RegisterView(TemplateView):
     template_name = 'register.html'
 
+
 class SignupClientView(TemplateView):
     template_name = 'signup_client.html'
+
 
 class SignupClientView(CreateView):
     model = WebUser
@@ -35,3 +43,5 @@ class SignupClientView(CreateView):
         web_user = form.save()
         login(self.request, web_user)
         return redirect('home')
+
+

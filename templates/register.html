@@ -1,18 +1,46 @@
 {% extends 'base.html' %}
-
+{% load static %}
+ <link href="{% static 'css/login.css' %}" rel="stylesheet" >
 {% block content %}
+<body style="background-color: #eee;">
+    <section class="h-50 gradient-form" style="background-color: #eee;">
 
-    Bueno pues aqui tendremos para elegir si vamos a ser cliente o visitante.
-    <br>
+  <div class="container py-5 h-50">
+    <div class="row d-flex justify-content-center align-items-center h-50">
+      <div class="col-xl-10">
+           <h1 style="text-align: Center">Choose your account</h1>
+        <div class="card rounded-3 text-black">
+          <div class="row g-0">
+            <div class="col-lg-6" style="background: linear-gradient(to left, rgba(48, 207, 208, 0.5), rgba(51, 8, 103, 0.5))">
+              <div class="card-body p-md-5 mx-md-4"  >
+                <h2>Client</h2>
+                    <i class="small mb-0"> Participate in the events as part of it!
+                        Request your booth and choose the services you need.
+                        Join the EventsAndMore family as a Client and promote your company at our events. </i>
+                  <div style="text-align: center"><a href="{% url 'signup_client' %}">
+                        Sign up as a Client
+                    </a>
+                  </div>
 
-    Who are you?
-    <br>
-    <a href="{% url 'signup_client' %}">
-        Client
-    </a>
-    <br>
-    <a>
-        Visitor
-    </a>
-
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2" style="background:linear-gradient(to right, rgba(48, 207, 208, 0.5), rgba(51, 8, 103, 0.5))">
+              <div class="text-black px-3 py-4 p-md-5 mx-md-4">
+                <h2>Visitor</h2>
+                  <i class="small mb-0"> Attend our events as a visitor and participate in the activities proposed by
+                      each of the stands. You will be able to enjoy the services provided by each of the companies.
+                      What are you waiting for to register for the next event? </i>
+                  <div style="text-align: center"><a href="#">
+                        Sign up as a Visitor
+                    </a>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
 {% endblock %}
