@@ -43,38 +43,58 @@ class PeticionStandClienteView(CreateView):
     template_name = 'peticion_stand_cliente.html'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(PeticionStandClienteView, self).form_valid(form)
+        if self.request.user.is_client:
+            client = Cliente.objects.get(User=self.request.user)
+            form.instance.clientUsername = client
+            return super(PeticionStandClienteView, self).form_valid(form)
+        else:
+            print("Error, user is not a client")
+            return redirect('/')
 
 
 class PeticionStandGestorView(CreateView):
     model = PeticionStand
     form_class = PeticionStandGestorForm
-    template_name = 'peticion_stand_cliente.html'
+    template_name = 'peticion_stand_gestor.html'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(PeticionStandGestorView, self).form_valid(form)
+        if self.request.user.is_gestor:
+            gestor = Gestor.objects.get(User=self.request.user)
+            form.instance.gestorUsername = gestor
+            return super(PeticionStandGestorView, self).form_valid(form)
+        else:
+            print("Error, user is not a gestor")
+            return redirect('/')
 
     #def update_peticon_stand(self, form, pk):
 
 
 def peticionStandGestorList(request):
-    peticiones = PeticionStand.objects.all()
-    dictionary = {'peticiones': peticiones}
-    return render(request, 'lista_peticiones_stand.html', dictionary)
+    if request.user. is_gestor:
+        peticiones = PeticionStand.objects.all()
+        dictionary = {'peticiones': peticiones}
+        return render(request, 'lista_peticiones_stand.html', dictionary)
+    else:
+        print("Error el user no es un gestor")
+        return redirect('/')
 
 
 def updatePeticionStand(request, pk):
-    peticion = PeticionStand.objects.get(id=pk)
-    form = PeticionStandGestorForm(instance=peticion)
+    if request.user.is_gestor:
+        peticion = PeticionStand.objects.get(id=pk)
+        form = PeticionStandGestorForm(instance=peticion)
 
-    if request.method == 'POST':
-        form = PeticionStandGestorForm(request.POST, instance=peticion)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
+        if request.method == 'POST':
+            form = PeticionStandGestorForm(request.POST, instance=peticion)
+            gestor = Gestor.objects.get(User=request.user)
+            form.instance.gestorUsername = gestor
+            if form.is_valid():
+                form.save()
+                return redirect('/')
 
-    context = {'form':form}
-    return render(request, 'peticion_stand_gestor.html', context)
+        context = {'form':form}
+        return render(request, 'peticion_stand_gestor.html', context)
+    else:
+        print("Error el user no es un gestor")
+        return redirect('/')
 

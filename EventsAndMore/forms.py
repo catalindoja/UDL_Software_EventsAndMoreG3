@@ -29,10 +29,10 @@ class ClientSignupForm(UserCreationForm):
 class PeticionStandClienteForm(forms.ModelForm):
     class Meta:
         model = PeticionStand
-        exclude = ['gestorUsername', 'estado', 'revisado']
+        exclude = ['clientUsername', 'gestorUsername', 'estado', 'revisado']
 
 
 class PeticionStandGestorForm(forms.ModelForm):
     class Meta:
         model = PeticionStand
-        fields = '__all__'
+        exclude = ['gestorUsername']
