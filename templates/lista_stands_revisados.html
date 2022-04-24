@@ -15,7 +15,10 @@
         <ul>
         {% for peticion in peticiones %}
             <li>
-                <a href="../../peticion_stand_gestor/{{peticion.id}}/">idPeticion: {{ peticion.id }}. clientUsername: {{ peticion.clientUsername }}.</a>
+                Peticion numero: {{ peticion.id }}. cliente: {{ peticion.clientUsername }}.
+                Stand: {{ peticion.idStand }}. Evento: {{ peticion.idEvento }}. Fecha: {{ peticion.fecha }}
+                estadoPeticion: {{ peticion.estado_peticion }}
+
 
             </li>
         {% endfor %}

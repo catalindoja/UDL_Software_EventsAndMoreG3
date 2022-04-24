@@ -9,6 +9,7 @@ from .models import *
 from .forms import *
 from django.contrib.auth import login #eto que éh?
 
+
 # Create your views here.
 class HomePageView(TemplateView):
     template_name = 'home.html'
@@ -46,7 +47,8 @@ class PeticionStandClienteView(CreateView):
         if self.request.user.is_client:
             client = Cliente.objects.get(User=self.request.user)
             form.instance.clientUsername = client
-            return super(PeticionStandClienteView, self).form_valid(form)
+            form.save()
+            return redirect('lista_peticiones_cliente')
         else:
             print("Error, user is not a client")
             return redirect('/')
@@ -61,7 +63,8 @@ class PeticionStandGestorView(CreateView):
         if self.request.user.is_gestor:
             gestor = Gestor.objects.get(User=self.request.user)
             form.instance.gestorUsername = gestor
-            return super(PeticionStandGestorView, self).form_valid(form)
+            form.save()
+            return redirect('lista_stands_revisados')
         else:
             print("Error, user is not a gestor")
             return redirect('/')
@@ -69,17 +72,32 @@ class PeticionStandGestorView(CreateView):
     #def update_peticon_stand(self, form, pk):
 
 
-def peticionStandGestorList(request):
-    if request.user. is_gestor:
+def eventosPeticionStandGestorList(request):
+    if request.user.is_gestor:
+        eventos = Event.objects.all()
+        dictionary = {'eventos': eventos}
+        return render(request, 'lista_eventos_peticion_stand.html', dictionary)
+    else:
+        print("Error el user no es un gestor")
+        return redirect('/')
+    return 0
+
+
+def peticionStandGestorList(request, key):
+    if request.user.is_gestor:
         peticiones = PeticionStand.objects.all()
-        dictionary = {'peticiones': peticiones}
+        arr_peticiones = []
+        for peticion in peticiones:
+            if peticion.revisado is False and peticion.idEvento == Event.objects.get(id=key):
+                arr_peticiones.append(peticion)
+        dictionary = {'peticiones': arr_peticiones}
         return render(request, 'lista_peticiones_stand.html', dictionary)
     else:
         print("Error el user no es un gestor")
         return redirect('/')
 
 
-def updatePeticionStand(request, pk):
+def updatePeticionStandGestor(request, pk):
     if request.user.is_gestor:
         peticion = PeticionStand.objects.get(id=pk)
         form = PeticionStandGestorForm(instance=peticion)
@@ -90,7 +108,7 @@ def updatePeticionStand(request, pk):
             form.instance.gestorUsername = gestor
             if form.is_valid():
                 form.save()
-                return redirect('/')
+                return redirect('lista_stands_revisados')
 
         context = {'form':form}
         return render(request, 'peticion_stand_gestor.html', context)
@@ -98,3 +116,38 @@ def updatePeticionStand(request, pk):
         print("Error el user no es un gestor")
         return redirect('/')
 
+
+def listaPeticionesCliente(request):
+    if request.user.is_client:
+        peticiones = PeticionStand.objects.all()
+        arr_peticiones = []
+        for peticion in peticiones:
+            if peticion.revisado is True and peticion.clientUsername == Cliente.objects.get(User=request.user):
+                if peticion.estado is True:
+                    peticion.estado_peticion = 'Aceptada'
+                else:
+                    peticion.estado_peticion = 'Denegada'
+                arr_peticiones.append(peticion)
+        dictionary = {'peticiones': arr_peticiones}
+        return render(request, 'lista_peticiones_cliente.html', dictionary)
+    else:
+        print("Error el user no es un cliente")
+        return redirect('/')
+
+
+def listaStandsAsignadosGestor(request):
+    if request.user.is_gestor:
+        peticiones = PeticionStand.objects.all()
+        arr_peticiones = []
+        for peticion in peticiones:
+            if peticion.revisado is True and peticion.gestorUsername == Gestor.objects.get(User=request.user):
+                if peticion.estado is True:
+                    peticion.estado_peticion = 'Aceptada'
+                else:
+                    peticion.estado_peticion = 'Denegada'
+                arr_peticiones.append(peticion)
+        dictionary = {'peticiones': arr_peticiones}
+        return render(request, 'lista_stands_revisados.html', dictionary)
+    else:
+        print("Error el user no es un cliente")
+        return redirect('/')

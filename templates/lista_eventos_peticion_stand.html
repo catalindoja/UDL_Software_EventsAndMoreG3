@@ -5,7 +5,7 @@
 {% block title %}
     <div>
         <h1 style="text-align:center">
-            Lista peticiones de stand
+            Lista Eventos para las peticiones de stand
         </h1>
     </div>
 {% endblock title %}
@@ -13,9 +13,9 @@
 {% block content %}
     <div>
         <ul>
-        {% for peticion in peticiones %}
+        {% for evento in eventos %}
             <li>
-                <a href="../../peticion_stand_gestor/{{peticion.id}}/">idPeticion: {{ peticion.id }}. clientUsername: {{ peticion.clientUsername }}.</a>
+                <a href="../lista_peticiones_stand/{{evento.id}}/">idEvento: {{ evento.id }}. nombre: {{ evento.nombre }}.</a>
 
             </li>
         {% endfor %}
