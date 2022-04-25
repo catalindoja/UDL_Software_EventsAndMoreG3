@@ -52,7 +52,8 @@ class StandsView(CreateView):
     def form_valid(self, form):
         form.instance.idEvento = get_object_or_404(Event, pk=self.kwargs['pk'])
         form.instance.occupied = False
-        return super(StandsView, self).form_valid(form)
+        form.save()
+        return redirect('home')
 
 
 class StandsListView(ListView):
@@ -198,11 +199,13 @@ def listaPeticionesCliente(request):
         peticiones = PeticionStand.objects.all()
         arr_peticiones = []
         for peticion in peticiones:
-            if peticion.revisado is True and peticion.clientUsername == Cliente.objects.get(User=request.user):
-                if peticion.estado is True:
+            if peticion.clientUsername == Cliente.objects.get(User=request.user):
+                if peticion.estado is True and peticion.revisado is True:
                     peticion.estado_peticion = 'Aceptada'
-                else:
+                elif peticion.revisado is True and peticion.estado is False:
                     peticion.estado_peticion = 'Denegada'
+                else:
+                    peticion.estado_peticion = 'Pendiente de revision'
                 arr_peticiones.append(peticion)
         dictionary = {'peticiones': arr_peticiones}
         return render(request, 'lista_peticiones_cliente.html', dictionary)
