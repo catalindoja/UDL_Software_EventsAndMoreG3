@@ -9,14 +9,28 @@
         </h1>
     </div>
 
+    {% endblock title %}
+    {% block content %}
+    <ul>
+    <div style="width: 80%">
+        {% for stand in object_list %}
+            {% if stand.occupied == True %}
+                <div style="float: left;margin: 1em 1em 1em 1em;border: 1px solid #000;background-color: red;">
+                    <p>Stand: {{ stand.id}} </p>
+                <br>
+                    <p>Descripción: {{ stand.description }}</p>
+                 </div>
+            {% else %}
+                <div style="float: left;margin: 1em 1em 1em 1em;border: 1px solid #000;background-color: green;">
+                    <p>Stand: {{ stand.id}} </p>
+                <br>
+                    <p>Descripción: {{ stand.description }}</p>
+                 </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endblock content %}
 
-{% endblock title %}
-{% block content %}
-<ul>
-{% for stand in object_list %}
-    <li><p>{{ stand.description}}   {{ stand.occupied }}</p></li>
-{% empty %}
-    <li>  </li>
-{% endfor %}
-</ul>
-{% endblock content %}
+{% if somevar < 100 %}
+  This appears if variable somevar is less than 100.
+{% endif %}
