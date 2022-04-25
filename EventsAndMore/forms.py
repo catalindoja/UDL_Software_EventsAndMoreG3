@@ -57,3 +57,9 @@ class PeticionStandGestorForm(forms.ModelForm):
     class Meta:
         model = PeticionStand
         exclude = ['gestorUsername']
+
+
+class SendStandIncidenceForm(forms.ModelForm):
+    class Meta:
+        model = StandIncidence
+        exclude = ['Gestor_Username', 'Date', 'Status', 'Checked', 'Client_Username']

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    si clicamos en la request en concreto, podremos ver los detalles, como gestor a cargo, standa asignado y demas.
+    <h3>
+        Nota: cuando se asigne el stand, que se actualice la stand distribution
+    </h3>
+
+    
+
+    <table class="table">
+        <thread>
+            <br><br>
+            <p style="text-align:center">
+                <b>
+                    Previous requests
+                </b>
+            </p>
+            <hr>
+            <tr style="text-align:center">
+                <th scope="col">
+                    Number
+                </th>
+                <th scope="col">
+                    Event
+                </th>
+                <th scope="col">
+                    Stand
+                </th>
+                <th scope="col">
+                    Checked
+                </th>
+                <th scope="col">
+                    Solved
+                </th>
+            </tr>
+        </thread>
+        <tbody style="text-align:center">
+            {% for standrequest in StandRquest_List %}   
+
+                {% if standrequest.Client_Username.User.username == User %}
+                    
+                    <tr style="text-align:center">
+                        <td>
+                            {{ standrequest.Id }}
+                        </td>
+                        <td>
+                            {{ standrequest.Current_Event }}
+                        </td>
+                        <td>
+                            {{ standrequest.Stand_Requested }}
+                        </td>
+                        <td>
+                            {{ standrequest.Checked }}
+                        </td>
+                        <td>
+                            {{ standrequest.Status }}
+                        </td>
+                    </tr>
+                
+                {% endif %}
+
+            {% endfor %}
+            
+        </tbody>
+        
+    </table>
+
+{% endblock %}

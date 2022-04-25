@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<ul>
+    List of active Events:
+    {% for event in Event_list %}
+        <li>
+            {{ event }}
+            <ul>
+                Stand distribution:
+                {% for distribution in Distribution_List %}                
+                    <li>
+                        {{distribution}}
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+        
+
+    {% endfor %}
+    
+</ul>
+
+<h3>
+    NOTA: HACER QUE SE PUEDA CLICAR EN CADA UNO DE LOS EVENTOS, VER LOS DETAILS Y ENTONCES QUE SE VEA LA TABLA CON STAND Y AVAILABILITY
+</h3>
+
+<table class="table">
+    <thread>
+        <br><br>
+        <p style="text-align:center">
+            <b>
+                Distribution for active Events
+            </b>
+        </p>
+        <hr>
+        <tr style="text-align:center">
+            <th scope="col">
+                Event
+            </th>
+            <th scope="col">
+                Stand
+            </th>
+            <th scope="col">
+                Availability
+            </th>
+        </tr>
+    </thread>
+    <tbody style="text-align:center">
+
+        {% for stand in Stand_list %}
+
+            {% for row in stands_for_row %}
+
+                {{stand}}
+
+            {% endfor %}
+            <br>
+
+        {% endfor %}
+
+    </tbody>
+    
+</table>
+
+
+
+{% endblock %}

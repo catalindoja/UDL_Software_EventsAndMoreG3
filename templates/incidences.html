@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<ul>
+    What do you want to do?
+    <li>
+        <a href="{% url 'send_stand_incidence' %}">
+            Send an incidence with my stand
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'previous_incidences' %}">
+            Check status of current incidences
+        </a>
+    </li>
+</ul>
+
+{% endblock %}

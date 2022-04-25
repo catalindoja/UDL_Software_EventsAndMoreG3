@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, reverse
 
 from . import views
 from .views import *
@@ -20,6 +20,10 @@ urlpatterns = [
     path('peticion_stand_gestor/<str:pk>/', views.updatePeticionStandGestor, name='peticion_stand_gestor'),
     path('lista_peticiones_cliente/', views.listaPeticionesCliente, name='lista_peticiones_cliente'),
     path('lista_stands_revisados/', views.listaStandsAsignadosGestor, name='lista_stands_revisados'),
+    path('incidences/', IncidencesView.as_view(), name='incidences'),
+    path('incidences/send_stand_incidences/', SendStandIncidenceView.as_view(), name='send_stand_incidence'),
+    path('incidences/previous_incidences/', PreviousIncidencesView, name='previous_incidences'),
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -230,3 +230,32 @@ def listaStandsAsignadosGestor(request):
     else:
         print("Error el user no es un cliente")
         return redirect('/')
+
+
+class IncidencesView(TemplateView):
+    template_name = 'incidences.html'
+
+
+class SendStandIncidenceView(CreateView):
+    model = StandIncidence
+    form_class = SendStandIncidenceForm
+    template_name = 'send_stand_incidence.html'
+
+    def form_valid(self, form):
+        my_user = Cliente.objects.all()
+        for users in my_user:
+            # print(users.User.username)
+            if users.User.username == self.request.user.username:
+                my_client = users
+
+        form.instance.Client_Username = my_client
+        form.save()
+        return redirect('incidences')
+
+
+def PreviousIncidencesView(request):
+    StandIncidence_List = StandIncidence.objects.all()
+    content = {'StandIncidence_List': StandIncidence_List,
+               'User': request.user.username,
+               }
+    return render(request, 'previous_incidences.html', content)
