@@ -6,10 +6,14 @@
 <ul>
     What do you want to do?
     <li>
-        Send an incidence with my stand/s
+        <a href="{% url 'send_stand_incidence' %}">
+            Send an incidence with my stand
+        </a>
     </li>
     <li>
-        Check status of current incidences
+        <a href="{% url 'previous_incidences' %}">
+            Check status of current incidences
+        </a>
     </li>
 </ul>
 

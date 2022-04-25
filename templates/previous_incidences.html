@@ -2,19 +2,12 @@
 
 {% block content %}
 
-    si clicamos en la request en concreto, podremos ver los detalles, como gestor a cargo, standa asignado y demas.
-    <h3>
-        Nota: cuando se asigne el stand, que se actualice la stand distribution
-    </h3>
-
-    
-
-    <table class="table">
+       <table class="table">
         <thread>
             <br><br>
             <p style="text-align:center">
                 <b>
-                    Previous requests
+                    Previous incidences
                 </b>
             </p>
             <hr>
@@ -26,7 +19,10 @@
                     Event
                 </th>
                 <th scope="col">
-                    Stand
+                    Stand incidenced
+                </th>
+                <th scope="col">
+                    Incidence Description
                 </th>
                 <th scope="col">
                     Checked
@@ -37,25 +33,28 @@
             </tr>
         </thread>
         <tbody style="text-align:center">
-            {% for standrequest in StandRquest_List %}   
+            {% for standincidence in StandIncidence_List %}   
 
-                {% if standrequest.Client_Username.User.username == User %}
+                {% if standincidence.Client_Username.User.username == User %}
                     
                     <tr style="text-align:center">
                         <td>
-                            {{ standrequest.Id }}
+                            {{ standincidence.Id }}
                         </td>
                         <td>
-                            {{ standrequest.Current_Event }}
+                            {{ standincidence.Current_Event }}
                         </td>
                         <td>
-                            {{ standrequest.Stand_Requested }}
+                            {{ standincidence.Stand_Incidenced }}
                         </td>
                         <td>
-                            {{ standrequest.Checked }}
+                            {{ standincidence.Description }}
                         </td>
                         <td>
-                            {{ standrequest.Status }}
+                            {{ standincidence.Checked }}
+                        </td>
+                        <td>
+                            {{ standincidence.Status }}
                         </td>
                     </tr>
                 

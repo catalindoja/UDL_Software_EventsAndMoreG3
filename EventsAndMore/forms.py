@@ -29,3 +29,8 @@ class SendStandRequestForm(forms.ModelForm):
     class Meta:
         model = StandRequest
         exclude = ['Gestor_Username', 'Date', 'Status', 'Checked', 'Client_Username']
+
+class SendStandIncidenceForm(forms.ModelForm):
+    class Meta:
+        model = StandIncidence
+        exclude = ['Gestor_Username', 'Date', 'Status', 'Checked', 'Client_Username']
