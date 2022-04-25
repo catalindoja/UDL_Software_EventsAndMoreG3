@@ -51,6 +51,17 @@
     </thread>
     <tbody style="text-align:center">
 
+        {% for stand in Stand_list %}
+
+            {% for row in stands_for_row %}
+
+                {{stand}}
+
+            {% endfor %}
+            <br>
+
+        {% endfor %}
+
     </tbody>
     
 </table>

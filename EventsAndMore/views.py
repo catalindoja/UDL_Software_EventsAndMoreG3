@@ -54,13 +54,16 @@ def StandDistributionView(request):
         if event.Date_End >= today:
             Active_events_list.append(event)
 
-    for active_event in Active_events_list:
-        print(active_event.Name)
-    
+    # for active_event in Active_events_list:
+        # print(active_event.Name)
+
+    stands_for_row = list(range(1, 6))
+    print(stands_for_row)    
 
     context = { 'Event_list' : Active_events_list,
                 'Stand_list' : Stand_list,
                 'Distribution_List' : Distribution_List,
+                'stands_for_row' : stands_for_row,
                 }
     return render(request, 'stand_distribution.html', context)
 
