@@ -46,3 +46,14 @@ class FilterEvents(forms.ModelForm):
         }
         exclude = ['gestorUsername','descripcion']
 
+
+class PeticionStandClienteForm(forms.ModelForm):
+    class Meta:
+        model = PeticionStand
+        exclude = ['clientUsername', 'gestorUsername', 'estado', 'revisado']
+
+
+class PeticionStandGestorForm(forms.ModelForm):
+    class Meta:
+        model = PeticionStand
+        exclude = ['gestorUsername']
