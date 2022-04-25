@@ -1,0 +1,21 @@
+{% include 'base.html' %}
+  {% load static %}
+{% block title %}
+    <div>
+        <h1 style="text-align:center">
+            Incidencia stand
+        </h1>
+    </div>
+{% endblock title %}
+
+{% block content %}
+    <div>
+        <form action = "" method = "post">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+{% endblock content %}

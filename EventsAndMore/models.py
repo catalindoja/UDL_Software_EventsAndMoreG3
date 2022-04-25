@@ -89,8 +89,8 @@ class StandIncidence(models.Model):
     Current_Event = models.ForeignKey(Event, on_delete=models.CASCADE)
     Description = models.TextField(max_length=200)
     Date = models.DateField(default=date.today)
-    Status = models.BooleanField(editable=False, default=False)
-    Checked = models.BooleanField(editable=False, default=False)
+    Status = models.BooleanField(default=False)
+    Checked = models.BooleanField(default=False)
 
     def __str__(self):
         return f'Incidence {self.Id}, Stand {self.Stand_Incidenced}'

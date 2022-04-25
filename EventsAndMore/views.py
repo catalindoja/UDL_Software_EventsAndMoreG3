@@ -244,7 +244,6 @@ class SendStandIncidenceView(CreateView):
     def form_valid(self, form):
         my_user = Cliente.objects.all()
         for users in my_user:
-            # print(users.User.username)
             if users.User.username == self.request.user.username:
                 my_client = users
 
@@ -259,3 +258,28 @@ def PreviousIncidencesView(request):
                'User': request.user.username,
                }
     return render(request, 'previous_incidences.html', content)
+
+
+def updateIncidenciaStandGestor(request, pk):
+    if request.user.is_gestor:
+        incidencia = StandIncidence.objects.get(Id=pk)
+        form = IncidenciaStandGestorForm(instance=incidencia)
+
+        if request.method == 'POST':
+            form = IncidenciaStandGestorForm(request.POST, instance=incidencia)
+            gestores = Gestor.objects.all()
+            my_gestor = None
+            for g in gestores:
+                if g.User.username == request.user.username:
+                    my_gestor = g
+
+            form.instance.Gestor_Username = my_gestor
+            if form.is_valid():
+                form.save()
+                return redirect('incidences')
+
+        context = {'form':form}
+        return render(request, 'lista_incidencias_gestor.html', context)
+    else:
+        print("Error el user no es un gestor")
+        return redirect('/')

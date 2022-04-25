@@ -23,7 +23,7 @@ urlpatterns = [
     path('incidences/', IncidencesView.as_view(), name='incidences'),
     path('incidences/send_stand_incidences/', SendStandIncidenceView.as_view(), name='send_stand_incidence'),
     path('incidences/previous_incidences/', PreviousIncidencesView, name='previous_incidences'),
-
+    path('lista_incidencias_gestor/<str:pk>/', views.updateIncidenciaStandGestor, name='lista_incidencias_gestor'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
