@@ -107,6 +107,10 @@ def updatePeticionStandGestor(request, pk):
             gestor = Gestor.objects.get(User=request.user)
             form.instance.gestorUsername = gestor
             if form.is_valid():
+                if form.instance.estado is True:
+                    stand = Stand.objects.get(id=form.instance.idStand.id)
+                    stand.occupied = True
+                    stand.save()
                 form.save()
                 return redirect('lista_stands_revisados')
 
