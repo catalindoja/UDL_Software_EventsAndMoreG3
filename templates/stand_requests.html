@@ -6,27 +6,17 @@
 <ul>
     What do you want to do?
     <li>
-        Send a stand request
+        <a href="{% url 'send_stand_request' %}">
+            Send a stand request
+        </a>
+        
     </li>
     <li>
-        Check previous requests
+        <a href="{% url 'previous_requests' %}">
+            Check previous requests
+        </a>
     </li>
 </ul>
-<hr>
-<ul>
-    Do you want to send a stand request?
-    <li>
-        Select the event you want to book a stand
-    </li>
-    <li>
-        Number of stands?
-    </li>
-    <li>
-        Select available stand(s)
-    </li>
-    <li>
-        Save
-    </li>
-</ul>
+
 
 {% endblock %}

@@ -72,7 +72,7 @@ class Distribution(models.Model):
 class StandRequest(models.Model):
     Id = models.AutoField(primary_key=True)
     Stand_Requested = models.ForeignKey(Stand, on_delete=models.CASCADE)
-    Client_Username = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    Client_Username = models.ForeignKey(Cliente, on_delete=models.CASCADE, blank=True, null=True)
     Gestor_Username = models.ForeignKey(Gestor, on_delete=models.CASCADE, blank=True, null=True)
     Current_Event = models.ForeignKey(Event, on_delete=models.CASCADE)
     Date = models.DateField(default=date.today)
@@ -96,3 +96,12 @@ class StandIncidence(models.Model):
     def __str__(self):
         return f'Incidence {self.Id}, Stand {self.Stand_Incidenced}'
 
+class Notifications(models.Model):
+    TOPIC = (
+        ('Stand request', 'Stand request'),
+        ('Stand Incidence', 'Stand Incidence'),
+    )
+    Id = models.AutoField(primary_key=True)
+    Topic = models.CharField(choices=TOPIC, max_length=100)
+    Description = models.TextField(max_length=200)
+    

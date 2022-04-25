@@ -1,5 +1,5 @@
-from tkinter import N
-from django.urls import path
+
+from django.urls import path, reverse
 from .views import *
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -11,6 +11,8 @@ urlpatterns = [
     path('incidences/', IncidencesView.as_view(), name='incidences'),
     path('stand_requests/', StandRequestView.as_view(), name='stand_requests'),
     path('stand_distribution/', StandDistributionView, name='stand_distribution'),
+    path('stand_requests/send_stand_request/', SendStandRequestView.as_view(), name='send_stand_request'),
+    path('stand_requests/previous_requests/', PreviousRequestsView, name='previous_requests'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

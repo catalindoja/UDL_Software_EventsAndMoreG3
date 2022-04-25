@@ -64,3 +64,43 @@ def StandDistributionView(request):
                 }
     return render(request, 'stand_distribution.html', context)
 
+
+# def SendStandRequestView(request):
+#     context = {}
+#     return render(request, 'send_stand_request.html', context)
+
+class SendStandRequestView(CreateView):
+    model = StandRequest
+    form_class = SendStandRequestForm
+    template_name = 'send_stand_request.html'
+
+    #TODO: que se guarden los atributos que he puesto en exclude, guardar el current user, que solo salgan los eventos disponibles
+
+
+    def form_valid(self, form):
+        # print(type(self.request.user.username))
+        # print(type(form.instance.Client_Username))
+
+        
+        my_user = Cliente.objects.all()
+        for users in my_user:
+            print(users.User.username)
+            if users.User.username == self.request.user.username:
+                my_client = users
+        
+        form.instance.Client_Username = my_client
+        stand_request = form.save()
+        # print(self.request.user)
+        # print(form.instance.Client_Username)
+        return redirect('stand_requests')
+        # return super(SendStandRequestView, self).form_valid(form)
+
+
+def PreviousRequestsView(request):
+
+    StandRquest_List = StandRequest.objects.all()
+    # print(request.user.username)
+    context = { 'StandRquest_List' : StandRquest_List,
+                'User' : request.user.username,
+                }
+    return render(request, 'previous_requests.html', context)

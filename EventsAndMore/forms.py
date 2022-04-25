@@ -23,3 +23,9 @@ class ClientSignupForm(UserCreationForm):
         print(client.CIF)
         # client.CIF.add(*self.cleaned_data.get('CIF'))
         return web_user# web_user
+
+#TODO: poder seleccionar multiples stands. Maybe con multiple choice?
+class SendStandRequestForm(forms.ModelForm):
+    class Meta:
+        model = StandRequest
+        exclude = ['Gestor_Username', 'Date', 'Status', 'Checked', 'Client_Username']
