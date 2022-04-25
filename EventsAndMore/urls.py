@@ -24,6 +24,7 @@ urlpatterns = [
     path('incidences/send_stand_incidences/', SendStandIncidenceView.as_view(), name='send_stand_incidence'),
     path('incidences/previous_incidences/', PreviousIncidencesView, name='previous_incidences'),
     path('lista_incidencias_gestor/<str:pk>/', views.updateIncidenciaStandGestor, name='lista_incidencias_gestor'),
+    path('request/', RequestView.as_view(), name='request'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -22,7 +22,7 @@
         {% if user.is_client %}
 
         <li>
-          <a class="nav-link active" aria-current="page" href="#">  <!--Warning-->
+          <a class="nav-link active" aria-current="page" href="{% url 'request' %}">  <!--Warning-->
             Requests 
           </a>
         </li>
@@ -31,13 +31,19 @@
             Incidences
           </a>
         </li>
-        <li>
-          <a class="nav-link active" aria-current="page" href="#">  <!--Warning-->
-            Stand distribution
+        {% endif %}
+      {% if user.is_gestor %}
+           <li>
+          <a class="nav-link active" aria-current="page" href="{% url 'lista_eventos_peticion_stand' %}">  <!--Warning-->
+            Requests
           </a>
         </li>
-
-        {% endif %}
+        <li>
+          <a class="nav-link active" aria-current="page" href="{% url 'lista_incidencias_gestor' 1 %}">  <!--Warning-->
+            Incidences
+          </a>
+        </li>
+      {% endif %}
 
       </ul>
       <span class="navbar-text">

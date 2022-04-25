@@ -236,6 +236,10 @@ class IncidencesView(TemplateView):
     template_name = 'incidences.html'
 
 
+class RequestView(TemplateView):
+    template_name = 'request.html'
+
+
 class SendStandIncidenceView(CreateView):
     model = StandIncidence
     form_class = SendStandIncidenceForm
