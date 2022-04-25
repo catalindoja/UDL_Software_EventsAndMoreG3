@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import *
 from .forms import *
@@ -101,3 +101,11 @@ def EventViewSpecific(request,idEvent):
            #form.instance.user = self.request.user
            #print("HHHHHHHHHHHHHHHHHHHH")
            #return super(CreateNewEvent, self).form_valid(form)
+
+class StandsListView(ListView):
+    model = Stand
+    paginate_by = 50
+    template_name = "standsList.html"
+
+    def get_queryset(self):
+        return Stand.objects.filter(idEvento__stand__id=self.kwargs['pk'])

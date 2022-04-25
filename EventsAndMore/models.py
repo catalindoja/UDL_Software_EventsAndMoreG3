@@ -45,3 +45,12 @@ class Event(models.Model):
 
     def __str__(self):
         return str(self.nombre)
+
+class Stand(models.Model):
+    id = models.AutoField(primary_key=True)
+    idEvento = models.ForeignKey(Event, on_delete=models.CASCADE)
+    occupied = models.BooleanField(blank=False, null=False)
+    description = models.CharField(max_length=200, blank=False, null=False)
+
+    def __str__(self):
+        return str(self.description)

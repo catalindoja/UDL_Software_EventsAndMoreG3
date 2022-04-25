@@ -4,3 +4,4 @@ from . models import *
 admin.site.register(WebUser)
 admin.site.register(Cliente)
 admin.site.register(Event)
+admin.site.register(Stand)

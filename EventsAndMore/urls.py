@@ -9,5 +9,6 @@ urlpatterns = [
     path('create_event/',CreateNewEvent, name='new event'),
     path('register/', RegisterView.as_view(), name='register'),
     path('register/signup_client/', SignupClientView.as_view(), name='signup_client'),
+    path('events/<int:pk>/stands/', StandsListView.as_view(), name='stands_list'),
 ]
 urlpatterns += staticfiles_urlpatterns()
