@@ -247,8 +247,24 @@ class IncidencesView(TemplateView):
     template_name = 'incidences.html'
 
 
-class RequestView(TemplateView):
-    template_name = 'request.html'
+def RequestView(request):
+    if request.user.is_client:
+        peticiones = PeticionStand.objects.all()
+        arr_peticiones = []
+        for peticion in peticiones:
+            if peticion.clientUsername == Cliente.objects.get(User=request.user):
+                if peticion.estado is True and peticion.revisado is True:
+                    peticion.estado_peticion = 'Aceptada'
+                elif peticion.revisado is True and peticion.estado is False:
+                    peticion.estado_peticion = 'Denegada'
+                else:
+                    peticion.estado_peticion = 'Pendiente de revision'
+                arr_peticiones.append(peticion)
+        dictionary = {'peticiones': arr_peticiones}
+        return render(request, 'request.html', dictionary)
+    else:
+        print("Error el user no es un cliente")
+        return redirect('/')
 
 
 class SendStandIncidenceView(CreateView):

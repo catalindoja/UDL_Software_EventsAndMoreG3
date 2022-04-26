@@ -10,11 +10,29 @@
             Send a stand request
         </a>
     </li>
-    <li>
-        <a href="{% url 'lista_peticiones_cliente' %}">
-            Check my stand request
-        </a>
-    </li>
 </ul>
+    <div>
+        {% for peticion in peticiones %}
+            <div class="margins" style="float: left;margin: 0 1em 0 1em;">
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">Evento: {{ peticion.idEvento }}</h5>
+                    <h5 class="card-title">Stand: {{ peticion.idStand }}</h5>
+                    <p class="card-text">Peticion numero: {{ peticion.id }}</p>
+                    <p class="card-text">cliente: {{ peticion.clientUsername }} </p>
+                    <p class="card-text">Fecha: {{ peticion.fecha }}</p>
+                    <p class="card-text"> estadoPeticion: {{ peticion.estado_peticion }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
 
 {% endblock %}
+
+            <!--<li>
+                Peticion numero: {{ peticion.id }}. cliente: {{ peticion.clientUsername }}.
+                Stand: {{ peticion.idStand }}. Evento: {{ peticion.idEvento }}. Fecha: {{ peticion.fecha }}
+                estadoPeticion: {{ peticion.estado_peticion }}
+            </li>
