@@ -177,8 +177,12 @@ def updatePeticionStandGestor(request, pk):
 
         if request.method == 'POST':
             form = PeticionStandGestorForm(request.POST, instance=peticion)
-            gestor = Gestor.objects.get(User=request.user)
-            form.instance.gestorUsername = gestor
+            gestores = Gestor.objects.all()
+            my_gestor = None
+            for g in gestores:
+                if g.User.username == request.user.username:
+                    my_gestor = g
+            form.instance.gestorUsername = my_gestor
             if form.is_valid():
                 if form.instance.estado is True:
                     stand = Stand.objects.get(id=form.instance.idStand.id)
@@ -219,7 +223,14 @@ def listaStandsAsignadosGestor(request):
         peticiones = PeticionStand.objects.all()
         arr_peticiones = []
         for peticion in peticiones:
-            if peticion.revisado is True and peticion.gestorUsername == Gestor.objects.get(User=request.user):
+            print(peticion)
+            gestores = Gestor.objects.all()
+            my_gestor = None
+            for g in gestores:
+                if g.User.username == request.user.username:
+                    my_gestor = g
+            if peticion.revisado is True and peticion.gestorUsername == my_gestor:
+                print("entra")
                 if peticion.estado is True:
                     peticion.estado_peticion = 'Aceptada'
                 else:
