@@ -244,12 +244,26 @@ def listaStandsAsignadosGestor(request):
 
 
 def IncidencesView(request):
-    template_name = 'incidences.html'
-    StandIncidence_List = StandIncidence.objects.all()
-    content = {'StandIncidence_List': StandIncidence_List,
-               'User': request.user.username,
-    }
-    return render(request, 'incidences.html', content)
+    if request.method == "POST":
+        form = FilterIncidences(request.POST)
+        if form.is_valid():
+            nombre = form.cleaned_data['Stand_Incidenced']
+            incidences_all = StandIncidence.objects.all()
+            incidences_filter = incidences_all.filter(Stand_Incidenced__icontains=nombre)
+            content = {'StandIncidence_List': incidences_filter,
+                       'User': request.user.username,
+                       'form': form
+                       }
+            return render(request, 'incidences.html', content)
+    else:
+        form = FilterIncidences()
+        template_name = 'incidences.html'
+        StandIncidence_List = StandIncidence.objects.all()
+        content = {'StandIncidence_List': StandIncidence_List,
+                   'User': request.user.username,
+                   'form': form
+        }
+        return render(request, 'incidences.html', content)
 
 
 def RequestView(request):

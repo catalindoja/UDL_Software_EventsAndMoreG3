@@ -11,6 +11,18 @@
         </a>
     </li>
 <br>
+
+<div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">
+                Buscar incidencia
+            </button>
+        </form>
+    </div>
+
+<div>
     {% for incidencia in StandIncidence_List %}
          {% if incidencia.Client_Username.User.username == User %}
          <div class="margins" style="float: left;margin: 0 1em 0 1em;">
@@ -19,15 +31,16 @@
                 <div class="card-body">
                     <h5 class="card-text">Event :{{ incidencia.Current_Event  }}</h5>
                     <h5 class="card-text">Stand incidenced : {{ incidencia.Stand_Incidenced}}</h5>
-                    <h5 class="card-title">ID incidence : {{ incidencia.Id }}</h5>
-                    <p class="card-text">Incidence Description  : <br>{{ incidencia.Description  }}</p>
-                    <p class="card-text">Checked : {{ incidencia.Checked  }}</p>
-                    <p class="card-text">Solved : {{ incidencia.Status }}</p>
+                    <h5 class="card-title">ID incidencia : {{ incidencia.Id }}</h5>
+                    <p class="card-text">Descripción de incidencia : <br>{{ incidencia.Description  }}</p>
+                    <p class="card-text">Revisada : {{ incidencia.Checked  }}</p>
+                    <p class="card-text">Soluciónada : {{ incidencia.Status }}</p>
                 </div>
             </div>
         </div>
         {% endif %}
         {% endfor %}
+</div>
 </ul>
 
 {% endblock %}
