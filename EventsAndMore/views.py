@@ -243,8 +243,13 @@ def listaStandsAsignadosGestor(request):
         return redirect('/')
 
 
-class IncidencesView(TemplateView):
+def IncidencesView(request):
     template_name = 'incidences.html'
+    StandIncidence_List = StandIncidence.objects.all()
+    content = {'StandIncidence_List': StandIncidence_List,
+               'User': request.user.username,
+    }
+    return render(request, 'incidences.html', content)
 
 
 def RequestView(request):

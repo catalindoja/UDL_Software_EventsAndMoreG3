@@ -10,11 +10,24 @@
             Send an incidence with my stand
         </a>
     </li>
-    <li>
-        <a href="{% url 'previous_incidences' %}">
-            Check status of current incidences
-        </a>
-    </li>
+<br>
+    {% for incidencia in StandIncidence_List %}
+         {% if incidencia.Client_Username.User.username == User %}
+         <div class="margins" style="float: left;margin: 0 1em 0 1em;">
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-text">Event :{{ incidencia.Current_Event  }}</h5>
+                    <h5 class="card-text">Stand incidenced : {{ incidencia.Stand_Incidenced}}</h5>
+                    <h5 class="card-title">ID incidence : {{ incidencia.Id }}</h5>
+                    <p class="card-text">Incidence Description  : <br>{{ incidencia.Description  }}</p>
+                    <p class="card-text">Checked : {{ incidencia.Checked  }}</p>
+                    <p class="card-text">Solved : {{ incidencia.Status }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
 </ul>
 
 {% endblock %}
