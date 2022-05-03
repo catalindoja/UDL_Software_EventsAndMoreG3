@@ -83,10 +83,10 @@ class PeticionStand(models.Model):
 
 class StandIncidence(models.Model):
     Id = models.AutoField(primary_key=True)
-    Stand_Incidenced = models.ForeignKey(Stand, on_delete=models.CASCADE)
+    Stand_Incidenced = models.ForeignKey(Stand, on_delete=models.CASCADE, related_name='incidencies')
     Client_Username = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     Gestor_Username = models.ForeignKey(Gestor, on_delete=models.CASCADE, blank=True, null=True)
-    Current_Event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    Current_Event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='evento')
     Description = models.TextField(max_length=200)
     Date = models.DateField(default=date.today)
     Status = models.BooleanField(default=False)

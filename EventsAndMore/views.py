@@ -247,10 +247,12 @@ def IncidencesView(request):
     if request.method == "POST":
         form = FilterIncidences(request.POST)
         if form.is_valid():
-            nombre = form.cleaned_data['Stand_Incidenced']
-            incidences_all = StandIncidence.objects.all()
-            incidences_filter = incidences_all.filter(Stand_Incidenced__icontains=nombre)
-            content = {'StandIncidence_List': incidences_filter,
+            objstand = form.cleaned_data['Stand_Incidenced']
+            objevent= form.cleaned_data['Current_Event']
+            stand_incidence = objstand.incidencies.filter(Current_Event=objevent)
+            #event_incidence =  objevent.evento.all()
+            #stand_incidence = stand_incidence.filter(Current_Event=event_incidence)
+            content = {'StandIncidence_List': stand_incidence,
                        'User': request.user.username,
                        'form': form
                        }
