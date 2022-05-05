@@ -9,4 +9,12 @@ admin.site.register(Stand)
 admin.site.register(Event)
 admin.site.register(PeticionStand)
 admin.site.register(StandIncidence)
-#admin.site.register(Distribution)
+#sprint2
+admin.site.register(Organizer)
+admin.site.register(DeptAdditionalServ)
+admin.site.register(AdditionalService)
+admin.site.register(PeticionServAdicional)
+admin.site.register(IncidenciasServAdicional)
+admin.site.register(PeticionEvento)
+admin.site.register(ListaNegra)
+#sprint3

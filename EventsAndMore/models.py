@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import date
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 
 # Create your models here.
 # class User(models.Model):
@@ -29,6 +29,20 @@ class Cliente(models.Model):  # WebUser
 
 
 class Gestor(models.Model):
+    User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return str(self.User)
+
+
+class Organizer(models.Model):
+    User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return str(self.User)
+
+
+class DeptAdditionalServ(models.Model):
     User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
@@ -77,7 +91,7 @@ class PeticionStand(models.Model):
     gestorUsername = models.ForeignKey(Gestor, on_delete=models.CASCADE, blank=True, null=True)
     idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
     fecha = models.DateField(default=date.today, blank=False, null=False)
-    estado = models.BooleanField(default=False)
+    concedido = models.BooleanField(default=False)
     revisado = models.BooleanField(default=False)
 
 
@@ -94,3 +108,50 @@ class StandIncidence(models.Model):
 
     def __str__(self):
         return f'Incidence {self.Id}, Stand {self.Stand_Incidenced}'
+
+
+class AdditionalService(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50, blank=False, null=False)
+    descripcion = models.CharField(max_length=200, blank=False, null=False)
+    precio = models.FloatField(null=False, blank=False)
+    empresa_colaboradora = models.CharField(max_length=50, blank=True, null=True)
+
+
+class PeticionServAdicional(models.Model):
+    id = models.AutoField(primary_key=True)
+    idStand = models.ForeignKey(Stand, on_delete=models.CASCADE)
+    clientUsername = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    deptAdditionalServUsername = models.ForeignKey(DeptAdditionalServ, on_delete=models.CASCADE, blank=True, null=True)
+    idAdditionalService = models.ForeignKey(AdditionalService, default=1, on_delete=models.CASCADE)
+    idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
+    fecha = models.DateField(default=date.today, blank=False, null=False)
+    extra = models.BooleanField(default=False)
+    concedido = models.BooleanField(default=False)
+
+
+class IncidenciasServAdicional(models.Model):
+    id = models.AutoField(primary_key=True)
+    clientUsername = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    deptAdditionalServUsername = models.ForeignKey(DeptAdditionalServ, on_delete=models.CASCADE, blank=True, null=True)
+    idStand = models.ForeignKey(Stand, on_delete=models.CASCADE)
+    idAdditionalService = models.ForeignKey(AdditionalService, default=1, on_delete=models.CASCADE)
+    idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
+    descripcion = models.CharField(max_length=200, blank=False, null=False)
+    fecha = models.DateField(default=date.today, blank=False, null=False)
+    solucionado = models.BooleanField(default=False)
+
+
+class PeticionEvento(models.Model):
+    id = models.AutoField(primary_key=True)
+    organizerUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE)
+    clientUsername = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
+    motivo = models.CharField(max_length=200, blank=False, null=False)
+
+
+class ListaNegra(models.Model):
+    id = models.AutoField(primary_key=True)
+    organizerUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE)
+    adminUsername = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True) #verificar esto
+    descripcion = models.CharField(max_length=200, blank=False, null=False)
