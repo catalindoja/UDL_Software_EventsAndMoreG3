@@ -22,11 +22,85 @@
         <p>
             aqui vamos a ver send stand incidence
         </p>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" value="Submit">
+        </form>
+    
     </div>
     <div align="right">
         <p>
             aqui vamos a ver las previous incidences
         </p>
+
+        <table class="table">
+            <thread>
+                <br><br>
+                <p style="text-align:center">
+                    <b>
+                        Previous incidences
+                    </b>
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Number
+                    </th>
+                    <th scope="col">
+                        Event
+                    </th>
+                    <th scope="col">
+                        Stand incidenced
+                    </th>
+                    <th scope="col">
+                        Incidence Description
+                    </th>
+                    <th scope="col">
+                        Checked
+                    </th>
+                    <th scope="col">
+                        Solved
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+                {% for standincidence in StandIncidence_List %}   
+    
+                    {% if standincidence.Client_Username.User.username == User %}
+                        
+                        <tr style="text-align:center">
+                            <td>
+                                {{ standincidence.Id }}
+                            </td>
+                            <td>
+                                {{ standincidence.Current_Event }}
+                            </td>
+                            <td>
+                                {{ standincidence.Stand_Incidenced }}
+                            </td>
+                            <td>
+                                {{ standincidence.Description }}
+                            </td>
+                            <td>
+                                {{ standincidence.Checked }}
+                            </td>
+                            <td>
+                                {{ standincidence.Status }}
+                            </td>
+                        </tr>
+                    
+                    {% endif %}
+    
+                {% endfor %}
+                
+            </tbody>
+            
+        </table>
+
     </div>
 </div>
 
