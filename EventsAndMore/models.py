@@ -145,7 +145,7 @@ class IncidenciasServAdicional(models.Model):
 class PeticionEvento(models.Model):
     id = models.AutoField(primary_key=True)
     organizerUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE)
-    clientUsername = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    adminUsername = models.ForeignKey(WebUser, on_delete=models.CASCADE, blank=True, null=True)  # verificar esto
     idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
     motivo = models.CharField(max_length=200, blank=False, null=False)
 
@@ -153,5 +153,5 @@ class PeticionEvento(models.Model):
 class ListaNegra(models.Model):
     id = models.AutoField(primary_key=True)
     organizerUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE)
-    adminUsername = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True) #verificar esto
+    clientUsername = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     descripcion = models.CharField(max_length=200, blank=False, null=False)
