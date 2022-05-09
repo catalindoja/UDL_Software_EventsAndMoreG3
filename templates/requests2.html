@@ -15,6 +15,22 @@
 </p>
 
 {% block content %}
+
+<div>
+    <p>
+        aqui vamos a ver send stand incidence
+    </p>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+</div>
+
     <div>
         <ul>
         {% for evento in eventos %}
