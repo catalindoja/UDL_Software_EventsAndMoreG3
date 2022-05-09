@@ -262,6 +262,21 @@ def Incidences2View(request):
     return render(request, 'incidences2.html', context)
 
 
+def Requests2View(request):
+    if request.method == 'POST':
+        form = Requests2Form(request.POST)
+        if form.is_valid():
+            return redirect('/')
+    else:
+        form = Requests2Form()
+
+    context = {
+        'form' : form,
+    }
+
+    return render(request, 'requests2.html', context)
+
+
 class RequestView(TemplateView):
     template_name = 'request.html'
 

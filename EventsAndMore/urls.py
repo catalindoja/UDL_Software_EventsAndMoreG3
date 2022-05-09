@@ -27,6 +27,7 @@ urlpatterns = [
     path('request/', RequestView.as_view(), name='request'),
 
     path('incidences2/', Incidences2View, name='incidences2'),
+    path('requests2/', Requests2View, name='requests2'),
 
 ]
 
