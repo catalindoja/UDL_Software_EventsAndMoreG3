@@ -272,6 +272,7 @@ def Requests2View(request):
 
     context = {
         'form' : form,
+        'evento': evento,
     }
 
     return render(request, 'requests2.html', context)
