@@ -246,6 +246,21 @@ def listaStandsAsignadosGestor(request):
 class IncidencesView(TemplateView):
     template_name = 'incidences.html'
 
+def Incidences2View(request):
+    if request.method == 'POST':
+
+        form = Incidencias2Form(request.POST)
+        if form.is_valid():
+            return redirect('/')
+    else:
+        form = Incidencias2Form()
+
+    context = {
+        'form' : form,
+    }
+
+    return render(request, 'incidences2.html', context)
+
 
 class RequestView(TemplateView):
     template_name = 'request.html'
