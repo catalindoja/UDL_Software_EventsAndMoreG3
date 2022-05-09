@@ -75,7 +75,7 @@ class Incidencias2Form(forms.ModelForm):
         model = StandIncidence
         exclude = ['Gestor_Username', 'Date', 'Status', 'Checked', 'Client_Username']
 
-class Requests2Form(form.ModelForm):
+class Requests2Form(forms.ModelForm):
     class Meta:
         model = PeticionStand
         exclude = ['gestorUsername']
