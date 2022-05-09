@@ -270,9 +270,10 @@ def Requests2View(request):
     else:
         form = Requests2Form()
 
+    eventos = Event.objects.all()
     context = {
         'form' : form,
-        'evento': evento,
+        'eventos': eventos,
     }
 
     return render(request, 'requests2.html', context)
