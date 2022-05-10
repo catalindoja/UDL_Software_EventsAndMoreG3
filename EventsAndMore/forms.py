@@ -57,7 +57,8 @@ class FilterIncidences(forms.ModelForm):
 class PeticionStandClienteForm(forms.ModelForm):
     class Meta:
         model = PeticionStand
-        exclude = ['clientUsername', 'gestorUsername', 'estado', 'revisado']
+        exclude = ['clientUsername', 'gestorUsername', 'concedido', 'revisado']
+        #modificar el queryset para dejarlo los datos que te deja
 
 
 class PeticionStandGestorForm(forms.ModelForm):

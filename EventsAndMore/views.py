@@ -184,7 +184,7 @@ def updatePeticionStandGestor(request, pk):
                     my_gestor = g
             form.instance.gestorUsername = my_gestor
             if form.is_valid():
-                if form.instance.estado is True:
+                if form.instance.concedido is True:
                     stand = Stand.objects.get(id=form.instance.idStand.id)
                     stand.occupied = True
                     stand.save()
@@ -204,9 +204,9 @@ def listaPeticionesCliente(request):
         arr_peticiones = []
         for peticion in peticiones:
             if peticion.clientUsername == Cliente.objects.get(User=request.user):
-                if peticion.estado is True and peticion.revisado is True:
+                if peticion.concedido is True and peticion.revisado is True:
                     peticion.estado_peticion = 'Aceptada'
-                elif peticion.revisado is True and peticion.estado is False:
+                elif peticion.revisado is True and peticion.concedido is False:
                     peticion.estado_peticion = 'Denegada'
                 else:
                     peticion.estado_peticion = 'Pendiente de revision'
@@ -231,7 +231,7 @@ def listaStandsAsignadosGestor(request):
                     my_gestor = g
             if peticion.revisado is True and peticion.gestorUsername == my_gestor:
                 print("entra")
-                if peticion.estado is True:
+                if peticion.concedido is True:
                     peticion.estado_peticion = 'Aceptada'
                 else:
                     peticion.estado_peticion = 'Denegada'
