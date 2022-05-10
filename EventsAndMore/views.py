@@ -230,7 +230,6 @@ def listaStandsAsignadosGestor(request):
                 if g.User.username == request.user.username:
                     my_gestor = g
             if peticion.revisado is True and peticion.gestorUsername == my_gestor:
-                print("entra")
                 if peticion.concedido is True:
                     peticion.estado_peticion = 'Aceptada'
                 else:
@@ -335,3 +334,5 @@ def updateIncidenciaStandGestor(request, pk):
     else:
         print("Error el user no es un gestor")
         return redirect('/')
+
+
