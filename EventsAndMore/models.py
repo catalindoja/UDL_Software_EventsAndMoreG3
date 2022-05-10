@@ -86,7 +86,7 @@ class StandIncidence(models.Model):
     Stand_Incidenced = models.ForeignKey(Stand, on_delete=models.CASCADE, related_name='incidencies')
     Client_Username = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     Gestor_Username = models.ForeignKey(Gestor, on_delete=models.CASCADE, blank=True, null=True)
-    Current_Event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='evento')
+    Current_Event = models.ForeignKey(Event, on_delete=models.CASCADE)
     Description = models.TextField(max_length=200)
     Date = models.DateField(default=date.today)
     Status = models.BooleanField(default=False)
