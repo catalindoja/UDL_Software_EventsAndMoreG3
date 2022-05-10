@@ -156,3 +156,6 @@ class ListaNegra(models.Model):
     organizerUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     clientUsername = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     descripcion = models.CharField(max_length=200, blank=False, null=False)
+
+
+
