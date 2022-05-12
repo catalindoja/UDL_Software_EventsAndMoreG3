@@ -18,6 +18,8 @@ class WebUser(AbstractUser):
     is_client = models.BooleanField(default=False)
     is_visitor = models.BooleanField(default=False)
     is_gestor = models.BooleanField(default=False)
+    is_organizer = models.BooleanField(default=False)
+    is_deptAdditionalServ = models.BooleanField(default=False)
 
 
 class Cliente(models.Model):  # WebUser
