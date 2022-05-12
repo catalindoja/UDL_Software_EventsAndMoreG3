@@ -31,6 +31,16 @@
             Incidences
           </a>
         </li>
+        <li>
+          <a class="nav-link active" aria-current="page" href="#">  <!--Warning-->
+            Stands
+          </a>
+        </li>
+        <li>
+          <a class="nav-link active" aria-current="page" href="#">  <!--Warning-->
+            Services
+          </a>
+        </li>
         {% endif %}
       {% if user.is_gestor %}
            <li>
@@ -53,6 +63,22 @@
             Services
           </a>
         </li>
+
+      {% endif %}
+
+      {% if user.is_deptAdditionalServ %}
+
+      <li>
+        <a class="nav-link active" aria-current="page" href="#">  <!--Warning-->
+          Stands
+        </a>
+      </li>
+      <li>
+        <a class="nav-link active" aria-current="page" href="#">  <!--Warning-->
+          Services
+        </a>
+      </li>
+
       {% endif %}
 
       </ul>
