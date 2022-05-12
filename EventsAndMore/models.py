@@ -118,6 +118,9 @@ class AdditionalService(models.Model):
     precio = models.FloatField(null=False, blank=False)
     empresa_colaboradora = models.CharField(max_length=50, blank=True, null=True)
 
+    def __str__(self):
+        return str(self.nombre)
+
 
 class PeticionServAdicional(models.Model):
     id = models.AutoField(primary_key=True)
@@ -129,6 +132,9 @@ class PeticionServAdicional(models.Model):
     fecha = models.DateField(default=date.today, blank=False, null=False)
     extra = models.BooleanField(default=False)
     concedido = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id)
 
 
 class IncidenciasServAdicional(models.Model):
@@ -142,6 +148,9 @@ class IncidenciasServAdicional(models.Model):
     fecha = models.DateField(default=date.today, blank=False, null=False)
     solucionado = models.BooleanField(default=False)
 
+    def __str__(self):
+        return str(self.id)
+
 
 class PeticionEvento(models.Model):
     id = models.AutoField(primary_key=True)
@@ -150,12 +159,18 @@ class PeticionEvento(models.Model):
     idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
     motivo = models.CharField(max_length=200, blank=False, null=False)
 
+    def __str__(self):
+        return str(self.id)
+
 
 class ListaNegra(models.Model):
     id = models.AutoField(primary_key=True)
     organizerUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     clientUsername = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     descripcion = models.CharField(max_length=200, blank=False, null=False)
+
+    def __str__(self):
+        return str(self.descripcion)
 
 
 

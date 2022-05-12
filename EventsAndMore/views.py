@@ -142,8 +142,6 @@ class PeticionStandGestorView(CreateView):
             print("Error, user is not a gestor")
             return redirect('/')
 
-    #def update_peticon_stand(self, form, pk):
-
 
 def eventosPeticionStandGestorList(request):
     if request.user.is_gestor:
@@ -336,3 +334,33 @@ def updateIncidenciaStandGestor(request, pk):
         return redirect('/')
 
 
+class PeticionServAdicionalClienteView(CreateView):
+    model = PeticionServAdicional
+    form_class = PeticionServAdicionalClienteForm
+    template_name = 'peticion_servicio_adicional_cliente.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_client:
+            client = Cliente.objects.get(User=self.request.user)
+            form.instance.clientUsername = client
+            form.save()
+            return redirect('/')
+        else:
+            print("Error, user is not a client")
+            return redirect('/')
+
+
+class PeticionServAdicionalDepartamentoView(CreateView):
+    model = PeticionServAdicional
+    form_class = PeticionServAdicionalDepartamentoForm
+    template_name = 'peticion_servicio_adicional_departamento.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_gestor:
+            gestor = Gestor.objects.get(User=self.request.user)
+            form.instance.gestorUsername = gestor
+            form.save()
+            return redirect('lista_stands_revisados')
+        else:
+            print("Error, user is not a gestor")
+            return redirect('/')

@@ -46,6 +46,7 @@ class FilterEvents(forms.ModelForm):
         }
         exclude = ['gestorUsername','descripcion']
 
+
 class FilterIncidences(forms.ModelForm):
     class Meta:
         model = StandIncidence
@@ -54,11 +55,11 @@ class FilterIncidences(forms.ModelForm):
         }
         exclude = ['Id','Client_Username','Gestor_Username','Description','Date','Status','Checked']
 
+
 class PeticionStandClienteForm(forms.ModelForm):
     class Meta:
         model = PeticionStand
         exclude = ['clientUsername', 'gestorUsername', 'concedido', 'revisado']
-        #modificar el queryset para dejarlo los datos que te deja
 
 
 class PeticionStandGestorForm(forms.ModelForm):
@@ -77,3 +78,16 @@ class IncidenciaStandGestorForm(forms.ModelForm):
     class Meta:
         model = StandIncidence
         exclude = ['Gestor_Username']
+
+
+class PeticionServAdicionalClienteForm(forms.ModelForm):
+    class Meta:
+        model = PeticionServAdicional
+        exclude = ['clientUsername', 'deptAdditionalServUsername', 'concedido']
+
+
+class PeticionServAdicionalDepartamentoForm(forms.ModelForm):
+    class Meta:
+        model = PeticionServAdicional
+        exclude = ['deptAdditionalServUsername']
+
