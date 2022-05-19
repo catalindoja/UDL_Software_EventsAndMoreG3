@@ -310,7 +310,6 @@ def PreviousIncidencesView(request):
                }
     return render(request, 'previous_incidences.html', content)
 
-
 def updateIncidenciaStandGestor(request, pk):
     if request.user.is_gestor:
         incidencia = StandIncidence.objects.get(Id=pk)
@@ -335,4 +334,36 @@ def updateIncidenciaStandGestor(request, pk):
         print("Error el user no es un gestor")
         return redirect('/')
 
-
+def peticionDeEvento(request):
+    if request.user.is_organizer:
+        if request.method == "POST":
+            form = PeticionEventoform(request.POST)
+            if form.is_valid():
+               motivo = form.cleaned_data['motivo']
+               organizador = Organizer.objects.get(User=request.user)
+               form.instance.organizerUsername = organizador
+               #adminUsername = Admin
+               #form.instance.adminUsername = organizador
+               form.save()
+               return redirect('Peticion_de_evento')
+        else:
+            #peticion_de_evento = PeticionEvento.objects.filter(organizerUsername__contains=request.user)
+            #return render(request, 'events.html', dictionary)
+            #peticion_de_evento = PeticionEvento.organizador.filter(organizerUsername=request.user)
+            form = PeticionEventoform()
+            #dictionary = {'eventos': eventos, 'form': form}
+            return render(request, "peticion_evento.html", {'form': form})
+    if request.user.is_superuser:
+        if request.method == "POST":
+            return redirect('/')
+        else:
+            #peticion_evento = PeticionEvento.objects.get(concedido=False)
+            form = PeticionEventoAdmin()
+            # peticion_de_evento = PeticionEvento.objects.filter(organizerUsername__contains=request.user)
+            # return render(request, 'events.html', dictionary)
+            # peticion_de_evento = PeticionEvento.organizador.filter(organizerUsername=request.user)
+            #form = PeticionEvento()
+            # dictionary = {'eventos': eventos, 'form': form}
+            return render(request, "adminPeticionesEvento.html", {'form': form})
+    else:
+        return redirect('/')

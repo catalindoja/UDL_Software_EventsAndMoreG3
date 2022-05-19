@@ -72,8 +72,17 @@ class SendStandIncidenceForm(forms.ModelForm):
         model = StandIncidence
         exclude = ['Gestor_Username', 'Date', 'Status', 'Checked', 'Client_Username']
 
-
 class IncidenciaStandGestorForm(forms.ModelForm):
     class Meta:
         model = StandIncidence
         exclude = ['Gestor_Username']
+
+class PeticionEventoform(forms.ModelForm):
+    class Meta:
+        model = PeticionEvento
+        exclude = ['organizerUsername','adminUsername','concedido']
+
+class PeticionEventoAdmin(forms.ModelForm):
+    class Meta:
+        model = PeticionEvento
+        exclude = ['organizerUsername','adminUsername']
