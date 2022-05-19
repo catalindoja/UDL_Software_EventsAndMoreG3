@@ -25,7 +25,7 @@ urlpatterns = [
     path('incidences/previous_incidences/', PreviousIncidencesView, name='previous_incidences'),
     path('lista_incidencias_gestor/<str:pk>/', views.updateIncidenciaStandGestor, name='lista_incidencias_gestor'),
     path('peticion_serv_adicional_cliente/', PeticionServAdicionalClienteView.as_view(), name='peticion_serv_adicional_cliente'),
-    #path('peticion_/', RequestView, name='request'),
+    path('peticion_serv_adicional_dept/<str:pk>/', views.updatePeticionServAdicionalDepartamento, name='peticion_serv_adicional_dept'),
     path('request/', RequestView, name='request'),
 ]
 

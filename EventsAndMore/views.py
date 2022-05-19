@@ -364,3 +364,28 @@ class PeticionServAdicionalDepartamentoView(CreateView):
         else:
             print("Error, user is not a gestor")
             return redirect('/')
+
+
+def updatePeticionServAdicionalDepartamento(request, pk):
+    if request.user.is_deptAdditionalServ:
+        peticion = PeticionServAdicional.objects.get(id=pk)
+        form = PeticionServAdicionalDepartamentoForm(instance=peticion)
+
+        if request.method == 'POST':
+            form = PeticionServAdicionalDepartamentoForm(request.POST, instance=peticion)
+            additionaldepts = DeptAdditionalServ.objects.all()
+            my_dept = None
+            for d in additionaldepts:
+                if d.User.username == request.user.username:
+                    my_dept = d
+            form.instance.deptAdditionalServUsername = my_dept
+            print(my_dept)
+            if form.is_valid():
+                form.save()
+                return redirect('/peticion_serv_adicional_dept/1/')
+
+        context = {'form':form}
+        return render(request, 'peticion_stand_gestor.html', context)
+    else:
+        print("Error el user no es un gestor")
+        return redirect('/')
