@@ -133,6 +133,7 @@ class PeticionServAdicional(models.Model):
     fecha = models.DateField(default=date.today, blank=False, null=False)
     extra = models.BooleanField(default=False)
     concedido = models.BooleanField(default=False)
+    revisado = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id)

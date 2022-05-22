@@ -151,7 +151,6 @@ def eventosPeticionStandGestorList(request):
     else:
         print("Error el user no es un gestor")
         return redirect('/')
-    return 0
 
 
 def peticionStandGestorList(request, key):
@@ -382,10 +381,54 @@ def updatePeticionServAdicionalDepartamento(request, pk):
             print(my_dept)
             if form.is_valid():
                 form.save()
-                return redirect('/peticion_serv_adicional_dept/1/')
+                return redirect('/lista_eventos_peticion_serv_adicional/')
 
         context = {'form':form}
         return render(request, 'peticion_stand_gestor.html', context)
+    else:
+        print("Error el user no es un departamento de servicios adicionales")
+        return redirect('/')
+
+
+def listaPeticionesServAdicionalCliente(request):
+    if request.user.is_client:
+        peticiones = PeticionServAdicional.objects.all()
+        arr_peticiones = []
+        for peticion in peticiones:
+            if peticion.clientUsername == Cliente.objects.get(User=request.user):
+                if peticion.concedido is True and peticion.revisado is True:
+                    peticion.estado_peticion = 'Aceptada'
+                elif peticion.revisado is True and peticion.concedido is False:
+                    peticion.estado_peticion = 'Denegada'
+                else:
+                    peticion.estado_peticion = 'Pendiente de revision'
+                arr_peticiones.append(peticion)
+        dictionary = {'peticiones': arr_peticiones}
+        return render(request, 'lista_peticiones_serv_adicional_cliente.html', dictionary)
+    else:
+        print("Error el user no es un cliente")
+        return redirect('/')
+
+
+def eventosPeticionServAdicionalList(request):
+    if request.user.is_deptAdditionalServ:
+        eventos = Event.objects.all()
+        dictionary = {'eventos': eventos}
+        return render(request, 'lista_eventos_peticion_serv_adicional.html', dictionary)
+    else:
+        print("Error el user no es un departamento de servicios adicionales")
+        return redirect('/')
+
+
+def peticionServicioAdicionalDepartamentoList(request, key):
+    if request.user.is_deptAdditionalServ:
+        peticiones = PeticionServAdicional.objects.all()
+        arr_peticiones = []
+        for peticion in peticiones:
+            if peticion.revisado is False and peticion.idEvento == Event.objects.get(id=key):
+                arr_peticiones.append(peticion)
+        dictionary = {'peticiones': arr_peticiones}
+        return render(request, 'lista_peticiones_dept_servicios_adicionales.html', dictionary)
     else:
         print("Error el user no es un gestor")
         return redirect('/')

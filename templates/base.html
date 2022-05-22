@@ -31,6 +31,11 @@
             Incidences
           </a>
         </li>
+        <li>
+          <a class="nav-link active" aria-current="page" href="{% url 'lista_peticiones_serv_adicional_cliente' %}">  <!--Warning-->
+            Additional Services
+          </a>
+        </li>
         {% endif %}
       {% if user.is_gestor %}
            <li>
@@ -44,6 +49,15 @@
           </a>
         </li>
       {% endif %}
+
+      {% if user.is_deptAdditionalServ %}
+         <li>
+          <a class="nav-link active" aria-current="page" href="{% url 'lista_eventos_peticion_serv_adicional' %}">  <!--Warning-->
+            Additional Services Requests
+          </a>
+        </li>
+      {% endif %}
+
 
       </ul>
       <span class="navbar-text">

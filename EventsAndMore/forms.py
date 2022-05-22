@@ -83,7 +83,7 @@ class IncidenciaStandGestorForm(forms.ModelForm):
 class PeticionServAdicionalClienteForm(forms.ModelForm):
     class Meta:
         model = PeticionServAdicional
-        exclude = ['clientUsername', 'deptAdditionalServUsername', 'concedido']
+        exclude = ['clientUsername', 'deptAdditionalServUsername', 'concedido', 'revisado']
 
 
 class PeticionServAdicionalDepartamentoForm(forms.ModelForm):

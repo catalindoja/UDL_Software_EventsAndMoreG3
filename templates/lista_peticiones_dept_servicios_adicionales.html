@@ -1,0 +1,25 @@
+<!-- templates/home.html -->
+
+{% include 'login_base.html' %}
+  {% load static %}
+{% block title %}
+    <div>
+        <h1 style="text-align:center">
+            Lista peticiones de stand
+        </h1>
+    </div>
+{% endblock title %}
+
+{% block content %}
+    <div>
+        <ul>
+        {% for peticion in peticiones %}
+            <li>
+                <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/">Peticion numero: {{ peticion.id }}.
+                    Hecha por el cliente: {{ peticion.clientUsername }}. En la fecha: {{ peticion.fecha }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    </div>
+{% endblock content %}

@@ -24,9 +24,21 @@ urlpatterns = [
     path('incidences/send_stand_incidences/', SendStandIncidenceView.as_view(), name='send_stand_incidence'),
     path('incidences/previous_incidences/', PreviousIncidencesView, name='previous_incidences'),
     path('lista_incidencias_gestor/<str:pk>/', views.updateIncidenciaStandGestor, name='lista_incidencias_gestor'),
-    path('peticion_serv_adicional_cliente/', PeticionServAdicionalClienteView.as_view(), name='peticion_serv_adicional_cliente'),
-    path('peticion_serv_adicional_dept/<str:pk>/', views.updatePeticionServAdicionalDepartamento, name='peticion_serv_adicional_dept'),
     path('request/', RequestView, name='request'),
+
+    path('peticion_serv_adicional_cliente/', PeticionServAdicionalClienteView.as_view(),
+         name='peticion_serv_adicional_cliente'),
+    path('lista_peticiones_serv_adicional_cliente/', views.listaPeticionesServAdicionalCliente,
+         name='lista_peticiones_serv_adicional_cliente'),
+
+    path('peticion_serv_adicional_dept/<str:pk>/', views.updatePeticionServAdicionalDepartamento,
+         name='peticion_serv_adicional_dept'),
+    path('lista_eventos_peticion_serv_adicional/', views.eventosPeticionServAdicionalList,
+         name='lista_eventos_peticion_serv_adicional'),
+    path('lista_peticiones_serv_adicional/<str:key>/', views.peticionServicioAdicionalDepartamentoList,
+         name='lista_peticiones_serv_adicional'),
+
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()
