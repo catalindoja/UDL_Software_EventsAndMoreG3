@@ -77,3 +77,9 @@ class IncidenciaStandGestorForm(forms.ModelForm):
     class Meta:
         model = StandIncidence
         exclude = ['Gestor_Username']
+
+
+class AdditionalServicesForm(forms.ModelForm):
+    class Meta:
+        model = AdditionalService
+        exclude = ['nombre', 'descripcion', 'habilitado', 'precio', 'empresa_colaboradora']
