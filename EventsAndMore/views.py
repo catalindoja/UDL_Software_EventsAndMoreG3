@@ -9,21 +9,25 @@ from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import *
 from .forms import *
-from django.contrib.auth import login #eto que éh?
+from django.contrib.auth import login  # eto que éh?
 
 
 # Create your views here.
 class HomePageView(TemplateView):
     template_name = 'home.html'
 
+
 class EventsView(TemplateView):
     template_name = 'events.html'
+
 
 class RegisterView(TemplateView):
     template_name = 'register.html'
 
+
 class SignupClientView(TemplateView):
     template_name = 'signup_client.html'
+
 
 class SignupClientView(CreateView):
     model = WebUser
@@ -73,14 +77,14 @@ def CreateNewEvent(request):
             descripcion = form.cleaned_data['descripcion']
             fecha_ini = form.cleaned_data['fecha_ini']
             fecha_fin = form.cleaned_data['fecha_fin']
-            id = len(Event.objects.all()) +1
-            #fecha_ini = date.today()
-            #fecha_fin = date.today()
-            new_event = Event(id,nombre,descripcion,fecha_fin,fecha_fin)
+            id = len(Event.objects.all()) + 1
+            # fecha_ini = date.today()
+            # fecha_fin = date.today()
+            new_event = Event(id, nombre, descripcion, fecha_fin, fecha_fin)
             print(new_event)
             form.save()
             return redirect('events')
-            #return super(CreateNewEvent).form_valid(form)
+            # return super(CreateNewEvent).form_valid(form)
     else:
         form = CreateEvents()
     return render(request, "create_events.html", {'form': form})
@@ -93,19 +97,19 @@ def EventsViewlist(request):
             nombre = form.cleaned_data['nombre']
             fecha_ini = form.cleaned_data['fecha_ini']
             fecha_fin = form.cleaned_data['fecha_fin']
-            #if nombre != null:
-            #if form.is_valid():
+            # if nombre != null:
+            # if form.is_valid():
             eventos = Event.objects.filter(nombre__contains=nombre)
             dictionary = {'eventos': eventos, 'form': form}
             return render(request, 'events.html', dictionary)
     else:
         form = FilterEvents()
         eventos = Event.objects.all()
-        dictionary = {'eventos': eventos, 'form': form }
-        return render(request, 'events.html',  dictionary)
+        dictionary = {'eventos': eventos, 'form': form}
+        return render(request, 'events.html', dictionary)
 
 
-def EventViewSpecific(request,idEvent):
+def EventViewSpecific(request, idEvent):
     evento = Event.objects.get(pk=int(idEvent))
     dictionary = {'evento': evento}
     return render(request, 'eventSpecific.html', dictionary)
@@ -142,7 +146,7 @@ class PeticionStandGestorView(CreateView):
             print("Error, user is not a gestor")
             return redirect('/')
 
-    #def update_peticon_stand(self, form, pk):
+    # def update_peticon_stand(self, form, pk):
 
 
 def eventosPeticionStandGestorList(request):
@@ -191,7 +195,7 @@ def updatePeticionStandGestor(request, pk):
                 form.save()
                 return redirect('lista_stands_revisados')
 
-        context = {'form':form}
+        context = {'form': form}
         return render(request, 'peticion_stand_gestor.html', context)
     else:
         print("Error el user no es un gestor")
@@ -247,10 +251,10 @@ def IncidencesView(request):
         form = FilterIncidences(request.POST)
         if form.is_valid():
             objstand = form.cleaned_data['Stand_Incidenced']
-            objevent= form.cleaned_data['Current_Event']
+            objevent = form.cleaned_data['Current_Event']
             stand_incidence = objstand.incidencies.filter(Current_Event=objevent)
-            #event_incidence =  objevent.evento.all()
-            #stand_incidence = stand_incidence.filter(Current_Event=event_incidence)
+            # event_incidence =  objevent.evento.all()
+            # stand_incidence = stand_incidence.filter(Current_Event=event_incidence)
             content = {'StandIncidence_List': stand_incidence,
                        'User': request.user.username,
                        'form': form
@@ -263,7 +267,7 @@ def IncidencesView(request):
         content = {'StandIncidence_List': StandIncidence_List,
                    'User': request.user.username,
                    'form': form
-        }
+                   }
         return render(request, 'incidences.html', content)
 
 
@@ -329,10 +333,19 @@ def updateIncidenciaStandGestor(request, pk):
                 form.save()
                 return redirect('incidences')
 
-        context = {'form':form}
+        context = {'form': form}
         return render(request, 'lista_incidencias_gestor.html', context)
     else:
         print("Error el user no es un gestor")
         return redirect('/')
 
 
+def incidences_for_deptAdditionalServView(request):
+    incidences_list = IncidenciasServAdicional.objects.all()
+    category_list = ["Missing", "Bugged", "Wrong", "Broken", "Help"]
+    context = {
+        'incidences_list': incidences_list,
+        'User': request.user.username,
+    }
+
+    return render(request, 'incidences_for_deptAdditionalServ.html', context)

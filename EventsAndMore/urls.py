@@ -8,7 +8,7 @@ urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
     path('events/', EventsViewlist, name='events'),
     path('events/event/<idEvent>', EventViewSpecific, name='event_specific'),
-    path('create_event/',CreateNewEvent, name='new event'),
+    path('create_event/', CreateNewEvent, name='new event'),
     path('register/', RegisterView.as_view(), name='register'),
     path('register/signup_client/', SignupClientView.as_view(), name='signup_client'),
     path('events/<int:pk>/stands/create/', StandsView.as_view(), name='stands'),
@@ -25,6 +25,9 @@ urlpatterns = [
     path('incidences/previous_incidences/', PreviousIncidencesView, name='previous_incidences'),
     path('lista_incidencias_gestor/<str:pk>/', views.updateIncidenciaStandGestor, name='lista_incidencias_gestor'),
     path('request/', RequestView, name='request'),
+
+    path('incidences_for_deptAdditionalServ/', incidences_for_deptAdditionalServView,
+         name='incidences_for_deptAdditionalServ'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

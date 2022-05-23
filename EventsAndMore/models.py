@@ -143,6 +143,17 @@ class IncidenciasServAdicional(models.Model):
     descripcion = models.CharField(max_length=200, blank=False, null=False)
     fecha = models.DateField(default=date.today, blank=False, null=False)
     solucionado = models.BooleanField(default=False)
+    checked = models.BooleanField(default=False)
+
+    CATEGORY = (
+        ("Missing", "Mi servicio adicional no ha llegado"),
+        ("Bugged", "Mi servicio adicional no funciona correctamente"),
+        ("Wrong", "Mi servicio adicional no es el que pedí"),
+        ("Broken", "Mi servicio adicional se ha roto"),
+        ("Help", "Necesito ayuda para usar el servicio adicional"),
+        ("Other", "Miscelánea"),
+    )
+    category = models.CharField(choices=CATEGORY, max_length=10)
 
 
 class PeticionEvento(models.Model):
