@@ -80,9 +80,9 @@ class IncidenciaStandGestorForm(forms.ModelForm):
 class PeticionEventoform(forms.ModelForm):
     class Meta:
         model = PeticionEvento
-        exclude = ['organizerUsername','adminUsername','concedido']
+        exclude = ['organizerUsername','adminUsername','concedido','revisado']
 
 class PeticionEventoAdmin(forms.ModelForm):
     class Meta:
         model = PeticionEvento
-        exclude = ['organizerUsername','adminUsername']
+        exclude = ['organizerUsername','adminUsername','nombre','motivo','revisado']

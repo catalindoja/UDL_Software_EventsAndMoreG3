@@ -342,28 +342,51 @@ def peticionDeEvento(request):
                motivo = form.cleaned_data['motivo']
                organizador = Organizer.objects.get(User=request.user)
                form.instance.organizerUsername = organizador
-               #adminUsername = Admin
-               #form.instance.adminUsername = organizador
                form.save()
                return redirect('Peticion_de_evento')
         else:
-            #peticion_de_evento = PeticionEvento.objects.filter(organizerUsername__contains=request.user)
-            #return render(request, 'events.html', dictionary)
-            #peticion_de_evento = PeticionEvento.organizador.filter(organizerUsername=request.user)
             form = PeticionEventoform()
-            #dictionary = {'eventos': eventos, 'form': form}
-            return render(request, "peticion_evento.html", {'form': form})
+            PeticionesDeEvento = PeticionEvento.objects.all()
+            PeticionesDeEvento = PeticionesDeEvento.filter(organizerUsername = Organizer.objects.get(User=request.user))
+            context = {'PeticionesDeEvento': PeticionesDeEvento,
+                       'form': form
+                       }
+            return render(request, "peticion_evento.html",context)
     if request.user.is_superuser:
         if request.method == "POST":
             return redirect('/')
         else:
-            #peticion_evento = PeticionEvento.objects.get(concedido=False)
             form = PeticionEventoAdmin()
-            # peticion_de_evento = PeticionEvento.objects.filter(organizerUsername__contains=request.user)
-            # return render(request, 'events.html', dictionary)
-            # peticion_de_evento = PeticionEvento.organizador.filter(organizerUsername=request.user)
-            #form = PeticionEvento()
-            # dictionary = {'eventos': eventos, 'form': form}
-            return render(request, "adminPeticionesEvento.html", {'form': form})
+            PeticionEvento_List = PeticionEvento.objects.all()
+            content = {'PeticionEvento_List': PeticionEvento_List,
+                       'form': form
+                       }
+            return render(request, "adminPeticionesEvento.html", content)
+    else:
+        return redirect('/')
+
+def updatePeticionDeEvento(request, pk):
+    if request.user.is_superuser:
+        peticionEvento = PeticionEvento.objects.get(id=pk)
+        form = PeticionEventoAdmin(instance=peticionEvento)
+
+        if request.method == 'POST':
+            form = PeticionEventoAdmin(request.POST, instance=peticionEvento)
+            if form.is_valid():
+                if form.instance.concedido is True:
+                    peticionEvento = PeticionEvento.objects.get(id=form.instance.id)
+                    peticionEvento.concedido = True
+                    peticionEvento.revisado = True
+                    peticionEvento.save()
+                else:
+                    peticionEvento = PeticionEvento.objects.get(id=form.instance.id)
+                    peticionEvento.concedido = False
+                    peticionEvento.revisado = True
+                    peticionEvento.save()
+                return redirect('Peticion_de_evento')
+        context = {'peticionEvento': peticionEvento,
+                   'form': form
+                   }
+        return render(request, 'peticion_eventoUpdate.html', context)
     else:
         return redirect('/')

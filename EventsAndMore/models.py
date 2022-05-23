@@ -149,6 +149,7 @@ class PeticionEvento(models.Model):
     organizerUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=200, blank=False, null=False)
     #adminUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE, blank=True, null=True)  # verificar esto
+    revisado = models.BooleanField(default=False)
     concedido = models.BooleanField(default=False)
     motivo = models.CharField(max_length=200, blank=False, null=False)
 

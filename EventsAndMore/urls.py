@@ -26,6 +26,7 @@ urlpatterns = [
     path('lista_incidencias_gestor/<str:pk>/', views.updateIncidenciaStandGestor, name='lista_incidencias_gestor'),
     path('request/', RequestView, name='request'),
     path('peticion_evento/',peticionDeEvento, name='Peticion_de_evento'),
+    path('peticion_evento/update/<str:pk>/',updatePeticionDeEvento, name='Update_Peticion_deEvento'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

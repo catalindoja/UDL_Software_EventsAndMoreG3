@@ -3,15 +3,45 @@
 
 {% block content %}
 <br>
-
-<div>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">
-            Enviar Peticion
-        </button>
-        </form>
+    <h5>Peticions de Evento pendientes de revisar</h5>
+    <div>
+        {% for peticionEvento in PeticionEvento_List %}
+        {% if peticionEvento.revisado == False %}
+         <div class="margins" style="float: left;margin: 0 1em 0 1em;">
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-text">Event : {{ peticionEvento.nombre  }}</h5>
+                    <h5 class="card-title">ID incidencia : {{ peticionEvento.id }}</h5>
+                    <h5 class="card-title">Organizador Solicitante : {{ peticionEvento.organizerUsername.User.username  }}</h5>
+                    <p class="card-text">Descripción : <br>{{ peticionEvento.motivo  }}</p>
+                    <p class="card-text">Concedidad : {{ peticionEvento.concedido  }}</p>
+                    <a href="update/{{ peticionEvento.id  }}/" class="btn btn-primary">Actualizar</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
     </div>
 
+    <h5>Peticions de Evento revisadas</h5>
+    <div>
+        {% for peticionEvento in PeticionEvento_List %}
+        {% if peticionEvento.revisado == True %}
+         <div class="margins" style="float: left;margin: 0 1em 0 1em;">
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-text">Event : {{ peticionEvento.nombre  }}</h5>
+                    <h5 class="card-title">ID incidencia : {{ peticionEvento.id }}</h5>
+                    <h5 class="card-title">Organizador Solicitante : {{ peticionEvento.organizerUsername.User.username  }}</h5>
+                    <p class="card-text">Descripción : <br>{{ peticionEvento.motivo  }}</p>
+                    <p class="card-text">Concedidad : {{ peticionEvento.concedido  }}</p>
+                    <a href="update/{{ peticionEvento.id  }}/" class="btn btn-primary">Actualizar</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}
