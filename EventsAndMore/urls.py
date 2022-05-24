@@ -41,6 +41,8 @@ urlpatterns = [
 
     path('peticion_evento/',peticionDeEvento, name='Peticion_de_evento'),
     path('peticion_evento/update/<str:pk>/',updatePeticionDeEvento, name='Update_Peticion_deEvento'),
+
+    path('additional_services/', AdditionalServicesView.as_view(), name='additional_services'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
