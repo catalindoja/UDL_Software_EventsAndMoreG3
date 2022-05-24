@@ -401,21 +401,31 @@ def incidences_deptAdditionalServ_details_editView(request, pk):
         print("Error el user no es miembro del departamento de servicios adocionales ")
         return redirect('/')
 
+
 def selectIncidenceView(request):
     return render(request, 'select_incidences.html', {})
 
-def send_incidence_client(request):
+
+def send_incidence_additionalServ_client(request):
     if request.method == 'POST':
 
-        form = Incidencias2Form(request.POST)
+        form = SendIncidencesAdditionalServClientForm(request.POST)
+        name = request.user.username
+        current_user = WebUser.objects.get(username=name)
+        current_client = Cliente.objects.get(User=current_user)
+        form.instance.clientUsername = current_client
         if form.is_valid():
+            form.save()
             return redirect('/')
     else:
-        form = Incidencias2Form()
+        form = SendIncidencesAdditionalServClientForm()
+
+    incidences = IncidenciasServAdicional.objects.all()
 
     context = {
         'form': form,
+        'incidences': incidences,
+        'User': request.user.username,
     }
 
-    return render(request, 'incidences2.html', context)
-
+    return render(request, 'incidences_additionalServ.html', context)

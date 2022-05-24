@@ -85,3 +85,9 @@ class IncidenciaServicioDeptForm(forms.ModelForm):
     class Meta:
         model = IncidenciasServAdicional
         exclude = ['deptAdditionalServUsername']
+
+
+class SendIncidencesAdditionalServClientForm(forms.ModelForm):
+    class Meta:
+        model = IncidenciasServAdicional
+        exclude = ['deptAdditionalServUsername', 'fecha', 'solucionado', 'checked', 'clientUsername']

@@ -32,7 +32,9 @@ urlpatterns = [
          name='incidences_details'),
     path('incidences_for_deptAdditionalServ/<int:pk>/edit/', incidences_deptAdditionalServ_details_editView,
          name='incidences_details_edit'),
-    path('select_incidences/', selectIncidenceView, name='select_incidences')
+    path('select_incidences/', selectIncidenceView, name='select_incidences'),
+    path('send_incidences_additionalServ_client/', send_incidence_additionalServ_client,
+         name='send_incidence_additionalServ_client'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -38,10 +38,19 @@
                             Event
                         </th>
                         <th scope="col">
-                            Stand incidenced
+                            Stand related
+                        </th>
+                        <th scope="col">
+                            Staff name
+                        </th>
+                        <th scope="col">
+                            Additional service incidenced
                         </th>
                         <th scope="col">
                             Incidence Description
+                        </th>
+                        <th scope="col">
+                            Date
                         </th>
                         <th scope="col">
                             Checked
@@ -52,28 +61,37 @@
                     </tr>
                 </thread>
                 <tbody style="text-align:center">
-                {% for standincidence in StandIncidence_List %}
+                {% for incidence in incidences %}
 
-                    {% if standincidence.Client_Username.User.username == User %}
+                    {% if incidence.clientUsername.User.username == User %}
 
                         <tr style="text-align:center">
                             <td>
-                                {{ standincidence.Id }}
+                                {{ incidence.id }}
                             </td>
                             <td>
-                                {{ standincidence.Current_Event }}
+                                {{ incidence.idEvento }}
                             </td>
                             <td>
-                                {{ standincidence.Stand_Incidenced }}
+                                {{ incidence.idStand }}
                             </td>
                             <td>
-                                {{ standincidence.Description }}
+                                {{ incidence.deptAdditionalServUsername }}
                             </td>
                             <td>
-                                {{ standincidence.Checked }}
+                                {{ incidence.idAdditionalService }}
                             </td>
                             <td>
-                                {{ standincidence.Status }}
+                                {{ incidence.descripcion }}
+                            </td>
+                            <td>
+                                {{ incidence.fecha }}
+                            </td>
+                            <td>
+                                {{ incidence.solucionado }}
+                            </td>
+                            <td>
+                                {{ incidence.checked }}
                             </td>
                         </tr>
 
