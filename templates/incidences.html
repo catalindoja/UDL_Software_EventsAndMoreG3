@@ -12,6 +12,25 @@
     </li>
 <br>
 
+<h1>
+    Send a new stand incidence
+</h1>
+<hr>
+
+ <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+<h1>
+    Search previous stand incidences
+</h1>
+<hr>
+
 <div>
         <form method="post">
             {% csrf_token %}
