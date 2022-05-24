@@ -514,18 +514,20 @@ class AdditionalServicesView(View):
         user = request.user  # get the current login user details
         paramFile = io.TextIOWrapper(request.FILES['additionalServiceFile'].file)
         portfolio1 = csv.DictReader(paramFile, delimiter=';')
-        list_of_dict = list(portfolio1)
-        objs = [
-            AdditionalService(
-                nombre=row['ï»¿nombre'], #No se porque pero lee nombre con 'ï»¿' primero, asi que he tenido que apañarlo y poner ï»¿nombre XD
-                descripcion=row['descripcion'],
-                habilitado=bool(row['habilitado']),
-                precio=int(row['precio']),
-                empresa_colaboradora=row['empresa_colaboradora']
+        objs = []
+        for row in portfolio1:
+            print(row)
+            objs.append(
+                AdditionalService(
+                    nombre=row['nombre'], #No se porque pero lee nombre con 'ï»¿' primero, asi que he tenido que apañarlo y poner ï»¿nombre XD
+                    descripcion=row['descripcion'],
+                    habilitado=bool(row['habilitado']),
+                    precio=int(row['precio']),
+                    empresa_colaboradora=row['empresa_colaboradora']
+
+                )
 
             )
-            for row in list_of_dict
-        ]
         try:
             msg = AdditionalService.objects.bulk_create(objs)
             returnmsg = {"status_code": 200}
