@@ -32,6 +32,7 @@ urlpatterns = [
          name='incidences_details'),
     path('incidences_for_deptAdditionalServ/<int:pk>/edit/', incidences_deptAdditionalServ_details_editView,
          name='incidences_details_edit'),
+    path('select_incidences/', selectIncidenceView, name='select_incidences')
 ]
 
 urlpatterns += staticfiles_urlpatterns()

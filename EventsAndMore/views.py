@@ -400,3 +400,6 @@ def incidences_deptAdditionalServ_details_editView(request, pk):
     else:
         print("Error el user no es miembro del departamento de servicios adocionales ")
         return redirect('/')
+
+def selectIncidenceView(request):
+    return render(request, 'select_incidences.html', {})
