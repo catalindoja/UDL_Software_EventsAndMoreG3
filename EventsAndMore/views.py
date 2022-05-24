@@ -403,3 +403,19 @@ def incidences_deptAdditionalServ_details_editView(request, pk):
 
 def selectIncidenceView(request):
     return render(request, 'select_incidences.html', {})
+
+def send_incidence_client(request):
+    if request.method == 'POST':
+
+        form = Incidencias2Form(request.POST)
+        if form.is_valid():
+            return redirect('/')
+    else:
+        form = Incidencias2Form()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'incidences2.html', context)
+
