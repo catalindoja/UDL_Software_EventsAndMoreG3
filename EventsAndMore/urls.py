@@ -28,6 +28,10 @@ urlpatterns = [
 
     path('incidences_for_deptAdditionalServ/', incidences_for_deptAdditionalServView,
          name='incidences_for_deptAdditionalServ'),
+    path('incidences_for_deptAdditionalServ/<int:pk>/', Incidences_for_deptAdditionalServ_DetailView,
+         name='incidences_details'),
+    path('incidences_for_deptAdditionalServ/<int:pk>/edit/', incidences_deptAdditionalServ_details_editView,
+         name='incidences_details_edit'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

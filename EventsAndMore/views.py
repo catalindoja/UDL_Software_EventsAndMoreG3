@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import *
 from .forms import *
@@ -340,6 +340,7 @@ def updateIncidenciaStandGestor(request, pk):
         return redirect('/')
 
 
+'''
 def incidences_for_deptAdditionalServView(request):
     incidences_list = IncidenciasServAdicional.objects.all()
     category_list = ["Missing", "Bugged", "Wrong", "Broken", "Help"]
@@ -349,3 +350,53 @@ def incidences_for_deptAdditionalServView(request):
     }
 
     return render(request, 'incidences_for_deptAdditionalServ.html', context)
+'''
+
+
+def incidences_for_deptAdditionalServView(request):
+    incidences_list = IncidenciasServAdicional.objects.all()
+    category_list = ["Missing", "Bugged", "Wrong", "Broken", "Help", "Other"]
+
+    context = {
+        'incidences_list': incidences_list,
+        'User': request.user.username,
+        'category_list': category_list,
+    }
+
+    return render(request, 'incidences_for_deptAdditionalServ.html', context)
+
+
+def Incidences_for_deptAdditionalServ_DetailView(request, pk):
+    incidence = IncidenciasServAdicional.objects.get(id=pk)
+
+    context = {
+        'incidence': incidence
+    }
+
+    return render(request, 'incidences_for_deptAdditionalServ_details.html', context)
+
+
+def incidences_deptAdditionalServ_details_editView(request, pk):
+    if request.user.is_deptAdditionalServ:
+        incidence = IncidenciasServAdicional.objects.get(id=pk)
+        form = IncidenciaServicioDeptForm(instance=incidence)
+
+        if request.method == 'POST':
+            form = IncidenciaServicioDeptForm(request.POST, instance=incidence)
+            depts = DeptAdditionalServ.objects.all()
+
+            my_dept = None
+            for d in depts:
+                if d.User.username == request.user.username:
+                    my_dept = d
+
+            form.instance.deptAdditionalServUsername = my_dept
+            if form.is_valid():
+                form.save()
+                return redirect('incidences_for_deptAdditionalServ')
+
+        context = {'form': form}
+        return render(request, 'incidences_deptAdditionalServ_details_edit.html', context)
+    else:
+        print("Error el user no es miembro del departamento de servicios adocionales ")
+        return redirect('/')

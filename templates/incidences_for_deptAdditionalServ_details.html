@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+    <table class="table">
+        <thread>
+            <br><br>
+            <p style="text-align:center">
+                <b>
+                    Incidences related with Additional Services
+                </b>
+            </p>
+            <hr>
+            <tr style="text-align:center">
+                <th scope="col">
+                    Number
+                </th>
+                <th scope="col">
+                    Event
+                </th>
+                <th scope="col">
+                    Stand related
+                </th>
+                <th scope="col">
+                    Client name
+                </th>
+                <th scope="col">
+                    Additional service incidenced
+                </th>
+                <th scope="col">
+                    Incidence Description
+                </th>
+                <th scope="col">
+                    Date
+                </th>
+                <th scope="col">
+                    Checked
+                </th>
+                <th scope="col">
+                    Solved
+                </th>
+            </tr>
+        </thread>
+        <tbody style="text-align:center">
+        <tr style="text-align:center">
+            <td>
+                <a href="{% url 'incidences_details_edit' incidence.pk %}">
+                    {{ incidence.id }}
+                </a>
+
+            </td>
+            <td>
+                {{ incidence.idEvento }}
+            </td>
+            <td>
+                {{ incidence.idStand }}
+            </td>
+            <td>
+                {{ incidence.clientUsername }}
+            </td>
+            <td>
+                {{ incidence.idAdditionalService }}
+            </td>
+            <td>
+                {{ incidence.descripcion }}
+            </td>
+            <td>
+                {{ incidence.fecha }}
+            </td>
+            <td>
+                {{ incidence.solucionado }}
+            </td>
+            <td>
+                {{ incidence.checked }}
+            </td>
+        </tr>
+
+
+        </tbody>
+
+    </table>
+
+
+{% endblock %}

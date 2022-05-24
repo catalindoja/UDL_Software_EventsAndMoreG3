@@ -2,9 +2,6 @@
 
 {% block content %}
 
-    Aqui vamos a ver, desde el dept de servicios adicionales, las incidencias relacionadas con los servicios.
-    <br>
-    <hr>
 
     <table class="table">
         <thead>
@@ -38,99 +35,29 @@
         </thead>
         <tbody style="text-align:center">
         {% for incidence in incidences_list %}
-            caca
-            {% if incidence.clientUsername.User.username == User %}
-                caca
-                <tr style="text-align:center">
+            <tr style="text-align:center">
+                {% for category in category_list %}
+
                     <td>
-                        {% if "caca" == "caca" %}
-                            caca
+
+                        {% if incidence.category == category %}
+                            <a href="{% url 'incidences_details' incidence.pk %}">
+                            {{ incidence.id }}
+                            </a>
+
+                        {% else %}
+                            -----
                         {% endif %}
                     </td>
-                </tr>
-
-            {% endif %}
-
-        {% endfor %}
-        </tbody>
-
-    </table>
-
-
-
-
-    <table class="table">
-        <thread>
-            <br><br>
-            <p style="text-align:center">
-                <b>
-                    Incidences related with Additional Services
-                </b>
-            </p>
-            <hr>
-            <tr style="text-align:center">
-                <th scope="col">
-                    Number
-                </th>
-                <th scope="col">
-                    Event
-                </th>
-                <th scope="col">
-                    Stand related
-                </th>
-                <th scope="col">
-                    Client name
-                </th>
-                <th scope="col">
-                    Additional service incidenced
-                    <!-- TODO aqui por ejemplo podemos poner un link para que al clicar, se vea algo tipo service_details -->
-                </th>
-                <th scope="col">
-                    Incidence Description
-                </th>
-                <th scope="col">
-                    Date
-                </th>
-                <th scope="col">
-                    Checked
-                </th>
-                <th scope="col">
-                    Solved
-                </th>
+                {% endfor %}
             </tr>
-        </thread>
-        <tbody style="text-align:center">
-        {% for standincidence in StandIncidence_List %}
 
-            {% if standincidence.Client_Username.User.username == User %}
 
-                <tr style="text-align:center">
-                    <td>
-                        {{ standincidence.Id }}
-                    </td>
-                    <td>
-                        {{ standincidence.Current_Event }}
-                    </td>
-                    <td>
-                        {{ standincidence.Stand_Incidenced }}
-                    </td>
-                    <td>
-                        {{ standincidence.Description }}
-                    </td>
-                    <td>
-                        {{ standincidence.Checked }}
-                    </td>
-                    <td>
-                        {{ standincidence.Status }}
-                    </td>
-                </tr>
-
-            {% endif %}
 
         {% endfor %}
-
         </tbody>
 
     </table>
+
 
 {% endblock %}

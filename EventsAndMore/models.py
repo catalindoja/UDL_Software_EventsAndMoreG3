@@ -11,6 +11,7 @@ from django.contrib.auth.models import AbstractUser, User
 #         return str(self.username)
 
 # TODO: nos ha dicho que podemos poner dentro de webuser al cliente y al visitante, que no es una guarrada si para uno de los roles tenemos atributos sin usar
+from django.urls import reverse
 from django.utils.datetime_safe import date
 
 
@@ -120,6 +121,9 @@ class AdditionalService(models.Model):
     precio = models.FloatField(null=False, blank=False)
     empresa_colaboradora = models.CharField(max_length=50, blank=True, null=True)
 
+    def __str__(self):
+        return f'{self.nombre}'
+
 
 class PeticionServAdicional(models.Model):
     id = models.AutoField(primary_key=True)
@@ -154,6 +158,9 @@ class IncidenciasServAdicional(models.Model):
         ("Other", "Miscelánea"),
     )
     category = models.CharField(choices=CATEGORY, max_length=10)
+
+    def get_absolute_url(self):
+        return reverse('incidences_for_deptAdditionalServ_details.html', kwargs={'pk': self.pk})
 
 
 class PeticionEvento(models.Model):
