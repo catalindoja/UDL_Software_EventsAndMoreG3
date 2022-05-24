@@ -39,6 +39,8 @@ urlpatterns = [
          name='lista_peticiones_serv_adicional'),
 
 
+    path('peticion_evento/',peticionDeEvento, name='Peticion_de_evento'),
+    path('peticion_evento/update/<str:pk>/',updatePeticionDeEvento, name='Update_Peticion_deEvento'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<br>
+
+<div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">
+            Enviar Peticion
+        </button>
+        </form>
+    </div>
+<div>
+<h5> Mis peticiones de evento</h5>
+<div>
+        {% for peticionEvento in PeticionesDeEvento %}
+         <div class="margins" style="float: left;margin: 0 1em 0 1em;">
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-text">Event : {{ peticionEvento.nombre  }}</h5>
+                    <p class="card-text">Descripción : <br>{{ peticionEvento.motivo  }}</p>
+                    <p class="card-text">Revisada : {{ peticionEvento.revisado  }}</p>
+                    <p class="card-text">Concedidad : {{ peticionEvento.concedido  }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+</div>
+</div>
+{% endblock %}

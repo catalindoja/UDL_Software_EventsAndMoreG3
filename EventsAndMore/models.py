@@ -19,6 +19,7 @@ class WebUser(AbstractUser):
     is_visitor = models.BooleanField(default=False)
     is_gestor = models.BooleanField(default=False)
     is_deptAdditionalServ = models.BooleanField(default=False)
+    is_organizer = models.BooleanField(default=False)
 
 
 class Cliente(models.Model):  # WebUser
@@ -157,8 +158,10 @@ class IncidenciasServAdicional(models.Model):
 class PeticionEvento(models.Model):
     id = models.AutoField(primary_key=True)
     organizerUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE)
-    adminUsername = models.ForeignKey(WebUser, on_delete=models.CASCADE, blank=True, null=True)  # verificar esto
-    idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=200, blank=False, null=False)
+    #adminUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE, blank=True, null=True)  # verificar esto
+    revisado = models.BooleanField(default=False)
+    concedido = models.BooleanField(default=False)
     motivo = models.CharField(max_length=200, blank=False, null=False)
 
     def __str__(self):

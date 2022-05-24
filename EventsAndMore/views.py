@@ -333,6 +333,38 @@ def updateIncidenciaStandGestor(request, pk):
         return redirect('/')
 
 
+def peticionDeEvento(request):
+    if request.user.is_organizer:
+        if request.method == "POST":
+            form = PeticionEventoform(request.POST)
+            if form.is_valid():
+               motivo = form.cleaned_data['motivo']
+               organizador = Organizer.objects.get(User=request.user)
+               form.instance.organizerUsername = organizador
+               form.save()
+               return redirect('Peticion_de_evento')
+        else:
+            form = PeticionEventoform()
+            PeticionesDeEvento = PeticionEvento.objects.all()
+            PeticionesDeEvento = PeticionesDeEvento.filter(organizerUsername = Organizer.objects.get(User=request.user))
+            context = {'PeticionesDeEvento': PeticionesDeEvento,
+                       'form': form
+                       }
+            return render(request, "peticion_evento.html",context)
+    if request.user.is_superuser:
+        if request.method == "POST":
+            return redirect('/')
+        else:
+            form = PeticionEventoAdmin()
+            PeticionEvento_List = PeticionEvento.objects.all()
+            content = {'PeticionEvento_List': PeticionEvento_List,
+                       'form': form
+                       }
+            return render(request, "adminPeticionesEvento.html", content)
+    else:
+        return redirect('/')
+
+
 class PeticionServAdicionalClienteView(CreateView):
     model = PeticionServAdicional
     form_class = PeticionServAdicionalClienteForm
@@ -431,4 +463,31 @@ def peticionServicioAdicionalDepartamentoList(request, key):
         return render(request, 'lista_peticiones_dept_servicios_adicionales.html', dictionary)
     else:
         print("Error el user no es un gestor")
+        return redirect('/')
+
+
+def updatePeticionDeEvento(request, pk):
+    if request.user.is_superuser:
+        peticionEvento = PeticionEvento.objects.get(id=pk)
+        form = PeticionEventoAdmin(instance=peticionEvento)
+
+        if request.method == 'POST':
+            form = PeticionEventoAdmin(request.POST, instance=peticionEvento)
+            if form.is_valid():
+                if form.instance.concedido is True:
+                    peticionEvento = PeticionEvento.objects.get(id=form.instance.id)
+                    peticionEvento.concedido = True
+                    peticionEvento.revisado = True
+                    peticionEvento.save()
+                else:
+                    peticionEvento = PeticionEvento.objects.get(id=form.instance.id)
+                    peticionEvento.concedido = False
+                    peticionEvento.revisado = True
+                    peticionEvento.save()
+                return redirect('Peticion_de_evento')
+        context = {'peticionEvento': peticionEvento,
+                   'form': form
+                   }
+        return render(request, 'peticion_eventoUpdate.html', context)
+    else:
         return redirect('/')
