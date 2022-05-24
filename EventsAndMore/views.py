@@ -248,25 +248,44 @@ def listaStandsAsignadosGestor(request):
 
 def IncidencesView(request):
     if request.method == "POST":
-        form = FilterIncidences(request.POST)
-        if form.is_valid():
-            objstand = form.cleaned_data['Stand_Incidenced']
-            objevent = form.cleaned_data['Current_Event']
+        formB = FilterIncidences(request.POST)
+        formI = SendStandIncidenceForm(request.POST)
+        if formI.is_valid():
+
+           # name = request.user.username
+            #current_user = WebUser.objects.get(username=name)
+           # current_client = Cliente.objects.get(User=current_user)
+            #formI.instance.Client_Username = current_client
+            formI.save()
+            #redirect('/')
+            context = {
+                'User': request.user.username,
+                'formI': formI,
+            }
+            return render(request, 'incidences.html', context)
+
+        if formB.is_valid():
+            objstand = formB.cleaned_data['Stand_Incidenced']
+            objevent = formB.cleaned_data['Current_Event']
             stand_incidence = objstand.incidencies.filter(Current_Event=objevent)
             # event_incidence =  objevent.evento.all()
             # stand_incidence = stand_incidence.filter(Current_Event=event_incidence)
             content = {'StandIncidence_List': stand_incidence,
                        'User': request.user.username,
-                       'form': form
+                       'formB': formB
                        }
             return render(request, 'incidences.html', content)
     else:
-        form = FilterIncidences()
+        formB = FilterIncidences()
+        formI = SendStandIncidenceForm()
         template_name = 'incidences.html'
         StandIncidence_List = StandIncidence.objects.all()
+        incidences = StandIncidence.objects.all()
         content = {'StandIncidence_List': StandIncidence_List,
                    'User': request.user.username,
-                   'form': form
+                   'formB': formB,
+                   'formI': formI,
+                   'incidences': incidences,
                    }
         return render(request, 'incidences.html', content)
 
