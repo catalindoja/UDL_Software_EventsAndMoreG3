@@ -302,9 +302,9 @@ def RequestView(request):
         arr_peticiones = []
         for peticion in peticiones:
             if peticion.clientUsername == Cliente.objects.get(User=request.user):
-                if peticion.estado is True and peticion.revisado is True:
+                if peticion.concedido is True and peticion.revisado is True:
                     peticion.estado_peticion = 'Aceptada'
-                elif peticion.revisado is True and peticion.estado is False:
+                elif peticion.revisado is True and peticion.concedido is False:
                     peticion.estado_peticion = 'Denegada'
                 else:
                     peticion.estado_peticion = 'Pendiente de revision'
