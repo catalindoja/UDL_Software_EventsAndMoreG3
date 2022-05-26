@@ -11,6 +11,7 @@ from django.contrib.auth.models import AbstractUser, User
 #         return str(self.username)
 
 # TODO: nos ha dicho que podemos poner dentro de webuser al cliente y al visitante, que no es una guarrada si para uno de los roles tenemos atributos sin usar
+from django.urls import reverse
 from django.utils.datetime_safe import date
 
 
@@ -150,6 +151,20 @@ class IncidenciasServAdicional(models.Model):
     descripcion = models.CharField(max_length=200, blank=False, null=False)
     fecha = models.DateField(default=date.today, blank=False, null=False)
     solucionado = models.BooleanField(default=False)
+    checked = models.BooleanField(default=False)
+
+    CATEGORY = (
+        ("Missing", "Mi servicio adicional no ha llegado"),
+        ("Bugged", "Mi servicio adicional no funciona correctamente"),
+        ("Wrong", "Mi servicio adicional no es el que pedí"),
+        ("Broken", "Mi servicio adicional se ha roto"),
+        ("Help", "Necesito ayuda para usar el servicio adicional"),
+        ("Other", "Miscelánea"),
+    )
+    category = models.CharField(choices=CATEGORY, max_length=10)
+
+    def get_absolute_url(self):
+        return reverse('incidences_for_deptAdditionalServ_details.html', kwargs={'pk': self.pk})
 
     def __str__(self):
         return str(self.id)
@@ -176,6 +191,4 @@ class ListaNegra(models.Model):
 
     def __str__(self):
         return str(self.descripcion)
-
-
 

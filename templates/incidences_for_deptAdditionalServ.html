@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+    <table class="table">
+        <thead>
+        <br><br>
+        <p style="text-align:center">
+            <b>
+                Categories
+            </b>
+        </p>
+        <hr>
+        <tr style="text-align:center">
+            <th scope="col">
+                Missing
+            </th>
+            <th scope="col">
+                Bugged
+            </th>
+            <th scope="col">
+                Wrong
+            </th>
+            <th scope="col">
+                Broken
+            </th>
+            <th scope="col">
+                Help
+            </th>
+            <th scope="col">
+                Other
+            </th>
+        </tr>
+        </thead>
+        <tbody style="text-align:center">
+        {% for incidence in incidences_list %}
+            <tr style="text-align:center">
+                {% for category in category_list %}
+
+                    <td>
+
+                        {% if incidence.category == category %}
+                            <a href="{% url 'incidences_details' incidence.pk %}">
+                            {{ incidence.id }}
+                            </a>
+
+                        {% else %}
+                            -----
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+
+
+
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <ul>
+        Select your action:
+        <li>
+            <a href="#">
+                Request new additional service
+            </a>
+
+        </li>
+        <li>
+            <a href="{% url 'send_incidence_additionalServ_client' %}">
+                Incidences with additional services
+            </a>
+
+        </li>
+    </ul>
+
+{% endblock %}

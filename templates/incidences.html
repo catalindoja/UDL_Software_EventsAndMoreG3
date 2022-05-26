@@ -3,44 +3,141 @@
 
 {% block content %}
 
-<ul>
-    What do you want to do?
-    <li>
-        <a href="{% url 'send_stand_incidence' %}">
-            Send an incidence with my stand
-        </a>
-    </li>
-<br>
 
-<div>
+    <h1>
+        Send a new stand incidence
+    </h1>
+    <hr>
+
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+                {{ formI.as_table }}
+            </table>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <h1>
+        Search previous stand incidences
+    </h1>
+    <hr>
+
+    <div>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ formB.as_p }}
             <button type="submit">
                 Buscar incidencia
             </button>
         </form>
     </div>
 
-<div>
-    {% for incidencia in StandIncidence_List %}
-         {% if incidencia.Client_Username.User.username == User %}
-         <div class="margins" style="float: left;margin: 0 1em 0 1em;">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="">
-                <div class="card-body">
-                    <h5 class="card-text">Event :{{ incidencia.Current_Event  }}</h5>
-                    <h5 class="card-text">Stand incidenced : {{ incidencia.Stand_Incidenced}}</h5>
-                    <h5 class="card-title">ID incidencia : {{ incidencia.Id }}</h5>
-                    <p class="card-text">Descripción de incidencia : <br>{{ incidencia.Description  }}</p>
-                    <p class="card-text">Revisada : {{ incidencia.Checked  }}</p>
-                    <p class="card-text">Soluciónada : {{ incidencia.Status }}</p>
+    <div>
+        {% for incidencia in StandIncidence_List %}
+            {% if incidencia.Client_Username.User.username == User %}
+                <div class="margins" style="float: left;margin: 0 1em 0 1em;">
+                    <div class="card" style="width: 18rem;">
+                        <img src="..." class="card-img-top" alt="">
+                        <div class="card-body">
+                            <h5 class="card-text">Event :{{ incidencia.Current_Event }}</h5>
+                            <h5 class="card-text">Stand incidenced : {{ incidencia.Stand_Incidenced }}</h5>
+                            <h5 class="card-title">ID incidencia : {{ incidencia.Id }}</h5>
+                            <p class="card-text">Descripción de incidencia : <br>{{ incidencia.Description }}</p>
+                            <p class="card-text">Revisada : {{ incidencia.Checked }}</p>
+                            <p class="card-text">Soluciónada : {{ incidencia.Status }}</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        {% endif %}
+            {% endif %}
         {% endfor %}
+    </div>
+    <br>
+<div>
+    <h1>
+        List of previous incidences
+    </h1>
+    <hr>
+    <br>
+
+
+            <table class="table">
+                <thread>
+                    <br><br>
+                    <p style="text-align:center">
+                        <b>
+                            Previous incidences
+                        </b>
+                    </p>
+                    <hr>
+                    <tr style="text-align:center">
+                        <th scope="col">
+                            Number
+                        </th>
+                        <th scope="col">
+                            Event
+                        </th>
+                        <th scope="col">
+                            Stand related
+                        </th>
+                        <th scope="col">
+                            Staff name
+                        </th>
+                        <th scope="col">
+                            Incidence Description
+                        </th>
+                        <th scope="col">
+                            Date
+                        </th>
+                        <th scope="col">
+                            Checked
+                        </th>
+                        <th scope="col">
+                            Solved
+                        </th>
+                    </tr>
+                </thread>
+                <tbody style="text-align:center">
+
+                {% for incidence in incidences %}
+                    {% if incidence.Client_Username.User.username == User %}
+
+                        <tr style="text-align:center">
+                            <td>
+                                {{ incidence.Id }}
+                            </td>
+                            <td>
+                                {{ incidence.Current_Event }}
+                            </td>
+                            <td>
+                                {{ incidence.Stand_Incidenced }}
+                            </td>
+                            <td>
+                                {{ incidence.Gestor_Username }}
+                            </td>
+                            <td>
+                                {{ incidence.Description }}
+                            </td>
+                            <td>
+                                {{ incidence.Date }}
+                            </td>
+                            <td>
+                                {{ incidence.Status }}
+                            </td>
+                            <td>
+                                {{ incidence.Checked }}
+                            </td>
+                        </tr>
+
+                    {% endif %}
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+
 </div>
-</ul>
 
 {% endblock %}

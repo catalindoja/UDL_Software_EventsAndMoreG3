@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import *
 from .forms import *
@@ -16,6 +16,7 @@ from django.contrib.auth import login #eto que éh?
 from django.views.generic.edit import CreateView
 from numpy.compat import unicode
 from django.views import View
+from django.contrib.auth import login  # eto que éh?
 
 
 # Create your views here.
@@ -111,11 +112,11 @@ def EventsViewlist(request):
     else:
         form = FilterEvents()
         eventos = Event.objects.all()
-        dictionary = {'eventos': eventos, 'form': form }
-        return render(request, 'events.html',  dictionary)
+        dictionary = {'eventos': eventos, 'form': form}
+        return render(request, 'events.html', dictionary)
 
 
-def EventViewSpecific(request,idEvent):
+def EventViewSpecific(request, idEvent):
     evento = Event.objects.get(pk=int(idEvent))
     dictionary = {'evento': evento}
     return render(request, 'eventSpecific.html', dictionary)
@@ -200,7 +201,7 @@ def updatePeticionStandGestor(request, pk):
                 form.save()
                 return redirect('lista_stands_revisados')
 
-        context = {'form':form}
+        context = {'form': form}
         return render(request, 'peticion_stand_gestor.html', context)
     else:
         print("Error el user no es un gestor")
@@ -253,26 +254,45 @@ def listaStandsAsignadosGestor(request):
 
 def IncidencesView(request):
     if request.method == "POST":
-        form = FilterIncidences(request.POST)
-        if form.is_valid():
-            objstand = form.cleaned_data['Stand_Incidenced']
-            objevent= form.cleaned_data['Current_Event']
+        formB = FilterIncidences(request.POST)
+        formI = SendStandIncidenceForm(request.POST)
+        if formI.is_valid():
+
+           # name = request.user.username
+            #current_user = WebUser.objects.get(username=name)
+           # current_client = Cliente.objects.get(User=current_user)
+            #formI.instance.Client_Username = current_client
+            formI.save()
+            #redirect('/')
+            context = {
+                'User': request.user.username,
+                'formI': formI,
+            }
+            return render(request, 'incidences.html', context)
+
+        if formB.is_valid():
+            objstand = formB.cleaned_data['Stand_Incidenced']
+            objevent = formB.cleaned_data['Current_Event']
             stand_incidence = objstand.incidencies.filter(Current_Event=objevent)
-            #event_incidence =  objevent.evento.all()
-            #stand_incidence = stand_incidence.filter(Current_Event=event_incidence)
+            # event_incidence =  objevent.evento.all()
+            # stand_incidence = stand_incidence.filter(Current_Event=event_incidence)
             content = {'StandIncidence_List': stand_incidence,
                        'User': request.user.username,
-                       'form': form
+                       'formB': formB
                        }
             return render(request, 'incidences.html', content)
     else:
-        form = FilterIncidences()
+        formB = FilterIncidences()
+        formI = SendStandIncidenceForm()
         template_name = 'incidences.html'
         StandIncidence_List = StandIncidence.objects.all()
+        incidences = StandIncidence.objects.all()
         content = {'StandIncidence_List': StandIncidence_List,
                    'User': request.user.username,
-                   'form': form
-        }
+                   'formB': formB,
+                   'formI': formI,
+                   'incidences': incidences,
+                   }
         return render(request, 'incidences.html', content)
 
 
@@ -338,7 +358,7 @@ def updateIncidenciaStandGestor(request, pk):
                 form.save()
                 return redirect('incidences')
 
-        context = {'form':form}
+        context = {'form': form}
         return render(request, 'lista_incidencias_gestor.html', context)
     else:
         print("Error el user no es un gestor")
@@ -538,3 +558,92 @@ class AdditionalServicesView(View):
 
         return JsonResponse(returnmsg)
 
+'''
+def incidences_for_deptAdditionalServView(request):
+    incidences_list = IncidenciasServAdicional.objects.all()
+    category_list = ["Missing", "Bugged", "Wrong", "Broken", "Help"]
+    context = {
+        'incidences_list': incidences_list,
+        'User': request.user.username,
+    }
+
+    return render(request, 'incidences_for_deptAdditionalServ.html', context)
+'''
+
+
+def incidences_for_deptAdditionalServView(request):
+    incidences_list = IncidenciasServAdicional.objects.all()
+    category_list = ["Missing", "Bugged", "Wrong", "Broken", "Help", "Other"]
+
+    context = {
+        'incidences_list': incidences_list,
+        'User': request.user.username,
+        'category_list': category_list,
+    }
+
+    return render(request, 'incidences_for_deptAdditionalServ.html', context)
+
+
+def Incidences_for_deptAdditionalServ_DetailView(request, pk):
+    incidence = IncidenciasServAdicional.objects.get(id=pk)
+
+    context = {
+        'incidence': incidence
+    }
+
+    return render(request, 'incidences_for_deptAdditionalServ_details.html', context)
+
+
+def incidences_deptAdditionalServ_details_editView(request, pk):
+    if request.user.is_deptAdditionalServ:
+        incidence = IncidenciasServAdicional.objects.get(id=pk)
+        form = IncidenciaServicioDeptForm(instance=incidence)
+
+        if request.method == 'POST':
+            form = IncidenciaServicioDeptForm(request.POST, instance=incidence)
+            depts = DeptAdditionalServ.objects.all()
+
+            my_dept = None
+            for d in depts:
+                if d.User.username == request.user.username:
+                    my_dept = d
+
+            form.instance.deptAdditionalServUsername = my_dept
+            if form.is_valid():
+                form.save()
+                return redirect('incidences_for_deptAdditionalServ')
+
+        context = {'form': form}
+        return render(request, 'incidences_deptAdditionalServ_details_edit.html', context)
+    else:
+        print("Error el user no es miembro del departamento de servicios adocionales ")
+        return redirect('/')
+
+
+def selectIncidenceView(request):
+    return render(request, 'select_incidences.html', {})
+
+
+def send_incidence_additionalServ_client(request):
+    if request.method == 'POST':
+
+        form = SendIncidencesAdditionalServClientForm(request.POST)
+        name = request.user.username
+        current_user = WebUser.objects.get(username=name)
+        current_client = Cliente.objects.get(User=current_user)
+        form.instance.clientUsername = current_client
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = SendIncidencesAdditionalServClientForm()
+
+    incidences = IncidenciasServAdicional.objects.all()
+
+    context = {
+        'form': form,
+        'incidences': incidences,
+        'User': request.user.username,
+    }
+
+    return render(request, 'incidences_additionalServ.html', context)

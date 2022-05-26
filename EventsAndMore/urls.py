@@ -8,7 +8,7 @@ urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
     path('events/', EventsViewlist, name='events'),
     path('events/event/<idEvent>', EventViewSpecific, name='event_specific'),
-    path('create_event/',CreateNewEvent, name='new event'),
+    path('create_event/', CreateNewEvent, name='new event'),
     path('register/', RegisterView.as_view(), name='register'),
     path('register/signup_client/', SignupClientView.as_view(), name='signup_client'),
     path('events/<int:pk>/stands/create/', StandsView.as_view(), name='stands'),
@@ -43,6 +43,16 @@ urlpatterns = [
     path('peticion_evento/update/<str:pk>/',updatePeticionDeEvento, name='Update_Peticion_deEvento'),
 
     path('additional_services/', AdditionalServicesView.as_view(), name='additional_services'),
+
+    path('incidences_for_deptAdditionalServ/', incidences_for_deptAdditionalServView,
+         name='incidences_for_deptAdditionalServ'),
+    path('incidences_for_deptAdditionalServ/<int:pk>/', Incidences_for_deptAdditionalServ_DetailView,
+         name='incidences_details'),
+    path('incidences_for_deptAdditionalServ/<int:pk>/edit/', incidences_deptAdditionalServ_details_editView,
+         name='incidences_details_edit'),
+    path('select_incidences/', selectIncidenceView, name='select_incidences'),
+    path('send_incidences_additionalServ_client/', send_incidence_additionalServ_client,
+         name='send_incidence_additionalServ_client'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

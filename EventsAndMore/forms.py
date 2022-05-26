@@ -22,16 +22,16 @@ class ClientSignupForm(UserCreationForm):
         client.save()
         print(client.CIF)
         # client.CIF.add(*self.cleaned_data.get('CIF'))
-        return web_user# web_user
+        return web_user  # web_user
 
 
 class CreateEvents(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['nombre', 'descripcion', 'fecha_ini','fecha_fin']
+        fields = ['nombre', 'descripcion', 'fecha_ini', 'fecha_fin']
         widgets = {
-            #'fecha_ini': DateInput(),
-            #'fecha_fin': DateInput(),
+            # 'fecha_ini': DateInput(),
+            # 'fecha_fin': DateInput(),
         }
         exclude = ['gestorUsername']
 
@@ -39,12 +39,12 @@ class CreateEvents(forms.ModelForm):
 class FilterEvents(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['nombre', 'fecha_ini','fecha_fin']
+        fields = ['nombre', 'fecha_ini', 'fecha_fin']
         widgets = {
             # 'fecha_ini': DateInput(),
             # 'fecha_fin': DateInput(),
         }
-        exclude = ['gestorUsername','descripcion']
+        exclude = ['gestorUsername', 'descripcion']
 
 
 class FilterIncidences(forms.ModelForm):
@@ -53,13 +53,14 @@ class FilterIncidences(forms.ModelForm):
         fields = ['Stand_Incidenced', 'Current_Event']
         widgets = {
         }
-        exclude = ['Id','Client_Username','Gestor_Username','Description','Date','Status','Checked']
+        exclude = ['Id', 'Client_Username', 'Gestor_Username', 'Description', 'Date', 'Status', 'Checked']
 
 
 class PeticionStandClienteForm(forms.ModelForm):
     class Meta:
         model = PeticionStand
         exclude = ['clientUsername', 'gestorUsername', 'concedido', 'revisado']
+        # modificar el queryset para dejarlo los datos que te deja
 
 
 class PeticionStandGestorForm(forms.ModelForm):
@@ -97,7 +98,20 @@ class PeticionEventoform(forms.ModelForm):
         model = PeticionEvento
         exclude = ['organizerUsername','adminUsername','concedido','revisado']
 
+
 class PeticionEventoAdmin(forms.ModelForm):
     class Meta:
         model = PeticionEvento
         exclude = ['organizerUsername','adminUsername','nombre','motivo','revisado']
+
+
+class IncidenciaServicioDeptForm(forms.ModelForm):
+    class Meta:
+        model = IncidenciasServAdicional
+        exclude = ['deptAdditionalServUsername']
+
+
+class SendIncidencesAdditionalServClientForm(forms.ModelForm):
+    class Meta:
+        model = IncidenciasServAdicional
+        exclude = ['deptAdditionalServUsername', 'fecha', 'solucionado', 'checked', 'clientUsername']
