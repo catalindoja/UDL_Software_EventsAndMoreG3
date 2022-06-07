@@ -760,3 +760,4 @@ def listBillsView(request):
         'clients_list': clients_list,
     }
     return render(request, 'list_bills.html', context)
+
