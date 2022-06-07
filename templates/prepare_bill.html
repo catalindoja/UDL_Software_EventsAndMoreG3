@@ -4,18 +4,14 @@
 
     {% if user.is_authenticated %}
 
-        <ul>
-            Creating bill for client {{ client }} in event {{ event }}
-
-            <li>
-                boton de create bill, iremos a bill_details
-            </li>
-        </ul>
-
         <table class="table">
             <thread>
                 <br><br>
                 <p style="text-align:center">
+                    <b>
+                        BILL'S PREVIOUS VIEW
+                    </b>
+                    <br>
                     <b>
                         Client {{ client }} expenses in event {{ event }} during {{ event.fecha_ini }}
                         - {{ event.fecha_ini }}
@@ -80,8 +76,12 @@
         </table>
 
     <a href="{% url 'createBill' event.pk client.pk %}">
-    CREATE BILL
+    Create bill
     </a>
+        <br>
+        <a href="{% url 'eventSelected' event.pk %}">
+        Return
+        </a>
 
     {% endif %}
 

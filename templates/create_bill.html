@@ -2,25 +2,22 @@
 
 {% block content %}
 
-    {% if created == True %}
-        Oops! Bill already created:
+    {% if user.is_authenticated %}
 
-        caca
+    {% if created == True %}
+        Oops! Bill already created!
+        <br>
+        <a href="{% url 'prepareBill' event.pk client.pk %}">
+        Return
+        </a>
 
     {% else %}
 
-        <ul>
-            detalles bill
-            <li>
-                aqui vamos a ver los detalles de la bill
-            </li>
-            <li>
-                boton aceptar y nos vamos a inicio
-            </li>
-            <li>
-                boton guardar PDF- PARA ROBERT
-            </li>
-        </ul>
+      <p>
+      <b>
+          BILL CREATED!
+      </b>
+      </p>
 
         <table class="table">
             <thread>
@@ -77,6 +74,16 @@
             </tr>
             </tbody>
         </table>
+
+        <a href="#">
+            ACCEPT
+        </a>
+        <br>
+        <a href="#">
+            SAVE PDF
+        </a>
+
+    {% endif %}
 
     {% endif %}
 

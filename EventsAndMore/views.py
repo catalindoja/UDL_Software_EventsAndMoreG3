@@ -733,10 +733,11 @@ def createBillView(request, pk, pk2):
     # print(request.session['price'])
 
     try:
-        created = True
         existing_bill = Bill.objects.get(clientUsername=client, idEvent=event)
+        created = True
+        print('bill encontrada')
     except Bill.DoesNotExist:
-
+        print('creando bill')
         new_bill = Bill.objects.create(clientUsername=client, managerUsername=manager, idEvent=event, total_price=price)
 
     context = {
@@ -748,3 +749,10 @@ def createBillView(request, pk, pk2):
     }
 
     return render(request, 'create_bill.html', context)
+
+
+def listBillsView(request):
+    context = {
+
+    }
+    return render(request, 'list_bills.html', context)

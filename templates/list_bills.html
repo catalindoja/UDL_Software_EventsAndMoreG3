@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+    <ul>
+        Aqui vamos a ver las facturas ya existentes. La idea es ver dos secciones diferentes
+        <li>
+            seccion facturas sin pagar
+        </li>
+        <li>
+            seccion facturas totales, ordenadas por cliente
+        </li>
+    </ul>
+
+    {% endif %}
+
+{% endblock %}
