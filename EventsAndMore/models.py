@@ -21,6 +21,7 @@ class WebUser(AbstractUser):
     is_gestor = models.BooleanField(default=False)
     is_deptAdditionalServ = models.BooleanField(default=False)
     is_organizer = models.BooleanField(default=False)
+    is_deptManagement = models.BooleanField(default=False)
 
 
 class Cliente(models.Model):  # WebUser
@@ -46,6 +47,13 @@ class Organizer(models.Model):
 
 
 class DeptAdditionalServ(models.Model):
+    User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return str(self.User)
+
+
+class DeptManagement(models.Model):
     User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
@@ -174,7 +182,7 @@ class PeticionEvento(models.Model):
     id = models.AutoField(primary_key=True)
     organizerUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=200, blank=False, null=False)
-    #adminUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE, blank=True, null=True)  # verificar esto
+    # adminUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE, blank=True, null=True)  # verificar esto
     revisado = models.BooleanField(default=False)
     concedido = models.BooleanField(default=False)
     motivo = models.CharField(max_length=200, blank=False, null=False)
@@ -192,3 +200,15 @@ class ListaNegra(models.Model):
     def __str__(self):
         return str(self.descripcion)
 
+
+class Bill(models.Model):
+    id = models.AutoField(primary_key=True)
+    clientUsername = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    managerUsername = models.ForeignKey(DeptManagement, on_delete=models.CASCADE)
+    idEvent = models.ForeignKey(Event, on_delete=models.CASCADE)
+    payed = models.BooleanField(default=False)
+    total_price = models.FloatField(editable=False, default=0)
+    date = models.DateField(default=date.today)
+
+    def __str__(self):
+        return f' Client {self.clientUsername} in event {self.idEvent}'

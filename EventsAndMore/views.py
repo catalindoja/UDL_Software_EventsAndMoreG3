@@ -6,17 +6,11 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.contrib.auth.models import User
-from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView
-from .models import *
-from .forms import *
-from django.contrib.auth import login #eto que éh?
-from django.views.generic.edit import CreateView
-from numpy.compat import unicode
 from django.views import View
-from django.contrib.auth import login  # eto que éh?
+from django.views.generic import TemplateView, ListView
+from django.views.generic.edit import CreateView
+
+from .forms import *
 
 
 # Create your views here.
@@ -257,13 +251,12 @@ def IncidencesView(request):
         formB = FilterIncidences(request.POST)
         formI = SendStandIncidenceForm(request.POST)
         if formI.is_valid():
-
-           # name = request.user.username
-            #current_user = WebUser.objects.get(username=name)
-           # current_client = Cliente.objects.get(User=current_user)
-            #formI.instance.Client_Username = current_client
+            # name = request.user.username
+            # current_user = WebUser.objects.get(username=name)
+            # current_client = Cliente.objects.get(User=current_user)
+            # formI.instance.Client_Username = current_client
             formI.save()
-            #redirect('/')
+            # redirect('/')
             context = {
                 'User': request.user.username,
                 'formI': formI,
@@ -370,19 +363,19 @@ def peticionDeEvento(request):
         if request.method == "POST":
             form = PeticionEventoform(request.POST)
             if form.is_valid():
-               motivo = form.cleaned_data['motivo']
-               organizador = Organizer.objects.get(User=request.user)
-               form.instance.organizerUsername = organizador
-               form.save()
-               return redirect('Peticion_de_evento')
+                motivo = form.cleaned_data['motivo']
+                organizador = Organizer.objects.get(User=request.user)
+                form.instance.organizerUsername = organizador
+                form.save()
+                return redirect('Peticion_de_evento')
         else:
             form = PeticionEventoform()
             PeticionesDeEvento = PeticionEvento.objects.all()
-            PeticionesDeEvento = PeticionesDeEvento.filter(organizerUsername = Organizer.objects.get(User=request.user))
+            PeticionesDeEvento = PeticionesDeEvento.filter(organizerUsername=Organizer.objects.get(User=request.user))
             context = {'PeticionesDeEvento': PeticionesDeEvento,
                        'form': form
                        }
-            return render(request, "peticion_evento.html",context)
+            return render(request, "peticion_evento.html", context)
     if request.user.is_superuser:
         if request.method == "POST":
             return redirect('/')
@@ -447,7 +440,7 @@ def updatePeticionServAdicionalDepartamento(request, pk):
                 form.save()
                 return redirect('/lista_eventos_peticion_serv_adicional/')
 
-        context = {'form':form}
+        context = {'form': form}
         return render(request, 'peticion_stand_gestor.html', context)
     else:
         print("Error el user no es un departamento de servicios adicionales")
@@ -539,7 +532,8 @@ class AdditionalServicesView(View):
             print(row)
             objs.append(
                 AdditionalService(
-                    nombre=row['nombre'], #No se porque pero lee nombre con 'ï»¿' primero, asi que he tenido que apañarlo y poner ï»¿nombre XD
+                    nombre=row['nombre'],
+                    # No se porque pero lee nombre con 'ï»¿' primero, asi que he tenido que apañarlo y poner ï»¿nombre XD
                     descripcion=row['descripcion'],
                     habilitado=bool(row['habilitado']),
                     precio=int(row['precio']),
@@ -557,6 +551,7 @@ class AdditionalServicesView(View):
             returnmsg = {"status_code": 500}
 
         return JsonResponse(returnmsg)
+
 
 '''
 def incidences_for_deptAdditionalServView(request):
@@ -581,7 +576,7 @@ def incidences_for_deptAdditionalServView(request):
         'category_list': category_list,
     }
 
-    return render(request, 'incidences_for_deptAdditionalServ.html', context)
+    return render(request, "incidences_for_deptAdditionalServ.html", context)
 
 
 def Incidences_for_deptAdditionalServ_DetailView(request, pk):
@@ -647,3 +642,109 @@ def send_incidence_additionalServ_client(request):
     }
 
     return render(request, 'incidences_additionalServ.html', context)
+
+
+def billsView(request):
+    event_list = Event.objects.all()
+
+    #    print(f'eventos: {event_list}')
+
+    context = {
+        'event_list': event_list,
+    }
+
+    return render(request, 'bills.html', context)
+
+
+def eventSelectedView(request, pk):
+    client_list = []
+    emptyEvent = False
+
+    assitance_list = PeticionStand.objects.all()
+
+    for assistant in assitance_list:
+
+        if assistant.idEvento.pk == pk and assistant.clientUsername not in client_list:
+            client_list.append(assistant.clientUsername)
+
+    if len(client_list) == 0:
+        emptyEvent = True
+
+    context = {
+        'client_list': client_list,
+        'idEvent': pk,
+        'empty': emptyEvent,
+    }
+
+    return render(request, 'event_selected.html', context)
+
+
+def prepareBillView(request, pk, pk2):
+    event = Event.objects.get(pk=pk)
+    client = Cliente.objects.get(pk=pk2)
+
+    total_price = 0
+    services_requested = []
+    additional_services_list = PeticionServAdicional.objects.all()
+
+    for additional_service in additional_services_list:
+        if additional_service.clientUsername == client \
+                and additional_service.idEvento == event:
+            services_requested.append(additional_service)
+            total_price += additional_service.idAdditionalService.precio
+
+    stands_requested = []
+    stands_list = PeticionStand.objects.all()
+    for stand in stands_list:
+        if stand.clientUsername == client and stand.idEvento == event:
+            stands_requested.append(stand)
+            # TODO: poner precio al stand
+            # total_price += stand.precio
+
+    request.session['price'] = total_price
+
+    context = {
+        'event': event,
+        'client': client,
+        'services_requested': services_requested,
+        'stands_requested': stands_requested,
+        'total_price': total_price,
+    }
+    return render(request, 'prepare_bill.html', context)
+
+
+def createBillView(request, pk, pk2):
+    '''
+    ¿Por qué no hacemos la creación de la factura en prepare_bill?
+    Porque quizá el manager quiera ver cómo va a ser la factura, pero todavía no quiere generarla,
+    porque no ha terminado el evento, o porque faltan cosas por añadirse a la lista de cosas a pagar.
+    Also, no lo hago con un CreateView porque se ponen los campos de forma automática,
+    y considero que para eso no hace falta poner un form donde no se tenga que tocar nada.
+    '''
+
+    created = False
+    new_bill = None
+    existing_bill = None
+
+    event = Event.objects.get(pk=pk)
+    client = Cliente.objects.get(pk=pk2)
+    manager = DeptManagement.objects.get(User=request.user)
+    price = request.session['price']
+    # print(request.session['price'])
+
+    try:
+        created = True
+        existing_bill = Bill.objects.get(clientUsername=client, idEvent=event)
+    except Bill.DoesNotExist:
+
+        new_bill = Bill.objects.create(clientUsername=client, managerUsername=manager, idEvent=event, total_price=price)
+
+    context = {
+        'client': client,
+        'event': event,
+        'bill': new_bill,
+        'created': created,
+        'existing_bill': existing_bill,
+    }
+
+    return render(request, 'create_bill.html', context)

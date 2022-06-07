@@ -115,3 +115,9 @@ class SendIncidencesAdditionalServClientForm(forms.ModelForm):
     class Meta:
         model = IncidenciasServAdicional
         exclude = ['deptAdditionalServUsername', 'fecha', 'solucionado', 'checked', 'clientUsername']
+
+#
+# class CreateBillForm(forms.ModelForm):
+#     class Meta:
+#         model = Bill
+#         exclude = ['clientUsername', 'idEvent', ]

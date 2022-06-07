@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+        {% if empty == False %}
+
+            <ul>
+                Select the client you want to create the bill for:
+                {% for client in client_list %}
+                    <li>
+                        <a href="{% url 'prepareBill' idEvent client.pk %}">
+                            {{ client }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+        {% else %}
+            Oops! Seems like there were no clients for this event.
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}

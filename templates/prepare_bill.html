@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+        <ul>
+            Creating bill for client {{ client }} in event {{ event }}
+
+            <li>
+                boton de create bill, iremos a bill_details
+            </li>
+        </ul>
+
+        <table class="table">
+            <thread>
+                <br><br>
+                <p style="text-align:center">
+                    <b>
+                        Client {{ client }} expenses in event {{ event }} during {{ event.fecha_ini }}
+                        - {{ event.fecha_ini }}
+                    </b>
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Number
+                    </th>
+                    <th scope="col">
+                        Name
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                    <th>
+                        TOTAL PRICE
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+            {% for stand in stands_requested %}
+                <tr style="text-align:center">
+                <td>
+                    {{ stand.pk }}
+                </td>
+                <td>
+                    {{ stand.pk }}
+                </td>
+                <td>
+                    AQUI VA EL PRECIO DEL STAND
+                </td>
+            {% endfor %}
+            {% for service in services_requested %}
+                <tr style="text-align:center">
+                <td>
+                    {{ service.idAdditionalService.pk }}
+                </td>
+                <td>
+                    {{ service.idAdditionalService.nombre }}
+                </td>
+                <td>
+                    {{ service.idAdditionalService.precio }}
+                </td>
+            {% endfor %}
+            <tr style="text-align:center">
+                 <td>
+                    -----
+                </td>
+                <td>
+                    -----
+                </td>
+                <td>
+                    -----
+                </td>
+                <td>
+                    {{ total_price }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    <a href="{% url 'createBill' event.pk client.pk %}">
+    CREATE BILL
+    </a>
+
+    {% endif %}
+
+
+{% endblock %}

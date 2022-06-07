@@ -53,6 +53,13 @@ urlpatterns = [
     path('select_incidences/', selectIncidenceView, name='select_incidences'),
     path('send_incidences_additionalServ_client/', send_incidence_additionalServ_client,
          name='send_incidence_additionalServ_client'),
+
+
+    path('bills/', billsView, name='bills'),
+    path('bills/eventSelected/<int:pk>/', eventSelectedView, name='eventSelected'),
+    path('bills/eventSelected/<int:pk>/<int:pk2>/', prepareBillView, name='prepareBill'),
+    path('bills/eventSelected/<int:pk>/<int:pk2>/createBill/', createBillView, name='createBill'),
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+        <ul>
+            <li>
+                Ahora aqui la idea es seleccionar de un evento, un cliente
+            </li>
+            <li>
+                (dejar para robert un buscador de eventos y clientes también)
+            </li>
+            <li>
+                de este cliente, ver una lista: cosa a pagar y precio
+            </li>
+            <li>
+                tener boton de generar factura
+            </li>
+            <li>
+                mostrar el aspecto de la factura
+            </li>
+            <li>
+                (añadir boton para descargar factura)
+            </li>
+            <li>
+                (añadir botón para enviar al cliente)
+            </li>
+            <li>
+                este boton para enviar al cliente es que el cliente tenga una
+            </li>
+            <li>
+                seccion para ver facturas, y que le aparezca ahí dos listas:
+            </li>
+            <li>
+                tabla con facturas pendientes de pagar
+            </li>
+            <li>
+                tabla con facturas totales
+            </li>
+        </ul>
+
+        <ul>
+            Table of events. Please, select a client to generate the bill
+            <hr>
+            {% for event in event_list %}
+
+                <li>
+                <a href="{% url 'eventSelected' event.pk %}">
+                     {{ event }}
+                </a>
+
+                </li>
+
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+
+{% endblock %}
