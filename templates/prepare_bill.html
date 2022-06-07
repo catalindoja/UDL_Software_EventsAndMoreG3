@@ -61,7 +61,7 @@
                 </td>
             {% endfor %}
             <tr style="text-align:center">
-                 <td>
+                <td>
                     -----
                 </td>
                 <td>
@@ -77,12 +77,16 @@
             </tbody>
         </table>
 
-    <a href="{% url 'createBill' event.pk client.pk %}">
-    Create
-    </a>
+        <a href="{% url 'createBill' event.pk client.pk %}">
+            Create
+        </a>
+        <br>
+        <a href="#">
+        Download
+        </a>
         <br>
         <a href="{% url 'eventSelected' event.pk %}">
-        Return
+            Return
         </a>
 
     {% endif %}
