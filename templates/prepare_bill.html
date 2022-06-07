@@ -10,6 +10,8 @@
                 <p style="text-align:center">
                     <b>
                         BILL'S PREVIOUS VIEW
+                        <br>
+                        (Your bill will be automatically sent to the client)
                     </b>
                     <br>
                     <b>
@@ -76,7 +78,7 @@
         </table>
 
     <a href="{% url 'createBill' event.pk client.pk %}">
-    Create bill
+    Create
     </a>
         <br>
         <a href="{% url 'eventSelected' event.pk %}">
