@@ -9,9 +9,12 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView
-
 from .forms import *
-
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.views import View
+from xhtml2pdf import pisa
 
 # Create your views here.
 class HomePageView(TemplateView):
@@ -678,6 +681,48 @@ def eventSelectedView(request, pk):
 
     return render(request, 'event_selected.html', context)
 
+def generatePDFBill(request, pk, pk2):
+    event = Event.objects.get(pk=pk)
+    client = Cliente.objects.get(pk=pk2)
+
+    total_price = 0
+    services_requested = []
+    additional_services_list = PeticionServAdicional.objects.all()
+
+    for additional_service in additional_services_list:
+        if additional_service.clientUsername == client \
+                and additional_service.idEvento == event:
+            services_requested.append(additional_service)
+            total_price += additional_service.idAdditionalService.precio
+
+    stands_requested = []
+    stands_list = PeticionStand.objects.all()
+    for stand in stands_list:
+        if stand.clientUsername == client and stand.idEvento == event:
+            stands_requested.append(stand)
+            # TODO: poner precio al stand
+            # total_price += stand.precio
+
+    request.session['price'] = total_price
+
+    context = {
+        'event': event,
+        'client': client,
+        'services_requested': services_requested,
+        'stands_requested': stands_requested,
+        'total_price': total_price,
+    }
+    pdf = render_to_pdf('pdfBills.html', context)
+    return HttpResponse(pdf, content_type='application/pdf')
+
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
 
 def prepareBillView(request, pk, pk2):
     event = Event.objects.get(pk=pk)
