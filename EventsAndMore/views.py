@@ -793,6 +793,38 @@ def createBillView(request, pk, pk2):
 
     return render(request, 'create_bill.html', context)
 
+def BillsSearch(request):
+    if request.method == "POST":
+        formB = BillFilter(request.POST)
+        if formB.is_valid():
+        #objclient = formB.cleaned_data['clientUsername']
+            objevent = formB.cleaned_data['idEvent']
+        #objManager = formB.cleaned_data['managerUsername']
+        #payed = formB.cleaned_data['payed']
+        #date = formB.cleaned_data['date']
+
+        #BillSearch = Bill.objects.all()
+        #BillSearch = BillSearch.filter(clientUsername=objclient)
+            # stand_incidence = objstand.incidencies.filter(Current_Event=objevent)
+            # event_incidence =  objevent.evento.all()
+            # stand_incidence = stand_incidence.filter(Current_Event=event_incidence)
+
+            unpayed_bills = [bill for bill in Bill.objects.all()
+                         if (bill.payed is False and bill.idEvent == objevent)]
+
+            context = { 'unpayed_bills': unpayed_bills,
+                    'User': request.user.username,
+                    'formB': formB
+                       }
+            return render(request, 'BillsSearch.html', context)
+    else:
+        formB = BillFilter()
+        template_name = 'incidences.html'
+        context = {
+                   'User': request.user.username,
+                   'formB': formB,
+                   }
+        return render(request, 'BillsSearch.html',context)
 
 def listBillsView(request):
     unpayed_bills = [bill for bill in Bill.objects.all() if

@@ -2,24 +2,17 @@
 
 {% block content %}
 
+     <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ formB.as_p }}
+            <button type="submit">
+                Buscar Factura
+            </button>
+        </form>
+    </div>
+
     {% if user.is_authenticated %}
-
-        <ul>
-            Aqui vamos a ver las facturas ya existentes. La idea es ver dos secciones diferentes
-            <li>
-                Lista de facturas sin pagar
-            </li>
-            <li>
-                Lista con facturas totales, ordenadas por cliente
-            </li>
-            <li>
-                link a un buscador --> PARA ROBERT
-            </li>
-        </ul>
-
-        <a href="search">
-            Bills searcher
-        </a>
 
         <table class="table">
             <thread>
@@ -115,8 +108,6 @@
                 {% for client in clients_list %}
                     {% for bill in unpayed_bills %}
                         {% if bill.clientUsername.User.username == client.User.username %}
-
-
                             <td>
                                 {{ bill.pk }}
                             </td>
