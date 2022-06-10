@@ -647,3 +647,31 @@ def send_incidence_additionalServ_client(request):
     }
 
     return render(request, 'incidences_additionalServ.html', context)
+
+
+class EncuestaSatisfaccionView(CreateView):
+    model = EncuestaSatisfaccion
+    form_class = EncuestaSatisfaccionForm
+    template_name = 'encuesta_satisfaccion.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_visitor:
+            visitor = Visitor.objects.get(User=self.request.user)
+            form.instance.visitanteUsername = visitor
+            form.save()
+            return redirect('/')
+        else:
+            print("Error, user is not a client")
+            return redirect('/')
+
+        #### Cómo calificarías la organización del evento
+        #### Qué tan útil fue el personal del evento
+        #### Previo al evento, ¿cuánta información te fue proporcionada para ayudarte a entender mejor de qué se trataba?
+        #### Por favor, indica tu nivel de acuerdo para la declaración: La duración del evento fue perfecta. (Ni muy largo ni muy corto)
+        #### En general, ¿qué tan satisfecho estuviste con el evento?
+        #### El evento fue interactivo?
+        #### Las empresas estaban bien organizadas
+        #### La distribucion de los stands fue adequada
+        #### Como calificaria el evento
+        #### Recomendaria el evento a la familia / amigos?
+        #### Comentarios

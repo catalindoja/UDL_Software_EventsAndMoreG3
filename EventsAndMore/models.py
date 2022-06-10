@@ -52,6 +52,13 @@ class DeptAdditionalServ(models.Model):
         return str(self.User)
 
 
+class Visitor(models.Model):
+    User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return str(self.User)
+
+
 # class Staff(models.Model): #WebUser
 #     ROLES = (
 #         ("Gestor", "Gestor de stands"),
@@ -192,3 +199,19 @@ class ListaNegra(models.Model):
     def __str__(self):
         return str(self.descripcion)
 
+
+class EncuestaSatisfaccion(models.Model):
+    id = models.AutoField(primary_key=True)
+    visitanteUsername = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
+    puntuacion_pregunta1 = models.IntegerField(max_length=1, blank=False, null=False)
+    puntuacion_pregunta2 = models.IntegerField(max_length=1, blank=False, null=False)
+    puntuacion_pregunta3 = models.IntegerField(max_length=1, blank=False, null=False)
+    puntuacion_pregunta4 = models.IntegerField(max_length=1, blank=False, null=False)
+    puntuacion_pregunta5 = models.IntegerField(max_length=1, blank=False, null=False)
+    puntuacion_pregunta6 = models.IntegerField(max_length=1, blank=False, null=False)
+    puntuacion_pregunta7 = models.IntegerField(max_length=1, blank=False, null=False)
+    puntuacion_pregunta8 = models.IntegerField(max_length=1, blank=False, null=False)
+    puntuacion_pregunta9 = models.IntegerField(max_length=1, blank=False, null=False)
+    puntuacion_pregunta10 = models.IntegerField(max_length=1, blank=False, null=False)
+    comentarios = models.CharField(blank=True, null=True)
