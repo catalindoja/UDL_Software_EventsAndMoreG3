@@ -683,8 +683,19 @@ def encuestaSatisfaccionDeptDireccionList(request, key):
         score = 0
         for peticion in peticiones:
             if peticion.idEvento == Event.objects.get(id=key):
-
+                score = (peticion.puntuacion_organizacion_evento
+                + peticion.puntuacion_personal_evento
+                + peticion.puntuacion_informacion_previa_evento
+                + peticion.puntuacion_duracion_evento
+                + peticion.puntuacion_satisfaccion_evento
+                + peticion.puntuacion_interactividad_evento
+                + peticion.puntuacion_organizacion_empresas
+                + peticion.puntuacion_distribucion_stands
+                + peticion.puntuacion_calificacion_evento
+                + peticion.puntuacion_recomendacion_evento)
+                score = score / 50 * 100
                 print(score)
+                peticion.score = str(score) + "%"
                 arr_peticiones.append(peticion)
         dictionary = {'peticiones': arr_peticiones}
         return render(request, 'lista_encuestas_satisfaccion.html', dictionary)
