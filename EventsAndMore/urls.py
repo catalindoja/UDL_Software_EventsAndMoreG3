@@ -53,6 +53,13 @@ urlpatterns = [
     path('select_incidences/', selectIncidenceView, name='select_incidences'),
     path('send_incidences_additionalServ_client/', send_incidence_additionalServ_client,
          name='send_incidence_additionalServ_client'),
+
+    path('encuesta_satisfaccion/', EncuestaSatisfaccionView.as_view(),
+         name='encuesta_satisfaccion'),
+    path('lista_eventos_encuesta_satisfaccion/', views.eventosEncuestaSatisfaccionDeptDireccion,
+         name='lista_eventos_encuesta_satisfaccion'),
+    path('lista_encuestas_satisfaccion/<str:key>/', views.encuestaSatisfaccionDeptDireccionList,
+         name='lista_encuestas_satisfaccion'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

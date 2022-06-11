@@ -21,6 +21,7 @@ class WebUser(AbstractUser):
     is_gestor = models.BooleanField(default=False)
     is_deptAdditionalServ = models.BooleanField(default=False)
     is_organizer = models.BooleanField(default=False)
+    is_deptManagement = models.BooleanField(default=False)
 
 
 class Cliente(models.Model):  # WebUser
@@ -58,6 +59,12 @@ class Visitor(models.Model):
     def __str__(self):
         return str(self.User)
 
+
+class DeptManagement(models.Model):
+    User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return str(self.User)
 
 # class Staff(models.Model): #WebUser
 #     ROLES = (
@@ -201,17 +208,28 @@ class ListaNegra(models.Model):
 
 
 class EncuestaSatisfaccion(models.Model):
+    GRADING = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    )
     id = models.AutoField(primary_key=True)
     visitanteUsername = models.ForeignKey(Visitor, on_delete=models.CASCADE)
     idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
-    puntuacion_pregunta1 = models.IntegerField(max_length=1, blank=False, null=False)
-    puntuacion_pregunta2 = models.IntegerField(max_length=1, blank=False, null=False)
-    puntuacion_pregunta3 = models.IntegerField(max_length=1, blank=False, null=False)
-    puntuacion_pregunta4 = models.IntegerField(max_length=1, blank=False, null=False)
-    puntuacion_pregunta5 = models.IntegerField(max_length=1, blank=False, null=False)
-    puntuacion_pregunta6 = models.IntegerField(max_length=1, blank=False, null=False)
-    puntuacion_pregunta7 = models.IntegerField(max_length=1, blank=False, null=False)
-    puntuacion_pregunta8 = models.IntegerField(max_length=1, blank=False, null=False)
-    puntuacion_pregunta9 = models.IntegerField(max_length=1, blank=False, null=False)
-    puntuacion_pregunta10 = models.IntegerField(max_length=1, blank=False, null=False)
-    comentarios = models.CharField(blank=True, null=True)
+    puntuacion_organizacion_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_personal_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_informacion_previa_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_duracion_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_satisfaccion_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_interactividad_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_organizacion_empresas = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_distribucion_stands = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_calificacion_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_recomendacion_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    comentarios = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.id)
+

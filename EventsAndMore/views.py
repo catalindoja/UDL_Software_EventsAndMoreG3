@@ -661,17 +661,33 @@ class EncuestaSatisfaccionView(CreateView):
             form.save()
             return redirect('/')
         else:
-            print("Error, user is not a client")
+            print("Error, user is not a visitor")
             return redirect('/')
 
-        #### Cómo calificarías la organización del evento
-        #### Qué tan útil fue el personal del evento
-        #### Previo al evento, ¿cuánta información te fue proporcionada para ayudarte a entender mejor de qué se trataba?
-        #### Por favor, indica tu nivel de acuerdo para la declaración: La duración del evento fue perfecta. (Ni muy largo ni muy corto)
-        #### En general, ¿qué tan satisfecho estuviste con el evento?
-        #### El evento fue interactivo?
-        #### Las empresas estaban bien organizadas
-        #### La distribucion de los stands fue adequada
-        #### Como calificaria el evento
-        #### Recomendaria el evento a la familia / amigos?
-        #### Comentarios
+
+def eventosEncuestaSatisfaccionDeptDireccion(request):
+    if request.user.is_deptManagement:
+        eventos = Event.objects.all()
+        dictionary = {'eventos': eventos}
+        return render(request, 'lista_eventos_encuesta_satisfaccion.html', dictionary)
+    else:
+        print("Error el user no es un departamento de direccion")
+        return redirect('/')
+# 15/25 * 100
+
+
+def encuestaSatisfaccionDeptDireccionList(request, key):
+    if request.user.is_deptManagement:
+        peticiones = EncuestaSatisfaccion.objects.all()
+        arr_peticiones = []
+        score = 0
+        for peticion in peticiones:
+            if peticion.idEvento == Event.objects.get(id=key):
+
+                print(score)
+                arr_peticiones.append(peticion)
+        dictionary = {'peticiones': arr_peticiones}
+        return render(request, 'lista_encuestas_satisfaccion.html', dictionary)
+    else:
+        print("Error el user no es un gestor")
+        return redirect('/')

@@ -119,5 +119,5 @@ class SendIncidencesAdditionalServClientForm(forms.ModelForm):
 
 class EncuestaSatisfaccionForm(forms.ModelForm):
     class Meta:
-        model = IncidenciasServAdicional
+        model = EncuestaSatisfaccion
         exclude = ['visitanteUsername']
