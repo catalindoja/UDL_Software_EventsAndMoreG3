@@ -142,6 +142,7 @@ class PeticionServAdicional(models.Model):
     idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
     fecha = models.DateField(default=date.today, blank=False, null=False)
     extra = models.BooleanField(default=False)
+    cargoExtra = models.FloatField(default=0.0)
     concedido = models.BooleanField(default=False)
     revisado = models.BooleanField(default=False)
 
@@ -212,3 +213,12 @@ class Bill(models.Model):
 
     def __str__(self):
         return f' Client {self.clientUsername} in event {self.idEvent}'
+
+
+class Balance(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateField(default=date.today)
+    incomes = models.FloatField(default=0.0)
+    expenses = models.FloatField(default=0.0)
+    result = models.FloatField(default=0.0)
+

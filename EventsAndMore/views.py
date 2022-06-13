@@ -761,3 +761,11 @@ def listBillsView(request):
     }
     return render(request, 'list_bills.html', context)
 
+
+def monthlyBalanceView(request):
+
+    context = {
+
+    }
+
+    return render(request, 'monthlyBalance.html', context)

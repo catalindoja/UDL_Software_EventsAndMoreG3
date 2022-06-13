@@ -38,9 +38,8 @@ urlpatterns = [
     path('lista_peticiones_serv_adicional/<str:key>/', views.peticionServicioAdicionalDepartamentoList,
          name='lista_peticiones_serv_adicional'),
 
-
-    path('peticion_evento/',peticionDeEvento, name='Peticion_de_evento'),
-    path('peticion_evento/update/<str:pk>/',updatePeticionDeEvento, name='Update_Peticion_deEvento'),
+    path('peticion_evento/', peticionDeEvento, name='Peticion_de_evento'),
+    path('peticion_evento/update/<str:pk>/', updatePeticionDeEvento, name='Update_Peticion_deEvento'),
 
     path('additional_services/', AdditionalServicesView.as_view(), name='additional_services'),
 
@@ -54,11 +53,18 @@ urlpatterns = [
     path('send_incidences_additionalServ_client/', send_incidence_additionalServ_client,
          name='send_incidence_additionalServ_client'),
 
+    # management Department, 3rd iteration
 
+    # bill generation
     path('bills/', billsView, name='bills'),
     path('bills/eventSelected/<int:pk>/', eventSelectedView, name='eventSelected'),
     path('bills/eventSelected/<int:pk>/<int:pk2>/', prepareBillView, name='prepareBill'),
     path('bills/eventSelected/<int:pk>/<int:pk2>/createBill/', createBillView, name='createBill'),
+
+    # monthly balance generation
+    path('monthlyBalance/', monthlyBalanceView, name='monthlyBalance'),
+
+    # client stuff, 3rd iteration
 
     path('listBills/', listBillsView, name='listBills'),
 ]
