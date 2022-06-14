@@ -733,7 +733,6 @@ def createBillView(request, pk, pk2):
     client = Cliente.objects.get(pk=pk2)
     manager = DeptManagement.objects.get(User=request.user)
     price = request.session['price']
-    # print(request.session['price'])
 
     try:
         existing_bill = Bill.objects.get(clientUsername=client, idEvent=event)
@@ -768,10 +767,9 @@ def listBillsView(request):
 
 
 def monthlyBalanceView(request):
-    #creation_dates = ['2022-01-31', '2022-02-28', '2022-03-31', '2022-04-30', '2022-05-31', '2022-06-30',
-     #                 '2022-07-31', '2022-08-31', '2022-09-30', '2022-10-31', '2022-11-30', '2022-12-31']
 
     final_days = [
+        # TODO: deberia poder ser de cualquier año. hacer algo tipo if month and day is tal, then is final day
         datetime(2022, 1, 31),
         datetime(2022, 2, 28),
         # datetime(2022, 2, 29),
@@ -786,67 +784,76 @@ def monthlyBalanceView(request):
         datetime(2022, 11, 30),
         datetime(2022, 12, 31),
     ]
+    bill_incomes = []
+    ticket_incomes = []
+    expenses = []
+    new_balance = None
 
-    # changing_to_first_day = today_date.split('-')
-    # changing_to_first_day[-1] = '01'
-    #
-    # first_day = '-'.join(changing_to_first_day)
-
-
-    empty = False  # para que salga el mensaje de Oops! no balances yet. Para que no salga una tabla vacía
+    empty = False  # Oops! no balances yet.
     balance_list = Balance.objects.all()
     if balance_list is []:
         empty = True
 
     today = datetime.today()
-    # today_date = today.strftime('%Y-%m-%d')
+    today = datetime(today.year, today.month, 30)  # TODO: borrar
 
-    # today_date = '2022-06-30'  # temporal
-
-    # new_first = datetime(today.year, today.month, 1)
-    # print(new_first)
-
-    today = datetime(today.year, today.month, 30) # TODO: borrar
-
-    if today in final_days: # si estamos a final de mes:
+    if today in final_days:  # si estamos a final de mes:
 
         first_day = datetime(today.year, today.month, 1)
-
-
-        bill_incomes = []
         # consideramos que los incomes son las entradas vendidas + facturas pagadas
         bills = Bill.objects.all()
         for bill in bills:
-            print(f'fecha bill: {bill.date}, today: {today}, first_day: {first_day}')
-            temp_date = datetime(bill.date.year, bill.date.month, bill.date.day)
-            if bill.payed and temp_date > first_day and temp_date < today:  # si la factura está pagada y está entre inicio de mes y final
-                bill_incomes.append(bill) # agregamos a la lista de ganancias
 
-        print(bill_incomes)
-        ticket_incomes = []
+            temp_date = datetime(bill.date.year, bill.date.month, bill.date.day)
+            # para poder comparar fechas del mismo tipo.
+            # bill.date es en formato datetime.date, y el resto son datetime.datetime
+
+            if bill.payed and first_day < temp_date < today:
+                bill_incomes.append(bill)  # agregamos a la lista de ganancias
+
+
         '''
         tickets = Ticket.objects.all()
         for ticket in tickets:
-            if ticket.sold and ticket.idEvent:
-                ticket_incomes.append(bill)
+            temp_date = datetime(ticket.date.year, ticket.date.month, ticket.date.day)
+            if ticket.sold and first_day < temp_date < today:
+                ticket_incomes.append(ticket)
         '''
 
-        expenses = []
 
-    # print(type(balance_list[0].date))
-    # print(balance_list[0].date)
-    # print('-------')
-    # print(str(balance_list[0].date))
-    # print(type(str(balance_list[0].date)))
-    # print('------')
-    # print(type('2022-06-30'))
-    # print('2022-06-30')
-    # print('------')
-    # print(today_date)
+        # aqui los gastos dependen mucho.
+        # Vamos a suponer que los gastos es lo que vale el servicio,
+        # sin tener en cuenta el cargo extra que tienen los clientes también.
+
+        services_petition_list = PeticionServAdicional.objects.all()
+        for service_petition in services_petition_list:
+            temp_date = datetime(service_petition.fecha.year, service_petition.fecha.month, service_petition.fecha.day)
+            if first_day < temp_date < today:
+                expenses.append(service_petition.idAdditionalService)
+
+        #finalmente, creamos el balance
+
+        total_incomes = 0.0
+        total_expenses = 0.0
+        for bill_income in bill_incomes:
+            total_incomes += bill_income.total_price
+        #TODO: esperar a tener los tickets
+        # for ticket in ticket_incomes:
+        #     total_incomes += ticket.price
+        for expense in expenses:
+            total_expenses += expense.precio
+
+        new_balance = Balance.objects.create(incomes=total_incomes, expenses=total_expenses,
+                                             result=total_incomes-total_expenses)
+
 
     context = {
         'balance_list': balance_list,
         'empty': empty,
+        'bill_incomes': bill_incomes,
+        'ticket_incomes': ticket_incomes,
+        'expenses': expenses,
+        'new_balance': new_balance,
     }
 
     return render(request, 'monthlyBalance.html', context)

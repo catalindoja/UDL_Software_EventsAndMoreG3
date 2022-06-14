@@ -225,3 +225,23 @@ class Balance(models.Model):
     def __str__(self):
         return f'{self.date}'
 
+
+class BalanceIncome(models.Model):
+    id = models.AutoField(primary_key=True)
+    idBalance = models.ForeignKey(Balance, on_delete=models.CASCADE)
+    # idTicket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    idStand = models.ForeignKey(Stand, on_delete=models.CASCADE)
+    idService = models.ForeignKey(AdditionalService, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.id}'
+
+
+class BalanceExpense(models.Model):
+    id = models.AutoField(primary_key=True)
+    idBalance = models.ForeignKey(Balance, on_delete=models.CASCADE)
+    idService = models.ForeignKey(AdditionalService, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.id}'
+
