@@ -90,6 +90,7 @@ class Stand(models.Model):
     idEvento = models.ForeignKey(Event, on_delete=models.CASCADE)
     occupied = models.BooleanField(blank=False, null=False)
     description = models.CharField(max_length=200, blank=False, null=False)
+    price = models.FloatField(default=0)
 
     def __str__(self):
         return str(self.description)
@@ -228,10 +229,9 @@ class Balance(models.Model):
 
 class BalanceIncome(models.Model):
     id = models.AutoField(primary_key=True)
-    idBalance = models.ForeignKey(Balance, on_delete=models.CASCADE)
+    idBalance = models.ForeignKey(Balance, on_delete=models.CASCADE, null=True, blank=True)
     # idTicket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
-    idStand = models.ForeignKey(Stand, on_delete=models.CASCADE)
-    idService = models.ForeignKey(AdditionalService, on_delete=models.CASCADE)
+    idBill = models.ForeignKey(Bill, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f'{self.id}'

@@ -701,8 +701,7 @@ def prepareBillView(request, pk, pk2):
     for stand in stands_list:
         if stand.clientUsername == client and stand.idEvento == event:
             stands_requested.append(stand)
-            # TODO: poner precio al stand
-            # total_price += stand.precio
+            total_price += stand.idStand.price
 
     request.session['price'] = total_price
 
@@ -767,7 +766,6 @@ def listBillsView(request):
 
 
 def monthlyBalanceView(request):
-
     final_days = [
         # TODO: deberia poder ser de cualquier año. hacer algo tipo if month and day is tal, then is final day
         datetime(2022, 1, 31),
@@ -788,16 +786,25 @@ def monthlyBalanceView(request):
     ticket_incomes = []
     expenses = []
     new_balance = None
+    created = False  # para controlar que solo creemos un balance al mes
+
+    today = datetime.today()
+    today = datetime(today.year, today.month, 30)  # TODO: borrar
 
     empty = False  # Oops! no balances yet.
     balance_list = Balance.objects.all()
     if balance_list is []:
         empty = True
 
-    today = datetime.today()
-    today = datetime(today.year, today.month, 30)  # TODO: borrar
+    # miramos si tenemos un balance con la fecha de hoy. Lo hago así por poder usar el mismo tipo de fecha.
+    # si hiciera un objects.get(), tendria que buscar con formato datetime.date, y yo tengo datetime.datetime
+    for existing_balance in balance_list:
+        temp_date = datetime(existing_balance.date.year, existing_balance.date.month, existing_balance.date.day)
+        temp_date = today  # TODO: borrar
+        if temp_date == today:
+            created = True
 
-    if today in final_days:  # si estamos a final de mes:
+    if today in final_days and not created:  # si estamos a final de mes:
 
         first_day = datetime(today.year, today.month, 1)
         # consideramos que los incomes son las entradas vendidas + facturas pagadas
@@ -811,7 +818,6 @@ def monthlyBalanceView(request):
             if bill.payed and first_day < temp_date < today:
                 bill_incomes.append(bill)  # agregamos a la lista de ganancias
 
-
         '''
         tickets = Ticket.objects.all()
         for ticket in tickets:
@@ -820,10 +826,8 @@ def monthlyBalanceView(request):
                 ticket_incomes.append(ticket)
         '''
 
-
         # aqui los gastos dependen mucho.
         # Vamos a suponer que los gastos es lo que vale el servicio,
-        # sin tener en cuenta el cargo extra que tienen los clientes también.
 
         services_petition_list = PeticionServAdicional.objects.all()
         for service_petition in services_petition_list:
@@ -831,21 +835,21 @@ def monthlyBalanceView(request):
             if first_day < temp_date < today:
                 expenses.append(service_petition.idAdditionalService)
 
-        #finalmente, creamos el balance
+        # finalmente, creamos el balance
 
         total_incomes = 0.0
         total_expenses = 0.0
         for bill_income in bill_incomes:
             total_incomes += bill_income.total_price
-        #TODO: esperar a tener los tickets
+            # BalanceIncome.objects.create(idB)
+        # TODO: esperar a tener los tickets
         # for ticket in ticket_incomes:
         #     total_incomes += ticket.price
         for expense in expenses:
             total_expenses += expense.precio
 
         new_balance = Balance.objects.create(incomes=total_incomes, expenses=total_expenses,
-                                             result=total_incomes-total_expenses)
-
+                                             result=total_incomes - total_expenses)
 
     context = {
         'balance_list': balance_list,

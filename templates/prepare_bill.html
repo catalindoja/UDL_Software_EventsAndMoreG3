@@ -45,7 +45,7 @@
                     {{ stand.pk }}
                 </td>
                 <td>
-                    AQUI VA EL PRECIO DEL STAND
+                    {{ stand.idStand.price }}
                 </td>
             {% endfor %}
             {% for service in services_requested %}
@@ -57,7 +57,7 @@
                     {{ service.idAdditionalService.nombre }}
                 </td>
                 <td>
-                    {{ service.idAdditionalService.precio }}
+                    {{ service.idAdditionalService.precio }} + {{ service.cargoExtra }}
                 </td>
             {% endfor %}
             <tr style="text-align:center">
