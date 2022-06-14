@@ -1,4 +1,5 @@
 import csv
+import datetime
 import io
 
 from django.contrib.auth import login  # eto que éh?
@@ -647,3 +648,21 @@ def send_incidence_additionalServ_client(request):
     }
 
     return render(request, 'incidences_additionalServ.html', context)
+
+
+class EntradaView(CreateView):
+    model = Entrada
+    fields = ['idEvent', 'Quantity']
+    template_name = "compra_entrada.html"
+
+    # def get_context_data(self, **kwargs):
+    #     kwargs['event_name'] = get_object_or_404(Event, pk=self.kwargs['pk']).nombre
+    #     return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        form.instance.visitor = get_object_or_404(Visitor, User=self.request.user)
+        form.instance.Price = form.instance.Quantity * Entrada.PRICE_TICKET
+        form.instance.Date = datetime.datetime.now()
+        form.save()
+        return redirect('home')
+

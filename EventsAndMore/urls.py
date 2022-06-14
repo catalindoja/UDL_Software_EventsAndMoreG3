@@ -53,6 +53,7 @@ urlpatterns = [
     path('select_incidences/', selectIncidenceView, name='select_incidences'),
     path('send_incidences_additionalServ_client/', send_incidence_additionalServ_client,
          name='send_incidence_additionalServ_client'),
+    path('compra_entrada/', EntradaView.as_view(), name='compra_entrada'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

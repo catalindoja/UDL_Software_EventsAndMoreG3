@@ -18,3 +18,5 @@ admin.site.register(IncidenciasServAdicional)
 admin.site.register(PeticionEvento)
 admin.site.register(ListaNegra)
 #sprint3
+admin.site.register(Visitor)
+admin.site.register(Entrada)

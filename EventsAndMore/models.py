@@ -52,6 +52,13 @@ class DeptAdditionalServ(models.Model):
         return str(self.User)
 
 
+class Visitor(models.Model):
+    User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return str(self.User)
+
+
 # class Staff(models.Model): #WebUser
 #     ROLES = (
 #         ("Gestor", "Gestor de stands"),
@@ -191,4 +198,18 @@ class ListaNegra(models.Model):
 
     def __str__(self):
         return str(self.descripcion)
+
+
+class Entrada(models.Model):
+    PRICE_TICKET = 20.0
+
+    id = models.AutoField(primary_key=True)
+    visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    idEvent = models.ForeignKey(Event, on_delete=models.CASCADE)
+    Date = models.DateField(default=date.today)
+    Price = models.FloatField(null=False, blank=False)
+    Quantity = models.IntegerField()
+
+    def __str__(self):
+        return str(self.visitor.User.username + " Ha comprat ticket per l'event " + self.idEvent.nombre)
 
