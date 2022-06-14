@@ -20,3 +20,4 @@ admin.site.register(ListaNegra)
 # sprint3
 admin.site.register(Bill)
 admin.site.register(DeptManagement)
+admin.site.register(Balance)

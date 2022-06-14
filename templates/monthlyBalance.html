@@ -5,76 +5,105 @@
     {% if user.is_authenticated %}
 
         <ul>
-        aqui vamos a ver el balance mensual de gastos y cobros
-        <li>
-            la idea es generar el informe cuando sea final de mes
-        </li>
-        <li>
-            que se haga de manera automatica: detectar las fechas de ultimo dia de mes y que se genere solo el documento
-        </li>
-        <li>
-            ver una de mis tablas con los documentos previamente generados, pudiendo ver los detalles de cada uno
-        </li>
-        <li>
-            tener dos enlaces: uno a la lista de facturas generadas este mes
-            (pudiendo destacar las que están pagadas).
-            Otro enlace a un buscador con las facturas totales
-        </li>
-        <li>
-            los ingresos serán las entradas vendidas + las facturas de clientes pagadas
-        </li>
-        <li>
-            los gastos van a ser: servicios contratados, trabajadores?
-        </li>
-        <li>
-            NOTA: LOS SERVICIOS SOLICITADOS IN SITU TENÍAN UN CARGO EXTRA: DE AHÍ GANAMOS NOSOTROS ENTIENDO
-        </li>
-        <li>
-            en caso de no haber facturas, poner mensaje de oops, no hay facturas, no se puede generar
-        </li>
-        <li>
-            lo mismo que las facturas
-        </li>
+            aqui vamos a ver el balance mensual de gastos y cobros
+            <li>
+                la idea es generar el informe cuando sea final de mes
+            </li>
+            <li>
+                que se haga de manera automatica: detectar las fechas de ultimo dia de mes y que se genere solo el
+                documento
+            </li>
+
+            <li>
+                tener dos enlaces: uno a la lista de facturas generadas este mes
+                (pudiendo destacar las que están pagadas).
+                Otro enlace a un buscador con las facturas totales
+            </li>
+            <li>
+                los ingresos serán las entradas vendidas + las facturas de clientes pagadas
+            </li>
+            <li>
+                los gastos van a ser: servicios contratados, trabajadores?
+            </li>
+            <li>
+                NOTA: LOS SERVICIOS SOLICITADOS IN SITU TENÍAN UN CARGO EXTRA: DE AHÍ GANAMOS NOSOTROS ENTIENDO
+            </li>
+            <li>
+                en caso de no haber facturas, poner mensaje de oops, no hay facturas, no se puede generar
+            </li>
+            <li>
+                lo mismo que las facturas
+            </li>
+            <li>
+                <b>
+                    podemos hacer un balance temporal: que la vista calcule lo que llevamos de momento, pero no se puede
+                    guardar ni nada, porque es provisional.
+                </b>
+            </li>
+            <li>
+                si clicamos en uno de los balances, podemos ver los detalles de la lista de gastos y la de ganancias
+            </li>
         </ul>
 
-         <table class="table">
-            <thread>
-                <br><br>
-                <p style="text-align:center">
-                    <b>
-                        DOCUMENTS GENERATED
-                    </b>
-                </p>
-                <hr>
-                <tr style="text-align:center">
-                    <th scope="col">
-                        Number
-                    </th>
-                    <th scope="col">
-                        Month
-                    </th>
-                    <th scope="col">
-                        Result
-                    </th>
+        {% if empty == True %}
+            Oops! There are no balances generated yet.
+        {% else %}
+            <table class="table">
+                <thread>
+                    <br><br>
+                    <p style="text-align:center">
+                        <b>
+                            DOCUMENTS GENERATED
+                        </b>
+                    </p>
+                    <hr>
+                    <tr style="text-align:center">
+                        <th scope="col">
+                            Number
+                        </th>
+                        <th scope="col">
+                            Month
+                        </th>
+                        <th scope="col">
+                            Result
+                        </th>
 
-                </tr>
-            </thread>
-            <tbody style="text-align:center">
+                    </tr>
+                </thread>
+                <tbody style="text-align:center">
+                {% for balance in balance_list %}
 
-                <tr style="text-align:center">
-                <td>
-                    id
-                </td>
-                <td>
-                    date
-                </td>
-                <td>
-                    60k
-                </td>
+                    <tr style="text-align:center">
+
+                    <td>
+                        <a href="{% url 'balanceDetails' balance.id %}">
+                            {{ balance.id }}
+                        </a>
+
+                    </td>
+                    <td>
+                        <a href="{% url 'balanceDetails' balance.id %}">
+                            {{ balance.date }}
+                        </a>
+
+                    </td>
+                    <td>
+                        <a href="{% url 'balanceDetails' balance.id %}">
+                            {{ balance.result }}
+                        </a>
+
+                    </td>
 
 
-            </tbody>
-        </table>
+
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+        {% endif %}
+
+
 
 
 

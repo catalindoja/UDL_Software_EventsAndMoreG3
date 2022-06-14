@@ -63,6 +63,7 @@ urlpatterns = [
 
     # monthly balance generation
     path('monthlyBalance/', monthlyBalanceView, name='monthlyBalance'),
+    path('monthlyBalance/<int:pk>/', balanceDetailsView, name='balanceDetails'),
 
     # client stuff, 3rd iteration
 

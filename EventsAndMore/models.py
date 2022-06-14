@@ -222,3 +222,6 @@ class Balance(models.Model):
     expenses = models.FloatField(default=0.0)
     result = models.FloatField(default=0.0)
 
+    def __str__(self):
+        return f'{self.date}'
+

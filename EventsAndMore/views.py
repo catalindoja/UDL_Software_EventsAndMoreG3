@@ -9,6 +9,8 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView
+from datetime import datetime
+# import datetime
 
 from .forms import *
 
@@ -692,6 +694,7 @@ def prepareBillView(request, pk, pk2):
                 and additional_service.idEvento == event:
             services_requested.append(additional_service)
             total_price += additional_service.idAdditionalService.precio
+            total_price += additional_service.cargoExtra
 
     stands_requested = []
     stands_list = PeticionStand.objects.all()
@@ -754,18 +757,106 @@ def listBillsView(request):
                      bill.payed is False]
 
     clients_list = Cliente.objects.all()
+    bills_list = Bill.objects.all()
 
     context = {
         'unpayed_bills': unpayed_bills,
+        'bills_list': bills_list,
         'clients_list': clients_list,
     }
     return render(request, 'list_bills.html', context)
 
 
 def monthlyBalanceView(request):
+    #creation_dates = ['2022-01-31', '2022-02-28', '2022-03-31', '2022-04-30', '2022-05-31', '2022-06-30',
+     #                 '2022-07-31', '2022-08-31', '2022-09-30', '2022-10-31', '2022-11-30', '2022-12-31']
+
+    final_days = [
+        datetime(2022, 1, 31),
+        datetime(2022, 2, 28),
+        # datetime(2022, 2, 29),
+        datetime(2022, 3, 31),
+        datetime(2022, 4, 30),
+        datetime(2022, 5, 31),
+        datetime(2022, 6, 30),
+        datetime(2022, 7, 31),
+        datetime(2022, 8, 31),
+        datetime(2022, 9, 30),
+        datetime(2022, 10, 31),
+        datetime(2022, 11, 30),
+        datetime(2022, 12, 31),
+    ]
+
+    # changing_to_first_day = today_date.split('-')
+    # changing_to_first_day[-1] = '01'
+    #
+    # first_day = '-'.join(changing_to_first_day)
+
+
+    empty = False  # para que salga el mensaje de Oops! no balances yet. Para que no salga una tabla vacía
+    balance_list = Balance.objects.all()
+    if balance_list is []:
+        empty = True
+
+    today = datetime.today()
+    # today_date = today.strftime('%Y-%m-%d')
+
+    # today_date = '2022-06-30'  # temporal
+
+    # new_first = datetime(today.year, today.month, 1)
+    # print(new_first)
+
+    today = datetime(today.year, today.month, 30) # TODO: borrar
+
+    if today in final_days: # si estamos a final de mes:
+
+        first_day = datetime(today.year, today.month, 1)
+
+
+        bill_incomes = []
+        # consideramos que los incomes son las entradas vendidas + facturas pagadas
+        bills = Bill.objects.all()
+        for bill in bills:
+            print(f'fecha bill: {bill.date}, today: {today}, first_day: {first_day}')
+            temp_date = datetime(bill.date.year, bill.date.month, bill.date.day)
+            if bill.payed and temp_date > first_day and temp_date < today:  # si la factura está pagada y está entre inicio de mes y final
+                bill_incomes.append(bill) # agregamos a la lista de ganancias
+
+        print(bill_incomes)
+        ticket_incomes = []
+        '''
+        tickets = Ticket.objects.all()
+        for ticket in tickets:
+            if ticket.sold and ticket.idEvent:
+                ticket_incomes.append(bill)
+        '''
+
+        expenses = []
+
+    # print(type(balance_list[0].date))
+    # print(balance_list[0].date)
+    # print('-------')
+    # print(str(balance_list[0].date))
+    # print(type(str(balance_list[0].date)))
+    # print('------')
+    # print(type('2022-06-30'))
+    # print('2022-06-30')
+    # print('------')
+    # print(today_date)
 
     context = {
-
+        'balance_list': balance_list,
+        'empty': empty,
     }
 
     return render(request, 'monthlyBalance.html', context)
+
+
+def balanceDetailsView(request, pk):
+    balance = Balance.objects.get(id=pk)
+
+    context = {
+        'balance': balance,
+    }
+
+    return render(request, 'balanceDetails.html', context)

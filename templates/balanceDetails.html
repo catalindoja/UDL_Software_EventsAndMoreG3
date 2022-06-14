@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+        <ul>
+        <b>
+            Balance details:
+            (imaginate que esto está bonito)
+        </b>
+        <li>
+            Number: {{ balance.id }}
+        </li>
+        <li>
+            Creation date: {{ balance.date }}
+        </li>
+        <li>
+            Final incomes: {{ balance.incomes }}
+        </li>
+        <li>
+            Final expenses: {{ balance.expenses }}
+        </li>
+        <li>
+            Result: {{ balance.result }}
+        </li>
+        </ul>
+
+        <ul>
+        lista de ingresos
+        <li>
+
+        </li>
+        </ul>
+
+        <ul>
+        lista de gastos
+        <li>
+
+        </li>
+        </ul>
+
+    {% endif %}
+
+{% endblock %}

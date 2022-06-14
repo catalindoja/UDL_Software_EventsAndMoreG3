@@ -53,28 +53,28 @@
             </thread>
             <tbody style="text-align:center">
 
-            <tr style="text-align:center">
-                {% for bill in unpayed_bills %}
 
-                    <td>
-                        {{ bill.pk }}
-                    </td>
-                    <td>
-                        {{ bill.clientUsername }}
-                    </td>
-                    <td>
-                        {{ bill.idEvent }}
-                    </td>
-                    <td>
-                        {{ bill.date }}
-                    </td>
-                    <td>
-                        {{ bill.total_price }}
-                    </td>
-                    <td>
-                        {{ bill.payed }}
-                    </td>
-                {% endfor %}
+            {% for bill in unpayed_bills %}
+                <tr style="text-align:center">
+                <td>
+                    {{ bill.pk }}
+                </td>
+                <td>
+                    {{ bill.clientUsername }}
+                </td>
+                <td>
+                    {{ bill.idEvent }}
+                </td>
+                <td>
+                    {{ bill.date }}
+                </td>
+                <td>
+                    {{ bill.total_price }}
+                </td>
+                <td>
+                    {{ bill.payed }}
+                </td>
+            {% endfor %}
             </tr>
             </tbody>
         </table>
@@ -111,33 +111,36 @@
             </thread>
             <tbody style="text-align:center">
 
-            <tr style="text-align:center">
-                {% for client in clients_list %}
-                    {% for bill in unpayed_bills %}
-                        {% if bill.clientUsername.User.username == client.User.username %}
+
+            {% for client in clients_list %}
+
+                {% for bill in bills_list %}
+
+                    {% if bill.clientUsername.User.username == client.User.username %}
 
 
-                            <td>
-                                {{ bill.pk }}
-                            </td>
-                            <td>
-                                {{ bill.clientUsername }}
-                            </td>
-                            <td>
-                                {{ bill.idEvent }}
-                            </td>
-                            <td>
-                                {{ bill.date }}
-                            </td>
-                            <td>
-                                {{ bill.total_price }}
-                            </td>
-                            <td>
-                                {{ bill.payed }}
-                            </td>
-                        {% endif %}
-                    {% endfor %}
+                        <tr style="text-align:center">
+                        <td>
+                            {{ bill.pk }}
+                        </td>
+                        <td>
+                            {{ bill.clientUsername }}
+                        </td>
+                        <td>
+                            {{ bill.idEvent }}
+                        </td>
+                        <td>
+                            {{ bill.date }}
+                        </td>
+                        <td>
+                            {{ bill.total_price }}
+                        </td>
+                        <td>
+                            {{ bill.payed }}
+                        </td>
+                    {% endif %}
                 {% endfor %}
+            {% endfor %}
             </tr>
             </tbody>
         </table>
