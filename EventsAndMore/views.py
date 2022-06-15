@@ -262,7 +262,6 @@ def IncidencesView(request):
         formB = FilterIncidences(request.POST)
         formI = SendStandIncidenceForm(request.POST)
         if formI.is_valid():
-
             name = request.user.username
             current_user = WebUser.objects.get(username=name)
             current_client = Cliente.objects.get(User=current_user)
@@ -270,7 +269,7 @@ def IncidencesView(request):
             formI.save()
             formB = FilterIncidences()
             incidences = StandIncidence.objects.all()
-            #redirect('/')
+            return redirect('/')
             context = {
                 'User': request.user.username,
                 'formB': formB,  # añadido pa que no se borre al enviar incidencia
@@ -419,7 +418,6 @@ class PeticionServAdicionalClienteView(CreateView):
     model = PeticionServAdicional
     form_class = PeticionServAdicionalClienteForm
     template_name = 'peticion_servicio_adicional_cliente.html'
-
     def form_valid(self, form):
         if self.request.user.is_client:
             client = Cliente.objects.get(User=self.request.user)
@@ -460,7 +458,7 @@ def updatePeticionServAdicionalDepartamento(request, pk):
                 if d.User.username == request.user.username:
                     my_dept = d
             form.instance.deptAdditionalServUsername = my_dept
-            print(my_dept)
+            # print(my_dept)
             if form.is_valid():
                 form.save()
                 return redirect('/lista_eventos_peticion_serv_adicional/')
