@@ -2,11 +2,9 @@
 
 {% block content %}
 
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and user.is_client %}
 
-        <a href="#">
-            Bills searcher
-        </a>
+        <h1>These are your bills</h1>
 
         <table class="table">
             <thread>
@@ -22,9 +20,6 @@
                         Id
                     </th>
                     <th scope="col">
-                        Client
-                    </th>
-                    <th scope="col">
                         Event
                     </th>
                     <th scope="col">
@@ -34,34 +29,43 @@
                         Price
                     </th>
                     <th scope="col">
-                        Payed
+                        Paid
+                    </th>
+                    <th scope="col">
+                        Pay?
                     </th>
                 </tr>
             </thread>
             <tbody style="text-align:center">
 
 
-            {% for bill in unpayed_bills %}
-                <tr style="text-align:center">
-                <td>
-                    {{ bill.pk }}
-                </td>
-                <td>
-                    {{ bill.clientUsername }}
-                </td>
-                <td>
-                    {{ bill.idEvent }}
-                </td>
-                <td>
-                    {{ bill.date }}
-                </td>
-                <td>
-                    {{ bill.total_price }}
-                </td>
-                <td>
-                    {{ bill.payed }}
-                </td>
+            {% for bill in client_bills %}
+                {% if bill.payed == False %}
+                    <tr style="text-align:center">
+                    <td>
+                        {{ bill.pk }}
+                    </td>
+                    <td>
+                        {{ bill.idEvent }}
+                    </td>
+                    <td>
+                        {{ bill.date }}
+                    </td>
+                    <td>
+                        {{ bill.total_price }}
+                    </td>
+                    <td>
+                        {{ bill.payed }}
+                    </td>
+                    <td>
+                        <a href="#">
+                            Pay
+                        </a>
+                    </td>
+                {% endif %}
             {% endfor %}
+
+
             </tr>
             </tbody>
         </table>
@@ -80,9 +84,6 @@
                         Id
                     </th>
                     <th scope="col">
-                        Client
-                    </th>
-                    <th scope="col">
                         Event
                     </th>
                     <th scope="col">
@@ -92,42 +93,35 @@
                         Price
                     </th>
                     <th scope="col">
-                        Payed
+                        Paid
                     </th>
                 </tr>
             </thread>
             <tbody style="text-align:center">
 
 
-            {% for client in clients_list %}
+            {% for bill in client_bills %}
 
-                {% for bill in bills_list %}
+                <tr style="text-align:center">
+                <td>
+                    {{ bill.pk }}
+                </td>
+                <td>
+                    {{ bill.idEvent }}
+                </td>
+                <td>
+                    {{ bill.date }}
+                </td>
+                <td>
+                    {{ bill.total_price }}
+                </td>
+                <td>
+                    {{ bill.payed }}
+                </td>
 
-                    {% if bill.clientUsername.User.username == client.User.username %}
-
-
-                        <tr style="text-align:center">
-                        <td>
-                            {{ bill.pk }}
-                        </td>
-                        <td>
-                            {{ bill.clientUsername }}
-                        </td>
-                        <td>
-                            {{ bill.idEvent }}
-                        </td>
-                        <td>
-                            {{ bill.date }}
-                        </td>
-                        <td>
-                            {{ bill.total_price }}
-                        </td>
-                        <td>
-                            {{ bill.payed }}
-                        </td>
-                    {% endif %}
-                {% endfor %}
             {% endfor %}
+
+
             </tr>
             </tbody>
         </table>

@@ -64,10 +64,13 @@ urlpatterns = [
     # monthly balance generation
     path('monthlyBalance/', monthlyBalanceView, name='monthlyBalance'),
     path('monthlyBalance/<int:pk>/', balanceDetailsView, name='balanceDetails'),
+    path('monthlyBalance/<int:pk>/<int:pkBill>/', billDetailsView, name='billDetails'),
 
     # client stuff, 3rd iteration
 
     path('listBills/', listBillsView, name='listBills'),
+    path('clientBills/', clientBillsView, name='clientBills'),
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()

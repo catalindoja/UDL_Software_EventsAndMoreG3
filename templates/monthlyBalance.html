@@ -4,28 +4,6 @@
 
     {% if user.is_authenticated %}
 
-        <ul>
-            aqui vamos a ver el balance mensual de gastos y cobros
-
-
-
-            <li>
-                tener dos enlaces: uno a la lista de facturas generadas este mes
-                (pudiendo destacar las que están pagadas).
-                Otro enlace a un buscador con las facturas totales
-            </li>
-
-            <li>
-                <b>
-                    podemos hacer un balance temporal: que la vista calcule lo que llevamos de momento, pero no se puede
-                    guardar ni nada, porque es provisional.
-                </b>
-            </li>
-            <li>
-                si clicamos en uno de los balances, podemos ver los detalles de la lista de gastos y la de ganancias
-            </li>
-        </ul>
-
         {% if empty == True %}
             Oops! There are no balances generated yet.
         {% else %}

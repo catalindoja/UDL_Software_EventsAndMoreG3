@@ -816,6 +816,7 @@ def monthlyBalanceView(request):
             # bill.date es en formato datetime.date, y el resto son datetime.datetime
 
             if bill.payed and first_day < temp_date < today:
+                # ojo, deberian considerarse diferentes las fechas de emision de factura y la fecha de pago?
                 bill_incomes.append(bill)  # agregamos a la lista de ganancias
 
         '''
@@ -837,27 +838,30 @@ def monthlyBalanceView(request):
 
         # finalmente, creamos el balance
 
+        new_balance = Balance.objects.create()
+
         total_incomes = 0.0
         total_expenses = 0.0
         for bill_income in bill_incomes:
             total_incomes += bill_income.total_price
-            # BalanceIncome.objects.create(idB)
+            BalanceIncome.objects.create(idBalance=new_balance, idBill=bill_income, is_bill=True)
+
         # TODO: esperar a tener los tickets
         # for ticket in ticket_incomes:
         #     total_incomes += ticket.price
+        #     BalanceIncome.objects.create(idBalance=new_balance, idTicket=ticket, is_ticket=True)
         for expense in expenses:
             total_expenses += expense.precio
+            BalanceExpense.objects.create(idBalance=new_balance, idService=expense)
 
-        new_balance = Balance.objects.create(incomes=total_incomes, expenses=total_expenses,
-                                             result=total_incomes - total_expenses)
+        new_balance.incomes = total_incomes
+        new_balance.expenses = total_expenses
+        new_balance.result = total_incomes - total_expenses
+        new_balance.save()
 
     context = {
         'balance_list': balance_list,
         'empty': empty,
-        'bill_incomes': bill_incomes,
-        'ticket_incomes': ticket_incomes,
-        'expenses': expenses,
-        'new_balance': new_balance,
     }
 
     return render(request, 'monthlyBalance.html', context)
@@ -866,8 +870,34 @@ def monthlyBalanceView(request):
 def balanceDetailsView(request, pk):
     balance = Balance.objects.get(id=pk)
 
+    incomes = BalanceIncome.objects.filter(idBalance=balance)
+    expenses = BalanceExpense.objects.filter(idBalance=balance)
+
     context = {
         'balance': balance,
+        'incomes': incomes,
+        'expenses': expenses,
     }
 
     return render(request, 'balanceDetails.html', context)
+
+
+def billDetailsView(request, pk, pkBill):
+    bill = Bill.objects.get(id=pkBill)
+
+    context = {
+        'bill': bill,
+    }
+
+    return render(request, 'billDetails.html', context)
+
+
+def clientBillsView(request):
+    client_bills = [bill for bill in Bill.objects.all() if
+                    bill.clientUsername.User.username == request.user.username]
+
+    context = {
+        'client_bills': client_bills,
+    }
+
+    return render(request, 'clientBills.html', context)

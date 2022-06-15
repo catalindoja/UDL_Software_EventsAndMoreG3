@@ -27,6 +27,7 @@ class WebUser(AbstractUser):
 class Cliente(models.Model):  # WebUser
     User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
     CIF = models.CharField(unique=True, max_length=9)
+    Payment_details = models.TextField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return str(self.User)
@@ -232,6 +233,8 @@ class BalanceIncome(models.Model):
     idBalance = models.ForeignKey(Balance, on_delete=models.CASCADE, null=True, blank=True)
     # idTicket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
     idBill = models.ForeignKey(Bill, on_delete=models.CASCADE, null=True, blank=True)
+    is_ticket = models.BooleanField(default=False)
+    is_bill = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.id}'

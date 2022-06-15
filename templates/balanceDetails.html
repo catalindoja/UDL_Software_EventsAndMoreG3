@@ -5,40 +5,71 @@
     {% if user.is_authenticated %}
 
         <ul>
-        <b>
-            Balance details:
-            (imaginate que esto está bonito)
-        </b>
-        <li>
-            Number: {{ balance.id }}
-        </li>
-        <li>
-            Creation date: {{ balance.date }}
-        </li>
-        <li>
-            Final incomes: {{ balance.incomes }}
-        </li>
-        <li>
-            Final expenses: {{ balance.expenses }}
-        </li>
-        <li>
-            Result: {{ balance.result }}
-        </li>
+            <b>
+                Balance details:
+
+            </b>
+            <li>
+                Number: {{ balance.id }}
+            </li>
+            <li>
+                Creation date: {{ balance.date }}
+            </li>
+            <li>
+                Final incomes: {{ balance.incomes }}
+            </li>
+            <li>
+                Final expenses: {{ balance.expenses }}
+            </li>
+            <li>
+                Result: {{ balance.result }}
+            </li>
         </ul>
 
         <ul>
-        lista de ingresos
-        <li>
+            lista de ingresos
+            {% for income in incomes %}
+                <li>
+                    {% if income.is_bill %}
+                        Bill number
+                        <a href="{% url 'billDetails' balance.pk income.idBill.id %}">
+                        {{ income.idBill.id }}
+                        </a>
+                        --> {{ income.idBill.total_price }}
+                    {% else %}
+                        Ticket number
+                        <a href="#">
+                        {{ income.idTicket.id }}
+                        </a>
+                        --> {{ income.idTicket.price }}
+                    {% endif %}
+                </li>
+            {% endfor %}
 
-        </li>
         </ul>
 
         <ul>
-        lista de gastos
-        <li>
+            lista de gastos
+            {% for expense in expenses %}
+                <li>
+                    Service number
+                    <a href="#">
+                    {{ expense.idService.id }}
+                    </a>
+                    --> {{ expense.idService.precio }}
+                </li>
+            {% endfor %}
 
-        </li>
         </ul>
+
+        <br>
+        <a href="#">
+        Download
+        </a>
+        <br>
+        <a href="../">
+        Accept
+        </a>
 
     {% endif %}
 

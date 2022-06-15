@@ -49,6 +49,12 @@
                             Services
                         </a>
                     </li>
+                    <li>
+                        <a class="nav-link active" aria-current="page" href="{% url 'clientBills' %}">  <!--Warning-->
+                            Bills
+                        </a>
+                    </li>
+
                 {% endif %}
                 {% if user.is_gestor %}
                     <li>
