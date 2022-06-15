@@ -1083,3 +1083,25 @@ def encuestaSatisfaccionDeptDireccionList(request, key):
     else:
         print("Error el user no es un gestor")
         return redirect('/')
+
+class EntradaView(CreateView):
+    model = Entrada
+    fields = ['idEvent', 'Quantity']
+    template_name = "compra_entrada.html"
+
+    def form_valid(self, form):
+        form.instance.visitor = get_object_or_404(Visitor, User=self.request.user)
+        form.instance.Price = form.instance.Quantity * Entrada.PRICE_TICKET
+        form.instance.Date = datetime.datetime.now()
+        form.save()
+        return redirect('home')
+
+
+class AñadirServicioAdicionalView(CreateView):
+    model = AdditionalService
+    fields = ['nombre', 'descripcion', 'habilitado', 'precio', 'empresa_colaboradora']
+    template_name = "add_additional_service.html"
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('home')

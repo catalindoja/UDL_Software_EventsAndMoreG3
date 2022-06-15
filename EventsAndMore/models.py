@@ -282,3 +282,17 @@ class EncuestaSatisfaccion(models.Model):
     def __str__(self):
         return str(self.id)
 
+
+class Entrada(models.Model):
+    PRICE_TICKET = 20.0
+
+    id = models.AutoField(primary_key=True)
+    visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    idEvent = models.ForeignKey(Event, on_delete=models.CASCADE)
+    Date = models.DateField(default=date.today)
+    Price = models.FloatField(null=False, blank=False)
+    Quantity = models.IntegerField()
+
+    def __str__(self):
+        return str(self.visitor.User.username + " Ha comprat ticket per l'event " + self.idEvent.nombre)
+

@@ -24,3 +24,4 @@ admin.site.register(Balance)
 admin.site.register(Visitor)
 admin.site.register(EncuestaSatisfaccion)
 
+admin.site.register(Entrada)

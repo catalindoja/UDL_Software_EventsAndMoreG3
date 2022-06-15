@@ -82,6 +82,9 @@ urlpatterns = [
          name='lista_eventos_encuesta_satisfaccion'),
     path('lista_encuestas_satisfaccion/<str:key>/', views.encuestaSatisfaccionDeptDireccionList,
          name='lista_encuestas_satisfaccion'),
+    path('compra_entrada/', EntradaView.as_view(), name='compra_entrada'),
+    path('añadir_servicio_adicional/', AñadirServicioAdicionalView.as_view(), name='añadir_servicio_adicional'),
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()
