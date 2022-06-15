@@ -54,6 +54,8 @@ urlpatterns = [
     path('send_incidences_additionalServ_client/', send_incidence_additionalServ_client,
          name='send_incidence_additionalServ_client'),
     path('compra_entrada/', EntradaView.as_view(), name='compra_entrada'),
+    path('añadir_servicio_adicional/', AñadirServicioAdicionalView.as_view(), name='añadir_servicio_adicional'),
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()
