@@ -38,10 +38,10 @@
                         --> {{ income.idBill.total_price }}
                     {% else %}
                         Ticket number
-                        <a href="#">
+                        <a href="{% url 'ticketDetail' balance.pk income.idTicket.pk %}">
                         {{ income.idTicket.id }}
                         </a>
-                        --> {{ income.idTicket.price }}
+                        --> {{ income.idTicket.Price }}
                     {% endif %}
                 </li>
             {% endfor %}

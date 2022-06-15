@@ -235,10 +235,24 @@ class Balance(models.Model):
         return f'{self.date}'
 
 
+class Entrada(models.Model):
+    PRICE_TICKET = 20.0
+
+    id = models.AutoField(primary_key=True)
+    visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    idEvent = models.ForeignKey(Event, on_delete=models.CASCADE)
+    Date = models.DateField(default=date.today)
+    Price = models.FloatField(null=False, blank=False)
+    Quantity = models.IntegerField()
+
+    def __str__(self):
+        return str(self.visitor.User.username + " Ha comprat ticket per l'event " + self.idEvent.nombre)
+
+
 class BalanceIncome(models.Model):
     id = models.AutoField(primary_key=True)
     idBalance = models.ForeignKey(Balance, on_delete=models.CASCADE, null=True, blank=True)
-    # idTicket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    idTicket = models.ForeignKey(Entrada, on_delete=models.CASCADE, null=True, blank=True)
     idBill = models.ForeignKey(Bill, on_delete=models.CASCADE, null=True, blank=True)
     is_ticket = models.BooleanField(default=False)
     is_bill = models.BooleanField(default=False)
@@ -283,16 +297,4 @@ class EncuestaSatisfaccion(models.Model):
         return str(self.id)
 
 
-class Entrada(models.Model):
-    PRICE_TICKET = 20.0
-
-    id = models.AutoField(primary_key=True)
-    visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
-    idEvent = models.ForeignKey(Event, on_delete=models.CASCADE)
-    Date = models.DateField(default=date.today)
-    Price = models.FloatField(null=False, blank=False)
-    Quantity = models.IntegerField()
-
-    def __str__(self):
-        return str(self.visitor.User.username + " Ha comprat ticket per l'event " + self.idEvent.nombre)
 

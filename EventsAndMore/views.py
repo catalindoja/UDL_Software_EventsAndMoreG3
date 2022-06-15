@@ -903,6 +903,11 @@ def monthlyBalanceView(request):
                 # ojo, deberian considerarse diferentes las fechas de emision de factura y la fecha de pago?
                 bill_incomes.append(bill)  # agregamos a la lista de ganancias
 
+        tickets = Entrada.objects.all()
+        for ticket in tickets:
+            temp_date = datetime(ticket.Date.year, ticket.Date.month, ticket.Date.day)
+            if first_day < temp_date < today:
+                ticket_incomes.append(ticket)
         '''
         tickets = Ticket.objects.all()
         for ticket in tickets:
@@ -930,7 +935,12 @@ def monthlyBalanceView(request):
             total_incomes += bill_income.total_price
             BalanceIncome.objects.create(idBalance=new_balance, idBill=bill_income, is_bill=True)
 
-        # TODO: esperar a tener los tickets
+        for ticket in ticket_incomes:
+            total_incomes += ticket.PRICE_TICKET * ticket.Quantity
+            ticket.Price = ticket.PRICE_TICKET * ticket.Quantity
+            ticket.save()
+            BalanceIncome.objects.create(idBalance=new_balance, idTicket=ticket, is_ticket=True)
+
         # for ticket in ticket_incomes:
         #     total_incomes += ticket.price
         #     BalanceIncome.objects.create(idBalance=new_balance, idTicket=ticket, is_ticket=True)
@@ -964,6 +974,16 @@ def balanceDetailsView(request, pk):
     }
 
     return render(request, 'balanceDetails.html', context)
+
+
+def ticketDetailsView(request, pk, pk2):
+    ticket = Entrada.objects.get(id=pk2)
+
+    context = {
+        'ticket': ticket,
+    }
+
+    return render(request, 'ticketDetails.html', context)
 
 
 def billDetailsView(request, pk, pkBill):
@@ -1029,7 +1049,6 @@ def payBillView(request, pk):
     return render(request, 'payBill.html', context)
 
 
-
 class EncuestaSatisfaccionView(CreateView):
     model = EncuestaSatisfaccion
     form_class = EncuestaSatisfaccionForm
@@ -1054,6 +1073,8 @@ def eventosEncuestaSatisfaccionDeptDireccion(request):
     else:
         print("Error el user no es un departamento de direccion")
         return redirect('/')
+
+
 # 15/25 * 100
 
 
@@ -1065,15 +1086,15 @@ def encuestaSatisfaccionDeptDireccionList(request, key):
         for peticion in peticiones:
             if peticion.idEvento == Event.objects.get(id=key):
                 score = (peticion.puntuacion_organizacion_evento
-                + peticion.puntuacion_personal_evento
-                + peticion.puntuacion_informacion_previa_evento
-                + peticion.puntuacion_duracion_evento
-                + peticion.puntuacion_satisfaccion_evento
-                + peticion.puntuacion_interactividad_evento
-                + peticion.puntuacion_organizacion_empresas
-                + peticion.puntuacion_distribucion_stands
-                + peticion.puntuacion_calificacion_evento
-                + peticion.puntuacion_recomendacion_evento)
+                         + peticion.puntuacion_personal_evento
+                         + peticion.puntuacion_informacion_previa_evento
+                         + peticion.puntuacion_duracion_evento
+                         + peticion.puntuacion_satisfaccion_evento
+                         + peticion.puntuacion_interactividad_evento
+                         + peticion.puntuacion_organizacion_empresas
+                         + peticion.puntuacion_distribucion_stands
+                         + peticion.puntuacion_calificacion_evento
+                         + peticion.puntuacion_recomendacion_evento)
                 score = score / 50 * 100
                 # print(score)
                 peticion.score = str(score) + "%"
@@ -1084,6 +1105,7 @@ def encuestaSatisfaccionDeptDireccionList(request, key):
         print("Error el user no es un gestor")
         return redirect('/')
 
+
 class EntradaView(CreateView):
     model = Entrada
     fields = ['idEvent', 'Quantity']
@@ -1092,12 +1114,12 @@ class EntradaView(CreateView):
     def form_valid(self, form):
         form.instance.visitor = get_object_or_404(Visitor, User=self.request.user)
         form.instance.Price = form.instance.Quantity * Entrada.PRICE_TICKET
-        form.instance.Date = datetime.datetime.now()
+        form.instance.Date = datetime.now()
         form.save()
         return redirect('home')
 
 
-class AñadirServicioAdicionalView(CreateView):
+class AddServicioAdicionalView(CreateView):
     model = AdditionalService
     fields = ['nombre', 'descripcion', 'habilitado', 'precio', 'empresa_colaboradora']
     template_name = "add_additional_service.html"

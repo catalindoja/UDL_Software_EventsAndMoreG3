@@ -64,6 +64,7 @@ urlpatterns = [
     # monthly balance generation
     path('monthlyBalance/', monthlyBalanceView, name='monthlyBalance'),
     path('monthlyBalance/<int:pk>/', balanceDetailsView, name='balanceDetails'),
+    path('monthlyBalance/<int:pk>/<int:pk2>/', ticketDetailsView, name='ticketDetail'),
     path('monthlyBalance/<int:pk>/<int:pkBill>/', billDetailsView, name='billDetails'),
 
     # client stuff, 3rd iteration
@@ -72,7 +73,8 @@ urlpatterns = [
     path('clientBills/', clientBillsView, name='clientBills'),
     path('clientBills/<int:pk>/', payBillView, name='payBill'),
 
-    path('listBills/search', BillsSearch, name='listBills'),
+#TODO: arreglar esta basura en algún momento
+    path('listBills/search', BillsSearch, name='listBillsSearcher'),
     path('bills/eventSelected/<int:pk>/<int:pk2>/pdf', generatePDFBill, name="generatePdfBill"),
     path('bills/eventSelected/<int:pk>/<int:pk2>/createBill/pdf', generatePDFBill, name="generatePdfBill"),
 
@@ -83,7 +85,7 @@ urlpatterns = [
     path('lista_encuestas_satisfaccion/<str:key>/', views.encuestaSatisfaccionDeptDireccionList,
          name='lista_encuestas_satisfaccion'),
     path('compra_entrada/', EntradaView.as_view(), name='compra_entrada'),
-    path('añadir_servicio_adicional/', AñadirServicioAdicionalView.as_view(), name='añadir_servicio_adicional'),
+    path('añadir_servicio_adicional/', AddServicioAdicionalView.as_view(), name='añadir_servicio_adicional'),
 
 ]
 
