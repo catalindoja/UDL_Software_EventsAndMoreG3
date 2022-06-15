@@ -2,20 +2,24 @@
 
 {% block content %}
 
+     <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ formB.as_p }}
+            <button type="submit">
+                Buscar Factura
+            </button>
+        </form>
+    </div>
+
     {% if user.is_authenticated %}
-
-
-
-        <a href="search">
-            Bills searcher
-        </a>
 
         <table class="table">
             <thread>
                 <br><br>
                 <p style="text-align:center">
                     <b>
-                        Bills unpaid
+                        Bills unpayed
                     </b>
                 </p>
                 <hr>
@@ -42,28 +46,28 @@
             </thread>
             <tbody style="text-align:center">
 
+            <tr style="text-align:center">
+                {% for bill in unpayed_bills %}
 
-            {% for bill in unpayed_bills %}
-                <tr style="text-align:center">
-                <td>
-                    {{ bill.pk }}
-                </td>
-                <td>
-                    {{ bill.clientUsername }}
-                </td>
-                <td>
-                    {{ bill.idEvent }}
-                </td>
-                <td>
-                    {{ bill.date }}
-                </td>
-                <td>
-                    {{ bill.total_price }}
-                </td>
-                <td>
-                    {{ bill.payed }}
-                </td>
-            {% endfor %}
+                    <td>
+                        {{ bill.pk }}
+                    </td>
+                    <td>
+                        {{ bill.clientUsername }}
+                    </td>
+                    <td>
+                        {{ bill.idEvent }}
+                    </td>
+                    <td>
+                        {{ bill.date }}
+                    </td>
+                    <td>
+                        {{ bill.total_price }}
+                    </td>
+                    <td>
+                        {{ bill.payed }}
+                    </td>
+                {% endfor %}
             </tr>
             </tbody>
         </table>
@@ -100,36 +104,31 @@
             </thread>
             <tbody style="text-align:center">
 
-
-            {% for client in clients_list %}
-
-                {% for bill in bills_list %}
-
-                    {% if bill.clientUsername.User.username == client.User.username %}
-
-
-                        <tr style="text-align:center">
-                        <td>
-                            {{ bill.pk }}
-                        </td>
-                        <td>
-                            {{ bill.clientUsername }}
-                        </td>
-                        <td>
-                            {{ bill.idEvent }}
-                        </td>
-                        <td>
-                            {{ bill.date }}
-                        </td>
-                        <td>
-                            {{ bill.total_price }}
-                        </td>
-                        <td>
-                            {{ bill.payed }}
-                        </td>
-                    {% endif %}
+            <tr style="text-align:center">
+                {% for client in clients_list %}
+                    {% for bill in unpayed_bills %}
+                        {% if bill.clientUsername.User.username == client.User.username %}
+                            <td>
+                                {{ bill.pk }}
+                            </td>
+                            <td>
+                                {{ bill.clientUsername }}
+                            </td>
+                            <td>
+                                {{ bill.idEvent }}
+                            </td>
+                            <td>
+                                {{ bill.date }}
+                            </td>
+                            <td>
+                                {{ bill.total_price }}
+                            </td>
+                            <td>
+                                {{ bill.payed }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
             </tr>
             </tbody>
         </table>

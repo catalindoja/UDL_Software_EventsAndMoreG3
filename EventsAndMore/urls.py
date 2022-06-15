@@ -72,6 +72,9 @@ urlpatterns = [
     path('clientBills/', clientBillsView, name='clientBills'),
     path('clientBills/<int:pk>/', payBillView, name='payBill'),
 
+    path('listBills/search', BillsSearch, name='listBills'),
+    path('bills/eventSelected/<int:pk>/<int:pk2>/pdf', generatePDFBill, name="generatePdfBill"),
+    path('bills/eventSelected/<int:pk>/<int:pk2>/createBill/pdf', generatePDFBill, name="generatePdfBill"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
