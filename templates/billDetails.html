@@ -1,17 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'base_aux.html' %}
 
 
 {% block content %}
 
+    <br>
     {% if user.is_authenticated %}
-
+                <h1 style="text-align: center">
+                        Bill {{ bill.id }} details
+                    </h1>
         <table class="table">
             <thread>
-                <br><br>
                 <p style="text-align:center">
-                    <b>
-                        Bill {{ bill.id }} details
-                    </b>
                 </p>
                 <hr>
                 <tr style="text-align:center">
@@ -59,7 +58,9 @@
             </tr>
             </tbody>
         </table>
-
+        <div class="text-center pt-1 mb pb-1">
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="{% url 'monthlyBalance' %}">Return </a>
+        </div>
 
     {% endif %}
 

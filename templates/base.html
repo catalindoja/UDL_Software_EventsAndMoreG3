@@ -40,6 +40,11 @@
                             Incidences
                         </a>
                     </li>
+                    <li>
+                        <a class="nav-link active" aria-current="page" href="{% url 'clientBills' %}">  <!--Warning-->
+                            Bills
+                        </a>
+                    </li>
                 {% endif %}
                 {% if user.is_gestor %}
                     <li>
@@ -54,11 +59,7 @@
                             Incidences
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link active" aria-current="page" href="{% url 'clientBills' %}">  <!--Warning-->
-                            Bills
-                        </a>
-                    </li>
+
 
                 {% endif %}
 
@@ -78,7 +79,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link active" aria-current="page" href="{% url 'additional_services' %}">
+                        <a class="nav-link active" aria-current="page" href="{% url 'selection_add' %}">
                             <!--Warning-->
                             Add Services
                         </a>
@@ -99,25 +100,25 @@
                     <li>
                         <a class="nav-link active" aria-current="page"
                            href="{% url 'bills' %}">  <!--Warning-->
-                            Elaborar facturas
+                            Create bills
                         </a>
                     </li>
                     <li>
                         <a class="nav-link active" aria-current="page"
                            href="{% url 'listBills' %}">  <!--Warning-->
-                            Ver facturas creadas
+                            View created bills
                         </a>
                     </li>
                     <li>
                         <a class="nav-link active" aria-current="page"
                            href="{% url 'monthlyBalance' %}">  <!--Warning-->
-                            Informes de balance mensual
+                            Monthly balance sheet reports
                         </a>
                     </li>
 
                     <li>
                         <a class="nav-link active" aria-current="page" href="{% url 'lista_eventos_encuesta_satisfaccion' %}">  <!--Warning-->
-                            lista de encuestas
+                            Survey list
                         </a>
                     </li>
 

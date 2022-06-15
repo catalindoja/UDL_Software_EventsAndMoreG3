@@ -3,23 +3,42 @@
 {% block content %}
 
     {% if user.is_authenticated %}
-
-
-
-        <ul>
-            Table of events. Please, select an event to generate the bill for a client
+<br>
+        <h1 style="text-align: center">Events </h1>
+        <h5 style="text-align: center"><i >*Please, select an event to generate the bill for a client</i></h5>
             <hr>
+
+        <table class="table">
+        <thread>
+            <p style="text-align:center">
+                <b>
+                    All events
+                </b><br>
+                <i style="text-align: center">*If nothing appears, there is no events yet</i>
+            </p>
+            <hr>
+            <tr style="text-align:center">
+                <th scope="col">
+                    Event Name
+                </th>
+        </thread>
+        <tbody style="text-align:center">
             {% for event in event_list %}
+                    <tr style="text-align:center">
+                        <td>
+                            <a href="{% url 'eventSelected' event.pk %}">
+                                {{ event }}
+                            </a>
+                        </td>
+                    </tr>
 
-                <li>
-                <a href="{% url 'eventSelected' event.pk %}">
-                     {{ event }}
-                </a>
-
-                </li>
 
             {% endfor %}
-        </ul>
+
+        </tbody>
+
+    </table>
+
 
     {% endif %}
 

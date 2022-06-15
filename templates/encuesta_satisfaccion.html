@@ -3,17 +3,126 @@
 
 {% block content %}
 <br>
-<h4>Encuesta de satisfaccion</h4>
-<h5>Por favor puntue del 1 al 5 las opciones que tiene un desplegable. 5 siendo muy satisfecho, 3 siendo neutral y
-1 siendo muy insatisfecho.</h5>
-<div>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">
-            Enviar Peticion
-        </button>
-    </form>
-</div>
+<h1 style="text-align: center">Satisfaction Survey</h1>
+<h5 style="text-align: center"> <i>Please rate from 1 to 5 the options in the drop-down menu (5 being very satisfied, 3 being neutral and
+    1 being very dissatisfied)</i></h5>
+    <hr>
+    <div class="container">
+            <div class="row ">
+          <div class="col-lg-7 mx-auto">
+            <div class="card mt-2 mx-auto p-4 bg-light">
+                <i style="text-align: center">Thanks for answering</i>
+                <div class="card-body bg-light">
+                    <div class = "container">
+                        <form action="" method="post" id="formI">
+                            {% csrf_token %}
+                            <div class="controls">
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Please specify the event</label><br>
+                                                {{form.idEvento}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Event organization score</label><br>
+                                                {{form.puntuacion_organizacion_evento}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Personal rating event</label><br>
+                                                {{ form.puntuacion_personal_evento }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Rating pre-event information</label><br>
+                                             {{ form.puntuacion_informacion_previa_evento }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Event duration score</label><br>
+                                             {{ form.puntuacion_duracion_evento }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Event satisfaction score</label><br>
+                                             {{ form.puntuacion_satisfaccion_evento }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Event interactivity score</label><br>
+                                             {{ form.puntuacion_interactividad_evento }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Organization organization companies score</label><br>
+                                             {{ form.puntuacion_organizacion_empresas }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Score distribution stands</label><br>
+                                             {{ form.puntuacion_distribucion_stands }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Event scoring qualifications</label><br>
+                                             {{ form.puntuacion_calificacion_evento }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Rating event recommendation</label><br>
+                                             {{ form.puntuacion_recomendacion_evento }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: center">
+                                        <br>
+                                        <label for="form_message">Comentarios</label> <br>
+                                        {{ form.comentarios }}
+                                    </div>
+                                </div>
+                                    <div class="col-md-12" style="text-align: center">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary btn-send  pt-2 btn-block"> Send Survey </button>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
 
 {% endblock %}

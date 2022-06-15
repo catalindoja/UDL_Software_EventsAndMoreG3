@@ -5,21 +5,71 @@
 {% block title %}
     <div>
         <h1 style="text-align:center">
-            Lista peticiones de stand
+            Stand request list
         </h1>
     </div>
+    <hr>
 {% endblock title %}
 
 {% block content %}
     <div>
-        <ul>
+
+        <table class="table">
+        <thread>
+            <p style="text-align:center">
+                <b>
+                   Your stand request
+                </b>
+            </p>
+            <hr>
+            <tr style="text-align:center">
+                <th scope="col">
+                    Request number
+                </th>
+                <th scope="col">
+                    Client
+                </th>
+                <th scope="col">
+                    Stand
+                ç</th>
+                <th scope="col">
+                    Event
+                </th>
+                <th scope="col">
+                    Date
+                </th>
+                <th scope="col">
+                    Status
+                </th>
+            </tr>
+        </thread>
+        <tbody style="text-align:center">
         {% for peticion in peticiones %}
-            <li>
-                Peticion numero: {{ peticion.id }}. cliente: {{ peticion.clientUsername }}.
-                Stand: {{ peticion.idStand }}. Evento: {{ peticion.idEvento }}. Fecha: {{ peticion.fecha }}
-                estadoPeticion: {{ peticion.estado_peticion }}
-            </li>
+        <tr style="text-align:center">
+            <td>
+                {{ peticion.idEvento }}
+            </td>
+            <td>
+                {{ peticion.clientUsername }}
+            </td>
+            <td>
+                {{ peticion.idStand }}
+            </td>
+            <td>
+                {{ peticion.idEvento }}
+            </td>
+            <td>
+               {{ peticion.fecha }}
+            </td>
+            <td>
+                {{ peticion.estado_peticion }}
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
+    </div>
+    <div class="text-center pt-1 mb pb-1">
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="{% url 'home' %}">Return </a>
     </div>
 {% endblock content %}

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_aux3.html' %}
 
 {% block content %}
 
@@ -8,16 +8,16 @@
             <thread>
                 <br><br>
                 <p style="text-align:center">
-                    <b>
-                        BILL'S PREVIOUS VIEW
+                        <h1 style="text-align: center">BILL'S PREVIOUS VIEW</h1>
                         <br>
+                        <div style="text-align: center">
                         (Your bill will be automatically sent to the client)
-                    </b>
                     <br>
                     <b>
                         Client {{ client }} expenses in event {{ event }} during {{ event.fecha_ini }}
                         - {{ event.fecha_ini }}
                     </b>
+                            </div>
                 </p>
                 <hr>
                 <tr style="text-align:center">
@@ -76,18 +76,11 @@
             </tr>
             </tbody>
         </table>
-
-        <a href="{% url 'createBill' event.pk client.pk %}">
-            Create
-        </a>
-        <br>
-        <a href="pdf">
-        Download
-        </a>
-        <br>
-        <a href="{% url 'eventSelected' event.pk %}">
-            Return
-        </a>
+        <div class="text-center pt-1 mb-5 pb-1">
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="{% url 'createBill' event.pk client.pk %}">Create </a>
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="pdf">Download </a>
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="{% url 'eventSelected' event.pk %}">Return </a>
+        </div>
 
     {% endif %}
 

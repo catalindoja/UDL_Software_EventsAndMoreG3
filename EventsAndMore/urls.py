@@ -54,6 +54,7 @@ urlpatterns = [
     path('incidences_for_deptAdditionalServ/<int:pk>/edit/', incidences_deptAdditionalServ_details_editView,
          name='incidences_details_edit'),
     path('select_incidences/', selectIncidenceView, name='select_incidences'),
+    path('select_add/', AddServicesSeletionView.as_view(), name='selection_add'),
     path('send_incidences_additionalServ_client/', send_incidence_additionalServ_client,
          name='send_incidence_additionalServ_client'),
 
@@ -70,6 +71,8 @@ urlpatterns = [
     path('monthlyBalance/<int:pk>/', balanceDetailsView, name='balanceDetails'),
     path('monthlyBalance/<int:pk>/<int:pk2>/', ticketDetailsView, name='ticketDetail'),
     path('monthlyBalance/<int:pk>/<int:pkBill>/', billDetailsView, name='billDetails'),
+
+    path('billDetail/<int:pk>/', billDetailsView, name='billDetailsAux'),
 
     # client stuff, 3rd iteration
 

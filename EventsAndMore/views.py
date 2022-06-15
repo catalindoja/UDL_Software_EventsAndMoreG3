@@ -37,6 +37,10 @@ class SignupClientView(TemplateView):
     template_name = 'signup_client.html'
 
 
+class AddServicesSeletionView(TemplateView):
+    template_name = 'select_add.html'
+
+
 class SignupClientView(CreateView):
     model = WebUser
     form_class = ClientSignupForm
@@ -1004,8 +1008,8 @@ def ticketDetailsView(request, pk, pk2):
     return render(request, 'ticketDetails.html', context)
 
 
-def billDetailsView(request, pk, pkBill):
-    bill = Bill.objects.get(id=pkBill)
+def billDetailsView(request, pk):
+    bill = Bill.objects.get(id=pk)
 
     context = {
         'bill': bill,
@@ -1042,8 +1046,8 @@ def clientBillsView(request):
 
 def payBillView(request, pk):
     bill = Bill.objects.get(id=pk)
-    if request.method == 'POST':
 
+    if request.method == 'POST':
         form = PayBillForm(request.POST)
         if form.is_valid():
             payment = form.instance.Payment_details

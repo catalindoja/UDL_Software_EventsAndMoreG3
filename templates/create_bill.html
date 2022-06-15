@@ -1,22 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'base_aux4.html' %}
 
 {% block content %}
 
     {% if user.is_authenticated %}
 
     {% if created == True %}
-        Oops! Bill already created!
+        <br><br><br>
+        <h1 style="text-align: center">Oops! Bill already created!</h1>
         <br>
-        <a href="{% url 'prepareBill' event.pk client.pk %}">
-        Return
-        </a>
+        <div class="text-center pt-1 mb-5 pb-1">
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="{% url 'prepareBill' event.pk client.pk %}">Return </a>
+        </div>
 
     {% else %}
 
       <p>
-      <b>
+      <h1 style="text-align: center">
           BILL CREATED!
-      </b>
+      </h1>
       </p>
 
         <table class="table">
@@ -74,15 +75,12 @@
             </tr>
             </tbody>
         </table>
+            <br>
 
-        <a href="{% url 'bills' %}">
-            ACCEPT
-        </a>
-        <br>
-        <a href="pdf">
-            SAVE PDF
-        </a>
-
+        <div class="text-center pt-1 mb-5 pb-1">
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="{% url 'bills'%}">ACCEPT </a>
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="pdf">SAVE PDF </a>
+        </div>
     {% endif %}
 
     {% endif %}
