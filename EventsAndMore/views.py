@@ -56,6 +56,21 @@ class SignupClientView(CreateView):
         return redirect('home')
 
 
+class SignupVisitorView(CreateView):
+    model = WebUser
+    form_class = VisitorSignupForm
+    template_name = 'signup_visitor.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'visitor'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        web_user = form.save()
+        login(self.request, web_user)
+        return redirect('home')
+
+
 class StandsView(CreateView):
     model = Stand
     fields = ['description']

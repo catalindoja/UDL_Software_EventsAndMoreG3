@@ -94,6 +94,7 @@ urlpatterns = [
     path('compra_entrada/', EntradaView.as_view(), name='compra_entrada'),
     path('añadir_servicio_adicional/', AddServicioAdicionalView.as_view(), name='añadir_servicio_adicional'),
 
+    path('register/signup_visitor/', SignupVisitorView.as_view(), name='signup_visitor'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
