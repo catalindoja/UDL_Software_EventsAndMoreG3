@@ -70,6 +70,7 @@ urlpatterns = [
 
     path('listBills/', listBillsView, name='listBills'),
     path('clientBills/', clientBillsView, name='clientBills'),
+    path('clientBills/<int:pk>/', payBillView, name='payBill'),
 
 ]
 

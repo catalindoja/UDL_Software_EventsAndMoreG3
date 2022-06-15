@@ -893,11 +893,53 @@ def billDetailsView(request, pk, pkBill):
 
 
 def clientBillsView(request):
+    empty_bills = False
+    empty_unpaid_bills = False
+
     client_bills = [bill for bill in Bill.objects.all() if
                     bill.clientUsername.User.username == request.user.username]
 
+    unpaid_client_bills = [bill for bill in Bill.objects.all() if
+                           bill.clientUsername.User.username == request.user.username and
+                           not bill.payed]
+
+    if not unpaid_client_bills:
+        empty_unpaid_bills = True
+    if not client_bills:
+        empty_bills = True
+
     context = {
         'client_bills': client_bills,
+        'unpaid_client_bills': unpaid_client_bills,
+        'empty_unpaid_bills': empty_unpaid_bills,
+        'empty_bills': empty_bills,
     }
 
     return render(request, 'clientBills.html', context)
+
+
+def payBillView(request, pk):
+    bill = Bill.objects.get(id=pk)
+    if request.method == 'POST':
+
+        form = PayBillForm(request.POST)
+        if form.is_valid():
+            payment = form.instance.Payment_details
+            name = request.user.username
+            current_user = WebUser.objects.get(username=name)
+            current_client = Cliente.objects.get(User=current_user)
+            current_client.Payment_details = payment
+            current_client.save()
+
+            bill.payed = True
+            bill.save()
+            return redirect('/')
+    else:
+        form = PayBillForm()
+
+    context = {
+        'form': form,
+        'bill': bill,
+    }
+
+    return render(request, 'payBill.html', context)
