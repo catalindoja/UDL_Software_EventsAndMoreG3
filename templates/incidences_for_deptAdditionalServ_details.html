@@ -1,7 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'base_aux.html' %}
 
 {% block content %}
-
+    <br>
+    <h1 style="text-align: center">Incidences related with Additional Services</h1>
 
 
     <table class="table">
@@ -9,7 +10,7 @@
             <br><br>
             <p style="text-align:center">
                 <b>
-                    Incidences related with Additional Services
+                    All category incidences
                 </b>
             </p>
             <hr>
@@ -52,28 +53,44 @@
 
             </td>
             <td>
-                {{ incidence.idEvento }}
+                <a href="{% url 'incidences_details_edit' incidence.pk %}">
+                    {{ incidence.idEvento }}
+                </a>
             </td>
             <td>
-                {{ incidence.idStand }}
+                <a href="{% url 'incidences_details_edit' incidence.pk %}">
+                    {{ incidence.idStand }}
+                </a>
             </td>
             <td>
-                {{ incidence.clientUsername }}
+                <a href="{% url 'incidences_details_edit' incidence.pk %}">
+                    {{ incidence.clientUsername }}
+                </a>
             </td>
             <td>
-                {{ incidence.idAdditionalService }}
+                <a href="{% url 'incidences_details_edit' incidence.pk %}">
+                    {{ incidence.idAdditionalService }}
+                </a>
             </td>
             <td>
-                {{ incidence.descripcion }}
+                <a href="{% url 'incidences_details_edit' incidence.pk %}">
+                    {{ incidence.descripcion }}
+                </a>
             </td>
             <td>
-                {{ incidence.fecha }}
+                <a href="{% url 'incidences_details_edit' incidence.pk %}">
+                    {{ incidence.fecha }}
+                </a>
             </td>
             <td>
-                {{ incidence.solucionado }}
+                <a href="{% url 'incidences_details_edit' incidence.pk %}">
+                    {{ incidence.solucionado }}
+                </a>
             </td>
             <td>
-                {{ incidence.checked }}
+                <a href="{% url 'incidences_details_edit' incidence.pk %}">
+                    {{ incidence.checked }}
+                </a>
             </td>
         </tr>
 

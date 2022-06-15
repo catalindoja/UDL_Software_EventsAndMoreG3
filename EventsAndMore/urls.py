@@ -21,7 +21,7 @@ urlpatterns = [
     path('lista_peticiones_cliente/', views.listaPeticionesCliente, name='lista_peticiones_cliente'),
     path('lista_stands_revisados/', views.listaStandsAsignadosGestor, name='lista_stands_revisados'),
     path('incidences/', IncidencesView, name='incidences'),
-    path('incidences/send_stand_incidences/', SendStandIncidenceView.as_view(), name='send_stand_incidence'),
+    #path('incidences/send_stand_incidences/', SendStandIncidenceView.as_view(), name='send_stand_incidence'),
     path('incidences/previous_incidences/', PreviousIncidencesView, name='previous_incidences'),
     path('lista_incidencias_gestor/<str:pk>/', views.updateIncidenciaStandGestor, name='lista_incidencias_gestor'),
     path('request/', RequestView, name='request'),
@@ -38,6 +38,7 @@ urlpatterns = [
     path('lista_peticiones_serv_adicional/<str:key>/', views.peticionServicioAdicionalDepartamentoList,
          name='lista_peticiones_serv_adicional'),
 
+    path('select_request/', SelectRequestView.as_view(), name='select_request'),
 
     path('peticion_evento/',peticionDeEvento, name='Peticion_de_evento'),
     path('peticion_evento/update/<str:pk>/',updatePeticionDeEvento, name='Update_Peticion_deEvento'),

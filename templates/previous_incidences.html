@@ -1,19 +1,24 @@
-{% extends 'login_base.html' %}
+{% extends 'base_aux.html' %}
 
 {% block content %}
-
+    <br>
+    <h1 style="text-align: center">Stand Incidences</h1>
+    <hr>
        <table class="table">
         <thread>
             <br><br>
             <p style="text-align:center">
                 <b>
-                    Previous incidences
+                    All incidences
                 </b>
             </p>
             <hr>
             <tr style="text-align:center">
                 <th scope="col">
                     Number
+                </th>
+                 <th scope="col">
+                    Client
                 </th>
                 <th scope="col">
                     Event
@@ -35,30 +40,37 @@
         <tbody style="text-align:center">
             {% for standincidence in StandIncidence_List %}   
 
-                {% if standincidence.Client_Username.User.username == User %}
-                    
+
                     <tr style="text-align:center">
                         <td>
-                            {{ standincidence.Id }}
+                            <a href="{% url 'lista_incidencias_gestor' standincidence.pk %}">{{ standincidence.Id }}</a>
                         </td>
                         <td>
-                            {{ standincidence.Current_Event }}
+                            <a href="{% url 'lista_incidencias_gestor' standincidence.pk %}">{{ standincidence.Client_Username }}</a>
+
                         </td>
                         <td>
-                            {{ standincidence.Stand_Incidenced }}
+                            <a href="{% url 'lista_incidencias_gestor' standincidence.pk %}"> {{ standincidence.Current_Event }}</a>
+
                         </td>
                         <td>
-                            {{ standincidence.Description }}
+                            <a href="{% url 'lista_incidencias_gestor' standincidence.pk %}"> {{ standincidence.Stand_Incidenced }}</a>
+
                         </td>
                         <td>
-                            {{ standincidence.Checked }}
+                            <a href="{% url 'lista_incidencias_gestor' standincidence.pk %}"> {{ standincidence.Description }}</a>
+
                         </td>
                         <td>
-                            {{ standincidence.Status }}
+                            <a href="{% url 'lista_incidencias_gestor' standincidence.pk %}"> {{ standincidence.Checked }}</a>
+
+                        </td>
+                        <td>
+                            <a href="{% url 'lista_incidencias_gestor' standincidence.pk %}"> {{ standincidence.Status }}</a>
+
                         </td>
                     </tr>
                 
-                {% endif %}
 
             {% endfor %}
             

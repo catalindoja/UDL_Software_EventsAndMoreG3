@@ -1,32 +1,31 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-
-<ul>
-    What do you want to do?
-    <li>
-        <a href="{% url 'peticion_stand_cliente' %}">
-            Send a stand request
-        </a>
-    </li>
-</ul>
+    <head>
+        <title>EventsAndMore | Requests</title>
+    </head>
+<h1 style="text-align:center">Your stand requests</h1>
+    <hr>
+    <div style="text-align: center">
+        <a class="btn btn-lg btn-primary" style="width:700px; margin-inline: auto" href="{% url 'peticion_stand_cliente' %}" role="button">Send a new stand request</a>
+    </div>
+    <br>
     <div>
         {% for peticion in peticiones %}
             <div class="margins" style="float: left;margin: 0 1em 0 1em;">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="">
-                <div class="card-body">
-                    <h5 class="card-title">Evento: {{ peticion.idEvento }}</h5>
-                    <h5 class="card-title">Stand: {{ peticion.idStand }}</h5>
-                    <p class="card-text">Peticion numero: {{ peticion.id }}</p>
-                    <p class="card-text">cliente: {{ peticion.clientUsername }} </p>
-                    <p class="card-text">Fecha: {{ peticion.fecha }}</p>
-                    <p class="card-text"> Estado Peticion: {{ peticion.estado_peticion }}</p>
+                <div class="card" style="width: 18rem;">
+                    <img src="../static/images/stand_ejemplo.jpeg" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title">Evento: {{ peticion.idEvento }}</h5>
+                        <h5 class="card-title">Stand: {{ peticion.idStand }}</h5>
+                        <p class="card-text">Peticion numero: {{ peticion.id }}</p>
+                        <p class="card-text">cliente: {{ peticion.clientUsername }} </p>
+                        <p class="card-text">Fecha: {{ peticion.fecha }}</p>
+                        <p class="card-text">Estado Peticion: {{ peticion.estado_peticion }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     </div>
 
 {% endblock %}

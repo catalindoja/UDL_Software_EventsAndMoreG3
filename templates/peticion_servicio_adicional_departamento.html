@@ -1,23 +1,93 @@
 <!-- templates/home.html -->
 
-{% include 'base.html' %}
+{% include 'base_aux.html' %}
   {% load static %}
 {% block title %}
+    <br>
     <div>
         <h1 style="text-align:center">
-            Peticion servicio adicional departamento
+            Additional Services Request
         </h1>
     </div>
+    <hr>
 {% endblock title %}
 
 {% block content %}
-    <div>
-        <form action = "" method = "post">
-            {% csrf_token %}
-            <table>
-                {{ form.as_table }}
-            </table>
-            <input type="submit" value=Submit">
-        </form>
+    <div class="container">
+            <div class="row ">
+          <div class="col-lg-7 mx-auto">
+            <div class="card mt-2 mx-auto p-4 bg-light">
+                <i style="text-align: center">*Client request</i>
+                <div class="card-body bg-light">
+                    <div class = "container">
+                        <form action="" method="post" id="formI">
+                            {% csrf_token %}
+                            <div class="controls">
+                                <div class="row">
+                                    <div class="col-md-6" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Please specify the stand</label><br>
+                                                {{form.idStand}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Please specify the event</label><br>
+                                                {{ form.idEvento }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Client name</label><br>
+                                             {{ form.clientUsername }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Additional Service ID</label><br>
+                                             {{ form.idAdditionalService }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Date</label><br>
+                                             {{ form.fecha }}
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="row">
+                                    <div class="col-md-4" style="text-align: center">
+                                        <br>
+                                        <label for="form_message">Extra? </label>  {{ form.extra }}
+                                    </div>
+                                    <div class="col-md-4" style="text-align: center">
+                                        <br>
+                                        <label for="form_message">Granted?</label>  {{ form.concedido }}
+                                    </div>
+                                     <div class="col-md-4" style="text-align: center">
+                                        <br>
+                                        <label for="form_message">Checked?</label>  {{ form.revisado }}
+                                    </div>
+                                    <div class="col-md-12" style="text-align: center">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary btn-send  pt-2 btn-block"> Send resolved request </button>
+                                    </div>
+                                </div>
+                             </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
     </div>
+
+
+
 {% endblock content %}

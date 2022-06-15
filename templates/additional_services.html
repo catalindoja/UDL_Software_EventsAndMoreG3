@@ -1,9 +1,40 @@
 {% extends 'base.html' %}
+
+
 {% block content %}
-<h4>Additional Services</h4>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" name="additionalServiceFile">
-    <button type="submit">Upload</button>
-  </form>
+    <br>
+<h1 style="text-align: center">Additional Services</h1>
+    <hr>
+    <div class="container">
+            <div class="row ">
+          <div class="col-lg-7 mx-auto">
+            <div class="card mt-2 mx-auto p-4 bg-light">
+                <i style="text-align: center">*Add a file</i>
+                <div class="card-body bg-light">
+                    <div class = "container">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="controls">
+                                 <div class="row">
+                                     <div>
+                                         <input class="form-control form-control-lg" id="formFileLg" type="file"name="additionalServiceFile">
+                                    </div>
+                                 </div>
+                                    <div class="col-md-12" style="text-align: center">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary btn-send  pt-2 btn-block"> Upload </button>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+
+
 {% endblock %}

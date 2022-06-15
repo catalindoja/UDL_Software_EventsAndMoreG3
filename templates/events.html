@@ -2,6 +2,11 @@
 
 {% include 'base.html' %}
   {% load static %}
+
+<head>
+    <title>EventsAndMore | Events</title>
+</head>
+
 {% block title %}
     <div>
         <h1 style="text-align:center">
@@ -9,28 +14,34 @@
         </h1>
     </div>
 {% endblock title %}
-
+<hr>
 {% block content %}
-    <div>
-        <form method="post">
+    <div style="text-align: center; border: black">
+        <i>*Search by event name</i>
+        <form class="row row-cols-lg-auto g-3 align-items-center justify-content-center" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">
-                Buscar Evento
-            </button>
+                {% for field in form %}
+                    <div class="col-12">
+                        {{ field.label_tag }}: {{ field }}
+                    </div>
+                {% endfor %}
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </div>
         </form>
-    </div>
+        </div>
     <div>
+    <hr>
         {% for evento in eventos %}
          <div class="margins" style="float: left;margin: 0 1em 0 1em;">
             <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="">
-                <div class="card-body">
+                <img src="../static/images/evento.jpeg" class="card-img-top" alt="">
+                <div class="card-body" style="text-align: center">
                     <h5 class="card-title">{{ evento.nombre }}</h5>
                     <p class="card-text">{{ evento.descripcion }}</p>
                     <p class="card-text">{{ evento.fecha_ini }}</p>
                     <p class="card-text">{{ evento.fecha_fin }}</p>
-                    <a href="{{ evento.id }}/stands" class="btn btn-primary">Go somewhere</a>
+                    <a href="{{ evento.id }}/stands" class="btn btn-primary">Go Event</a>
                 </div>
             </div>
         </div>

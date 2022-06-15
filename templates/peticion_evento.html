@@ -2,24 +2,56 @@
 
 
 {% block content %}
-<br>
+    <br>
+<h1 style="text-align: center"> Event request</h1>
+    <hr>
 
-<div>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">
-            Enviar Peticion
-        </button>
-        </form>
-    </div>
-<div>
-<h5> Mis peticiones de evento</h5>
-<div>
+    <div class="container">
+            <div class="row ">
+          <div class="col-lg-7 mx-auto">
+            <div class="card mt-2 mx-auto p-4 bg-light">
+                <i style="text-align: center">*Request your event!</i>
+                <div class="card-body bg-light">
+                    <div class = "container">
+                        <form action="" method="post" id="formI">
+                            {% csrf_token %}
+                            <div class="controls">
+                                <div class="row">
+                                    <div class="col-md-6" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Event name:</label>
+                                                {{form.nombre}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Reason?</label>
+                                                {{ form.motivo }}
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="col-md-12" style="text-align: center">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary btn-send  pt-2 btn-block"> Send Request </button>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+ <br><br>
+<h2 style="text-align: center"> My event request</h2>
+    <hr>
+    <div>
         {% for peticionEvento in PeticionesDeEvento %}
          <div class="margins" style="float: left;margin: 0 1em 0 1em;">
             <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="">
+                <img src="../static/images/evento.jpeg" class="card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-text">Event : {{ peticionEvento.nombre  }}</h5>
                     <p class="card-text">Descripción : <br>{{ peticionEvento.motivo  }}</p>
@@ -29,6 +61,5 @@
             </div>
         </div>
         {% endfor %}
-</div>
 </div>
 {% endblock %}

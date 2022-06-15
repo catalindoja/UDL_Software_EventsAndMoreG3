@@ -3,28 +3,84 @@
 {% include 'base.html' %}
   {% load static %}
 {% block title %}
+    <br>
     <div>
         <h1 style="text-align:center">
             Lista peticiones de servicio adicional
         </h1>
     </div>
+    <hr>
 {% endblock title %}
 
 {% block content %}
-    <div>
-        <a class="ml-1" href="{% url 'peticion_serv_adicional_cliente' %}">  <!--Warning-->
-            Peticion nueva
-        </a>
+    <div style="text-align: center">
+        <a class="btn btn-lg btn-primary" style="width:700px; margin-inline: auto" href="{% url 'peticion_serv_adicional_cliente' %}" role="button">Send a new additional services request</a>
     </div>
-    <div>
-        <ul>
-        {% for peticion in peticiones %}
-            <li>
-                Peticion numero: {{ peticion.id }}. cliente: {{ peticion.clientUsername }}.
-                Stand: {{ peticion.idStand }}. Evento: {{ peticion.idEvento }}. Fecha: {{ peticion.fecha }}
-                estadoPeticion: {{ peticion.estado_peticion }}
-            </li>
-        {% endfor %}
-    </ul>
+
+     <div>
+
+    <br>
+
+
+            <table class="table">
+                <thread>
+                    <br>
+                    <p style="text-align:center">
+                        <b>
+                            List of your current additional services requests
+                        </b>
+                    </p>
+                    <hr>
+                    <tr style="text-align:center">
+                        <th scope="col">
+                            Number
+                        </th>
+                        <th scope="col">
+                            Client
+                        </th>
+                        <th scope="col">
+                            Stand related
+                        </th>
+                        <th scope="col">
+                            Event
+                        </th>
+                        <th scope="col">
+                            Date
+                        </th>
+                        <th scope="col">
+                            Status
+                        </th>
+                    </tr>
+                </thread>
+                <tbody style="text-align:center">
+
+                {% for peticion in peticiones %}
+                        <tr style="text-align:center">
+                            <td>
+                                {{ peticion.id }}
+                            </td>
+                            <td>
+                                {{ peticion.clientUsername }}
+                            </td>
+                            <td>
+                                {{ peticion.idStand }}
+                            </td>
+                            <td>
+                                {{ peticion.idEvento }}
+                            </td>
+                            <td>
+                                {{ peticion.fecha }}
+                            </td>
+                            <td>
+                                {{ peticion.estado_peticion }}
+                            </td>
+                        </tr>
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+</div>
     </div>
 {% endblock content %}

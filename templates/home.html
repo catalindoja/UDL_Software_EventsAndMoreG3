@@ -2,6 +2,9 @@
 {% include 'base.html' %}
   {% load static %}
 <link href="{% static 'css/margins.css' %}" rel="stylesheet">
+<head>
+    <title>EventsAndMore | Home</title>
+</head>
 {% block title %}
 
     {% if user.is_authenticated %}
@@ -23,20 +26,186 @@
 
 {% endblock title %}
 {% block content %}
-    <p style="text-align:center">
-       <img style="text-align: center" src="../static/images/unknown.png"  alt="">
-    </p>
-    <h2 class = "margins">Upcoming Events</h2>
-    <div class="margins">
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+    <!-- CAROUSEL-->
+     <div style="margin: auto; width: 1000px">
+        <div class="container-lg my-3">
+            <div id="myCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                {% if user.is_authenticated %}
+                    {% if user.is_client %}
+                        <!-- Carousel indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <a href="{% url 'events' %}">
+                                    <img src="../static/images/events.jpeg" class="d-block w-200" width="1100" height="598"  alt="Slide 1">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Events</b></h5>
+                                        <p><b>Check here for our upcoming events!</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                        <div class="carousel-item">
+                            <a href="{% url 'request' %}">
+                            <img src="../static/images/stand_request.png" class="d-block w-100" width="1100" height="598" alt="Slide 2">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5><b>Resquest</b></h5>
+                                <p><b>Would you like to request a booth for one of our events? What are you waiting for!</b></p>
+                            </div>
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="{% url 'incidences' %}">
+                            <img src="../static/images/gestion-de-incidencias.png" class="d-block w-100" width="1100" height="598" alt="Slide 3">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5><b>Incidences</b></h5>
+                                <p><b>Have you had any problems? Check the issues or let us know!</b></p>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+                    {% elif user.is_gestor%}
+                         <!-- Carousel indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+                        </ol>
+                         <!-- Wrapper for carousel items -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                    <a href="{% url 'events' %}">
+                                        <img src="../static/images/events.jpeg" class="d-block w-200" width="1100" height="598"  alt="Slide 1">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h5><b>Events</b></h5>
+                                            <p><b>Check here for our upcoming events!</b></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            <div class="carousel-item">
+                                <a href="{% url 'lista_eventos_peticion_stand' %}">
+                                    <img src="../static/images/stands.png" class="d-block w-200" width="1100" height="598"  alt="Slide 2">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Stand Request</b></h5>
+                                        <p><b>Here you will see the stand requests!</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href="{% url 'incidences_for_deptAdditionalServ' %}">
+                                    <img src="../static/images/gestion-de-incidencias.png" class="d-block w-200" width="1100" height="598"  alt="Slide 3">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Stand Incidences</b></h5>
+                                        <p><b>Here you will see the stand incidences!</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                         </div>
+                    {% elif user.is_deptAdditionalServ %}
+                        <!-- Carousel indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+                        </ol>
+                         <!-- Wrapper for carousel items -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                    <a href="{% url 'events' %}">
+                                        <img src="../static/images/events.jpeg" class="d-block w-200" width="1100" height="598"  alt="Slide 1">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h5><b>Events</b></h5>
+                                            <p><b>Check here for our upcoming events!</b></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            <div class="carousel-item">
+                                <a href="{% url 'lista_eventos_peticion_serv_adicional' %}">
+                                    <img src="../static/images/servicios%20adicionales.png" class="d-block w-200" width="1100" height="598"  alt="Slide 2">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Additional Services Request</b></h5>
+                                        <p><b>Here you will see the Additional Services requests!</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href="{% url 'incidences_for_deptAdditionalServ' %}">
+                                    <img src="../static/images/stands.png" class="d-block w-200" width="1100" height="598"  alt="Slide 3">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Additional Services Incidences</b></h5>
+                                        <p><b>Here you will see the Additional Services incidences!</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                         </div>
+                    {% elif user.is_organizer %}
+                        <ol class="carousel-indicators">
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <a href="{% url 'events' %}">
+                                    <img src="../static/images/events.jpeg" class="d-block w-200" width="1100" height="598"  alt="Slide 1">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Events</b></h5>
+                                        <p><b>Check here for our upcoming events!</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href="{% url 'Peticion_de_evento' %}">
+                                    <img src="../static/images/event_request.webp" class="d-block w-200" width="1100" height="598"  alt="Slide 1">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Event Request</b></h5>
+                                        <p><b>What are you waiting for to request your event!</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% else %}
+                    <!-- Carousel indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+                        <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+                    </ol>
+                    <!-- Wrapper for carousel items -->
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <a href="{% url 'register' %}">
+                            <img src="../static/images/images.jpeg" class="d-block w-200" width="1100" height="598"  alt="Slide 1">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5><b>Register</b></h5>
+                                <p><b>Not a member? Register to participate in events!</b></p>
+                            </div>
+                                </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="{% url 'events' %}">
+                            <img src="../static/images/events.jpeg" class="d-block w-100" width="1100" height="598" alt="Slide 2">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5><b>Events</b></h5>
+                                <p><b>Check here for our upcoming events!</b></p>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                    <!-- Carousel controls -->
+                    <a class="carousel-control-prev" href="#myCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
             </div>
-        </div>
-    </div>
-    <br><br>
+         </div>
+
 {% endblock content %}
 

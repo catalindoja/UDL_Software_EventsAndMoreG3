@@ -1,25 +1,66 @@
 <!-- templates/home.html -->
 
-{% include 'login_base.html' %}
+{% include 'base_aux2.html' %}
   {% load static %}
 {% block title %}
+    <br>
     <div>
         <h1 style="text-align:center">
-            Lista peticiones de stand
+            Additional Services Stand List
         </h1>
     </div>
+    <hr>
 {% endblock title %}
 
 {% block content %}
-    <div>
-        <ul>
-        {% for peticion in peticiones %}
-            <li>
-                <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/">Peticion numero: {{ peticion.id }}.
-                    Hecha por el cliente: {{ peticion.clientUsername }}. En la fecha: {{ peticion.fecha }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-    </div>
+
+
+
+
+     <table class="table">
+        <thread>
+            <br><br>
+            <p style="text-align:center">
+                <b>
+                    All event stands
+                </b><br>
+                <i style="text-align: center">*If nothing appears, there is no stands yet</i>
+            </p>
+            <hr>
+            <tr style="text-align:center">
+                <th scope="col">
+                    Number
+                </th>
+                 <th scope="col">
+                    Client
+                </th>
+                <th scope="col">
+                    Date
+                </th>
+            </tr>
+        </thread>
+        <tbody style="text-align:center">
+            {% for peticion in peticiones %}
+                    <tr style="text-align:center">
+                        <td>
+                            <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/">{{ peticion.id }}</a>
+                        </td>
+                        <td>
+                            <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/"> {{ peticion.clientUsername }}</a>
+
+                        </td>
+                        <td>
+                            <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/">{{ peticion.fecha }}</a>
+
+                        </td>
+
+                    </tr>
+
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
 {% endblock content %}

@@ -4,22 +4,63 @@
   {% load static %}
 {% block title %}
     <div>
+    <br>
         <h1 style="text-align:center">
-            Lista peticiones de stand
+            Stand request list
         </h1>
     </div>
 {% endblock title %}
 
 {% block content %}
-    <div>
-        <ul>
-        {% for peticion in peticiones %}
-            <li>
-                <a href="../../peticion_stand_gestor/{{peticion.id}}/">Peticion numero: {{ peticion.id }}.
-                    Hecha por el cliente: {{ peticion.clientUsername }}. En la fecha: {{ peticion.fecha }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-    </div>
+    <hr>
+       <table class="table">
+        <thread>
+            <br><br>
+            <p style="text-align:center">
+                <b>
+                    All stands requested
+                </b><br>
+                <i style="text-align: center">* If nothing appears, there is no stand requested on the event</i>
+            </p>
+            <hr>
+            <tr style="text-align:center">
+                <th scope="col">
+                    Number
+                </th>
+                 <th scope="col">
+                    Client
+                </th>
+                <th scope="col">
+                    Date
+                </th>
+            </tr>
+        </thread>
+        <tbody style="text-align:center">
+            {% for peticion in peticiones %}
+                    <tr style="text-align:center">
+                        <td>
+                            <a href="../../peticion_stand_gestor/{{peticion.id}}/">{{ peticion.id }}</a>
+                        </td>
+                        <td>
+                            <a href="../../peticion_stand_gestor/{{peticion.id}}/">{{ peticion.clientUsername }}</a>
+
+                        </td>
+                        <td>
+                            <a href="../../peticion_stand_gestor/{{peticion.id}}/">{{ peticion.fecha }}</a>
+
+                        </td>
+                        <td>
+                            <a href="../../peticion_stand_gestor/{{peticion.id}}/"> {{ evento.fecha_fin }}</a>
+
+                        </td>
+
+                    </tr>
+
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
 {% endblock content %}

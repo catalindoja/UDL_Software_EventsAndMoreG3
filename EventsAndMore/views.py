@@ -258,16 +258,21 @@ def IncidencesView(request):
         formI = SendStandIncidenceForm(request.POST)
         if formI.is_valid():
 
-           # name = request.user.username
-            #current_user = WebUser.objects.get(username=name)
-           # current_client = Cliente.objects.get(User=current_user)
-            #formI.instance.Client_Username = current_client
+            name = request.user.username
+            current_user = WebUser.objects.get(username=name)
+            current_client = Cliente.objects.get(User=current_user)
+            formI.instance.Client_Username = current_client
             formI.save()
+            formB = FilterIncidences()
+            incidences = StandIncidence.objects.all()
             #redirect('/')
             context = {
                 'User': request.user.username,
+                'formB': formB,  # añadido pa que no se borre al enviar incidencia
                 'formI': formI,
+                'incidences': incidences,
             }
+
             return render(request, 'incidences.html', context)
 
         if formB.is_valid():
@@ -276,9 +281,13 @@ def IncidencesView(request):
             stand_incidence = objstand.incidencies.filter(Current_Event=objevent)
             # event_incidence =  objevent.evento.all()
             # stand_incidence = stand_incidence.filter(Current_Event=event_incidence)
+            formI = SendStandIncidenceForm()
+            incidences = StandIncidence.objects.all()
             content = {'StandIncidence_List': stand_incidence,
                        'User': request.user.username,
-                       'formB': formB
+                       'formB': formB,
+                       'formI': formI, # añadido pa que no se borre al filtrar incidencias
+                       'incidences': incidences,
                        }
             return render(request, 'incidences.html', content)
     else:
@@ -315,7 +324,7 @@ def RequestView(request):
         print("Error el user no es un cliente")
         return redirect('/')
 
-
+# ESTO ES MÄS INUTIL QUE VOSOTROS ESCRIBIENDO EN CASTELLANO
 class SendStandIncidenceView(CreateView):
     model = StandIncidence
     form_class = SendStandIncidenceForm
@@ -356,7 +365,7 @@ def updateIncidenciaStandGestor(request, pk):
             form.instance.Gestor_Username = my_gestor
             if form.is_valid():
                 form.save()
-                return redirect('incidences')
+                return redirect('previous_incidences')
 
         context = {'form': form}
         return render(request, 'lista_incidencias_gestor.html', context)
@@ -395,6 +404,10 @@ def peticionDeEvento(request):
             return render(request, "adminPeticionesEvento.html", content)
     else:
         return redirect('/')
+
+class SelectRequestView(TemplateView):
+    template_name = 'select_request.html'
+
 
 
 class PeticionServAdicionalClienteView(CreateView):
@@ -448,7 +461,7 @@ def updatePeticionServAdicionalDepartamento(request, pk):
                 return redirect('/lista_eventos_peticion_serv_adicional/')
 
         context = {'form':form}
-        return render(request, 'peticion_stand_gestor.html', context)
+        return render(request, 'peticion_servicio_adicional_departamento.html', context)
     else:
         print("Error el user no es un departamento de servicios adicionales")
         return redirect('/')
@@ -549,6 +562,8 @@ class AdditionalServicesView(View):
 
             )
         try:
+            return redirect('/')
+            # buggassssso
             msg = AdditionalService.objects.bulk_create(objs)
             returnmsg = {"status_code": 200}
             print('imported successfully')

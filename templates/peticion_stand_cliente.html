@@ -2,22 +2,32 @@
 
 {% include 'base.html' %}
   {% load static %}
+<head>
+    <title>EventsAndMore | Stand Request</title>
+</head>
 {% block title %}
     <div>
         <h1 style="text-align:center">
             Peticion stand
         </h1>
     </div>
+    <hr>
 {% endblock title %}
 
 {% block content %}
-    <div>
-        <form action = "" method = "post">
-            {% csrf_token %}
-            <table>
-                {{ form.as_table }}
-            </table>
-            <input type="submit" value=Submit">
-        </form>
+    <body style="background-color: #eee">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet" >
+  <div class="container w-50 py-5 h-50" style="text-align: center">
+    <div class="row justify-content-center align-items-center h-50">
+        <div class="card rounded-3 text-black">
+            <form action = "" method = "post">
+                {% csrf_token %}
+                        {{ form.as_table }}
+                <button type="submit" class="btn btn-outline-primary">Request</button>
+            </form>
+        </div>
     </div>
+  </div>
+    </body>
+
 {% endblock content %}
