@@ -5,21 +5,95 @@
 {% block title %}
     <div>
         <h1 style="text-align:center">
-            Lista peticiones de stand
+            Lista peticiones de servicios adicionales
         </h1>
     </div>
 {% endblock title %}
 
 {% block content %}
     <div>
-        <ul>
+
+        <table class="table">
+        <thread>
+            <br><br>
+            <p style="text-align:center">
+                <b>
+                    Requests related with Additional Services
+                </b>
+            </p>
+            <hr>
+            <tr style="text-align:center">
+                <th scope="col">
+                    Number
+                </th>
+                <th scope="col">
+                    Event
+                </th>
+                <th scope="col">
+                    Stand related
+                </th>
+                <th scope="col">
+                    Client name
+                </th>
+                <th scope="col">
+                    Additional Service id
+                </th>
+                <th scope="col">
+                    Extra
+                </th>
+                <th scope="col">
+                    Date
+                </th>
+                <th scope="col">
+                    Checked
+                </th>
+                <th scope="col">
+                    Solved
+                </th>
+            </tr>
+        </thread>
+        <tbody style="text-align:center">
         {% for peticion in peticiones %}
-            <li>
-                <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/">Peticion numero: {{ peticion.id }}.
-                    Hecha por el cliente: {{ peticion.clientUsername }}. En la fecha: {{ peticion.fecha }}
+        <tr style="text-align:center">
+            <td>
+                <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/">
+                    {{ peticion.id }}
                 </a>
-            </li>
+
+            </td>
+            <td>
+                {{ peticion.idEvento }}
+            </td>
+            <td>
+                {{ peticion.idStand }}
+            </td>
+            <td>
+                {{ peticion.clientUsername }}
+            </td>
+            <td>
+                {{ peticion.idAdditionalService }}
+            </td>
+            <td>
+                {{ peticion.extra }}
+            </td>
+            <td>
+                {{ peticion.fecha }}
+            </td>
+            <td>
+                {{ peticion.revisado }}
+            </td>
+            <td>
+                {{ peticion.concedido }}
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
+
+        </tbody>
+
+    </table>
+
+
+
+
     </div>
 {% endblock content %}

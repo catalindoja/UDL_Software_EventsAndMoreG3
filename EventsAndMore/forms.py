@@ -127,3 +127,9 @@ class PayBillForm(forms.ModelForm):
     class Meta:
         model = Cliente
         fields = ['Payment_details']
+
+
+class EncuestaSatisfaccionForm(forms.ModelForm):
+    class Meta:
+        model = EncuestaSatisfaccion
+        exclude = ['visitanteUsername']

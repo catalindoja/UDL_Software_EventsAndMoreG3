@@ -75,6 +75,13 @@ urlpatterns = [
     path('listBills/search', BillsSearch, name='listBills'),
     path('bills/eventSelected/<int:pk>/<int:pk2>/pdf', generatePDFBill, name="generatePdfBill"),
     path('bills/eventSelected/<int:pk>/<int:pk2>/createBill/pdf', generatePDFBill, name="generatePdfBill"),
+
+    path('encuesta_satisfaccion/', EncuestaSatisfaccionView.as_view(),
+         name='encuesta_satisfaccion'),
+    path('lista_eventos_encuesta_satisfaccion/', views.eventosEncuestaSatisfaccionDeptDireccion,
+         name='lista_eventos_encuesta_satisfaccion'),
+    path('lista_encuestas_satisfaccion/<str:key>/', views.encuestaSatisfaccionDeptDireccionList,
+         name='lista_encuestas_satisfaccion'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -1,0 +1,132 @@
+<!-- templates/home.html -->
+
+{% include 'login_base.html' %}
+  {% load static %}
+{% block title %}
+    <div>
+        <h1 style="text-align:center">
+            Lista encuestas de satisfacion
+        </h1>
+    </div>
+{% endblock title %}
+
+{% block content %}
+    <div>
+
+        <table class="table">
+        <thread>
+            <br><br>
+            <p style="text-align:center">
+                <b>
+                    Surveys related to the Events.
+                </b>
+            </p>
+            <hr>
+            <tr style="text-align:center">
+                <th scope="col">
+                    Number
+                </th>
+                <th scope="col">
+                    Event
+                </th>
+                <th scope="col">
+                    Visitor
+                </th>
+                <th scope="col">
+                    Organizacion evento
+                </th>
+                <th scope="col">
+                    Personal del evento
+                </th>
+                <th scope="col">
+                    Info previa evento
+                </th>
+                <th scope="col">
+                    Duracion evento
+                </th>
+                <th scope="col">
+                    Satisfaccion evento
+                </th>
+                <th scope="col">
+                    Interactividad evento
+                </th>
+                <th scope="col">
+                    Organizacion empresas
+                </th>
+                <th scope="col">
+                    Distribucion stands
+                </th>
+                <th scope="col">
+                    Calificacion evento
+                </th><th scope="col">
+                    Recomendacion evento
+                </th>
+                </th><th scope="col">
+                    Comentarios
+                </th>
+                </th><th scope="col">
+                    Score
+                </th>
+            </tr>
+        </thread>
+        <tbody style="text-align:center">
+        {% for peticion in peticiones %}
+        <tr style="text-align:center">
+            <td>
+                    {{ peticion.id }}
+            </td>
+            <td>
+                {{ peticion.idEvento }}
+            </td>
+            <td>
+                {{ peticion.visitanteUsername }}
+            </td>
+            <td>
+                {{ peticion.puntuacion_organizacion_evento }}
+            </td>
+            <td>
+                {{ peticion.puntuacion_personal_evento }}
+            </td>
+            <td>
+                {{ peticion.puntuacion_informacion_previa_evento }}
+            </td>
+            <td>
+                {{ peticion.puntuacion_duracion_evento }}
+            </td>
+            <td>
+                {{ peticion.puntuacion_satisfaccion_evento }}
+            </td>
+            <td>
+                {{ peticion.puntuacion_interactividad_evento }}
+            </td>
+            <td>
+                {{ peticion.puntuacion_organizacion_empresas }}
+            </td>
+            <td>
+                {{ peticion.puntuacion_distribucion_stands }}
+            </td>
+            <td>
+                {{ peticion.puntuacion_calificacion_evento }}
+            </td>
+            <td>
+                {{ peticion.puntuacion_recomendacion_evento }}
+            </td>
+            <td>
+                {{ peticion.comentarios }}
+            </td>
+            <td>
+                {{ peticion.score }}
+            </td>
+
+        </tr>
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+
+
+
+    </div>
+{% endblock content %}

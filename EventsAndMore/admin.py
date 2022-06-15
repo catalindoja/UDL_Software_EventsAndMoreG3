@@ -21,3 +21,6 @@ admin.site.register(ListaNegra)
 admin.site.register(Bill)
 admin.site.register(DeptManagement)
 admin.site.register(Balance)
+admin.site.register(Visitor)
+admin.site.register(EncuestaSatisfaccion)
+

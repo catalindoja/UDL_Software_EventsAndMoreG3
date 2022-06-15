@@ -1028,3 +1028,58 @@ def payBillView(request, pk):
 
     return render(request, 'payBill.html', context)
 
+
+
+class EncuestaSatisfaccionView(CreateView):
+    model = EncuestaSatisfaccion
+    form_class = EncuestaSatisfaccionForm
+    template_name = 'encuesta_satisfaccion.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_visitor:
+            visitor = Visitor.objects.get(User=self.request.user)
+            form.instance.visitanteUsername = visitor
+            form.save()
+            return redirect('/')
+        else:
+            print("Error, user is not a visitor")
+            return redirect('/')
+
+
+def eventosEncuestaSatisfaccionDeptDireccion(request):
+    if request.user.is_deptManagement:
+        eventos = Event.objects.all()
+        dictionary = {'eventos': eventos}
+        return render(request, 'lista_eventos_encuesta_satisfaccion.html', dictionary)
+    else:
+        print("Error el user no es un departamento de direccion")
+        return redirect('/')
+# 15/25 * 100
+
+
+def encuestaSatisfaccionDeptDireccionList(request, key):
+    if request.user.is_deptManagement:
+        peticiones = EncuestaSatisfaccion.objects.all()
+        arr_peticiones = []
+        score = 0
+        for peticion in peticiones:
+            if peticion.idEvento == Event.objects.get(id=key):
+                score = (peticion.puntuacion_organizacion_evento
+                + peticion.puntuacion_personal_evento
+                + peticion.puntuacion_informacion_previa_evento
+                + peticion.puntuacion_duracion_evento
+                + peticion.puntuacion_satisfaccion_evento
+                + peticion.puntuacion_interactividad_evento
+                + peticion.puntuacion_organizacion_empresas
+                + peticion.puntuacion_distribucion_stands
+                + peticion.puntuacion_calificacion_evento
+                + peticion.puntuacion_recomendacion_evento)
+                score = score / 50 * 100
+                print(score)
+                peticion.score = str(score) + "%"
+                arr_peticiones.append(peticion)
+        dictionary = {'peticiones': arr_peticiones}
+        return render(request, 'lista_encuestas_satisfaccion.html', dictionary)
+    else:
+        print("Error el user no es un gestor")
+        return redirect('/')
