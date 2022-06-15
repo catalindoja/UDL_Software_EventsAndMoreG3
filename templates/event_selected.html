@@ -1,0 +1,48 @@
+{% extends 'base_aux2.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+        {% if empty == False %}
+            <br>
+            <h1 style="text-align: center">Select the client you want to create the bill for</h1>
+                <table class="table">
+        <thread>
+            <p style="text-align:center">
+                <b>
+                    All event clients
+                </b><br>
+                <i style="text-align: center">*If nothing appears, there is no events yet</i>
+            </p>
+            <hr>
+            <tr style="text-align:center">
+                <th scope="col">
+                    Event Name
+                </th>
+        </thread>
+        <tbody style="text-align:center">
+            {% for client in client_list %}
+                    <tr style="text-align:center">
+                        <td>
+                            <a href="{% url 'prepareBill' idEvent client.pk %}">
+                            {{ client }}
+                        </a>
+                        </td>
+                    </tr>
+
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+        {% else %}
+            <br><br><br>
+            <h1 style="text-align: center">Oops! Seems like there were no clients for this event.</h1>
+        {% endif %}
+
+    {% endif %}
+
+
+{% endblock %}

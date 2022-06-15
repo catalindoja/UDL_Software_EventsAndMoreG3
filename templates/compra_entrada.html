@@ -1,0 +1,52 @@
+{% include 'base.html' %}
+  {% load static %}
+{% block title %}
+    <br>
+    <div>
+        <h1 style="text-align:center">
+            Comprar entrada
+        </h1>
+    </div>
+    <hr>
+{% endblock title %}
+
+{% block content %}
+
+    <div class="container">
+            <div class="row ">
+          <div class="col-lg-7 mx-auto">
+            <div class="card mt-2 mx-auto p-4 bg-light">
+                <i style="text-align: center">*Thanks for coming!</i>
+                <div class="card-body bg-light">
+                    <div class = "container">
+                        <form action="" method="post" id="formI">
+                            {% csrf_token %}
+                            <div class="controls">
+                                <div class="row">
+                                    <div class="col-md-6" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Event name:</label>
+                                                {{form.idEvent}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Quantity?</label>
+                                                {{ form.Quantity }}
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="col-md-12" style="text-align: center">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary btn-send  pt-2 btn-block"> Buy ticket </button>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+{% endblock content %}

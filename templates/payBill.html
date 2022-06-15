@@ -1,0 +1,97 @@
+{% extends 'base_aux.html' %}
+
+
+{% block content %}
+
+    {% if user.is_authenticated and user.is_client and bill.payed == False %}
+        <br>
+        <h1 style="text-align: center">
+            Payment
+        </h1>
+        <hr>
+        <table class="table">
+            <thread>
+                <br>
+                <p style="text-align:center">
+                    <b>
+                        Bill {{ bill.id }} details
+                    </b>
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Id
+                    </th>
+                    <th scope="col">
+                        Event
+                    </th>
+                    <th scope="col">
+                        Bill creation date
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+            <tr style="text-align:center">
+                <td>
+                    {{ bill.pk }}
+                </td>
+                <td>
+                    {{ bill.idEvent }}
+                </td>
+                <td>
+                    {{ bill.date }}
+                </td>
+                <td>
+                    {{ bill.total_price }}
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+
+        <br>
+        <h1 style="text-align: center">Please, enter your payment details:</h1>
+        <hr>
+        <div class="container">
+            <div class="row ">
+          <div class="col-lg-7 mx-auto">
+            <div class="card mt-2 mx-auto p-4 bg-light">
+                <i style="text-align: center">*What's the problem?</i>
+                <div class="card-body bg-light">
+                    <div class = "container">
+                        <form action="" method="post" id="formI">
+                            {% csrf_token %}
+                            <div class="controls">
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: center">
+                                        <br>
+                                        <label for="form_message">Payment details</label> <br>
+                                        {{ form.Payment_details }}
+                                    </div>
+                                    <div class="col-md-12" style="text-align: center">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary btn-send  pt-2 btn-block"> Pay </button>
+                                    </div>
+                                </div>
+                             </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+
+    {% else %}
+        <br>
+        <h1 style="text-align: center">Bill already paid!</h1>
+    {% endif %}
+
+{% endblock %}
+

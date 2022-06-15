@@ -25,6 +25,21 @@ class ClientSignupForm(UserCreationForm):
         return web_user  # web_user
 
 
+class VisitorSignupForm(UserCreationForm):
+
+    class Meta(UserCreationForm.Meta):
+        model = WebUser
+
+    @transaction.atomic
+    def save(self):
+        web_user = super().save(commit=False)
+        web_user.is_visitor = True
+        web_user.save()
+        visitor = Visitor.objects.create(User=web_user)
+        visitor.save()
+        return web_user  # web_user
+
+
 class CreateEvents(forms.ModelForm):
     class Meta:
         model = Event
@@ -84,25 +99,25 @@ class IncidenciaStandGestorForm(forms.ModelForm):
 class PeticionServAdicionalClienteForm(forms.ModelForm):
     class Meta:
         model = PeticionServAdicional
-        exclude = ['clientUsername', 'deptAdditionalServUsername', 'concedido', 'revisado']
+        exclude = ['clientUsername', 'deptAdditionalServUsername', 'concedido', 'revisado', 'cargoExtra']
 
 
 class PeticionServAdicionalDepartamentoForm(forms.ModelForm):
     class Meta:
         model = PeticionServAdicional
-        exclude = ['deptAdditionalServUsername']
+        exclude = ['deptAdditionalServUsername', 'cargoExtra']
 
 
 class PeticionEventoform(forms.ModelForm):
     class Meta:
         model = PeticionEvento
-        exclude = ['organizerUsername','adminUsername','concedido','revisado']
+        exclude = ['organizerUsername', 'adminUsername', 'concedido', 'revisado']
 
 
 class PeticionEventoAdmin(forms.ModelForm):
     class Meta:
         model = PeticionEvento
-        exclude = ['organizerUsername','adminUsername','nombre','motivo','revisado']
+        exclude = ['organizerUsername', 'adminUsername', 'nombre', 'motivo', 'revisado']
 
 
 class IncidenciaServicioDeptForm(forms.ModelForm):
@@ -115,3 +130,21 @@ class SendIncidencesAdditionalServClientForm(forms.ModelForm):
     class Meta:
         model = IncidenciasServAdicional
         exclude = ['deptAdditionalServUsername', 'fecha', 'solucionado', 'checked', 'clientUsername']
+
+
+class BillFilter(forms.ModelForm):
+    class Meta:
+        model = Bill
+        exclude = []
+
+
+class PayBillForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ['Payment_details']
+
+
+class EncuestaSatisfaccionForm(forms.ModelForm):
+    class Meta:
+        model = EncuestaSatisfaccion
+        exclude = ['visitanteUsername']

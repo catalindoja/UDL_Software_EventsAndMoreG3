@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+        <h1 style="text-align: center">Bills</h1>
+
+        <a href="#">
+            Bills searcher
+        </a>
+
+        <table class="table">
+            <thread>
+                <br><br>
+                <p style="text-align:center">
+                    <b>
+                        Bills unpaid
+                    </b>
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Id
+                    </th>
+                    <th scope="col">
+                        Client
+                    </th>
+                    <th scope="col">
+                        Event
+                    </th>
+                    <th scope="col">
+                        Bill creation date
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                    <th scope="col">
+                        Payed
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+
+
+            {% for bill in unpayed_bills %}
+                <tr style="text-align:center">
+                <td>
+                    {{ bill.pk }}
+                </td>
+                <td>
+                    {{ bill.clientUsername }}
+                </td>
+                <td>
+                    {{ bill.idEvent }}
+                </td>
+                <td>
+                    {{ bill.date }}
+                </td>
+                <td>
+                    {{ bill.total_price }}
+                </td>
+                <td>
+                    {{ bill.payed }}
+                </td>
+            {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table">
+            <thread>
+                <br><br>
+                <p style="text-align:center">
+                    <b>
+                        All bills
+                    </b>
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Id
+                    </th>
+                    <th scope="col">
+                        Client
+                    </th>
+                    <th scope="col">
+                        Event
+                    </th>
+                    <th scope="col">
+                        Bill creation date
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                    <th scope="col">
+                        Payed
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+
+
+            {% for client in clients_list %}
+
+                {% for bill in bills_list %}
+
+                    {% if bill.clientUsername.User.username == client.User.username %}
+
+
+                        <tr style="text-align:center">
+                        <td>
+                            {{ bill.pk }}
+                        </td>
+                        <td>
+                            {{ bill.clientUsername }}
+                        </td>
+                        <td>
+                            {{ bill.idEvent }}
+                        </td>
+                        <td>
+                            {{ bill.date }}
+                        </td>
+                        <td>
+                            {{ bill.total_price }}
+                        </td>
+                        <td>
+                            {{ bill.payed }}
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+
+
+    {% endif %}
+
+{% endblock %}

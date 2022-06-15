@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+     <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ formB.as_p }}
+            <button type="submit">
+                Buscar Factura
+            </button>
+        </form>
+    </div>
+
+    {% if user.is_authenticated %}
+
+        <table class="table">
+            <thread>
+                <br><br>
+                <p style="text-align:center">
+                    <b>
+                        Bills unpayed
+                    </b>
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Id
+                    </th>
+                    <th scope="col">
+                        Client
+                    </th>
+                    <th scope="col">
+                        Event
+                    </th>
+                    <th scope="col">
+                        Bill creation date
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                    <th scope="col">
+                        Payed
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+
+            <tr style="text-align:center">
+                {% for bill in unpayed_bills %}
+
+                    <td>
+                        {{ bill.pk }}
+                    </td>
+                    <td>
+                        {{ bill.clientUsername }}
+                    </td>
+                    <td>
+                        {{ bill.idEvent }}
+                    </td>
+                    <td>
+                        {{ bill.date }}
+                    </td>
+                    <td>
+                        {{ bill.total_price }}
+                    </td>
+                    <td>
+                        {{ bill.payed }}
+                    </td>
+                {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table">
+            <thread>
+                <br><br>
+                <p style="text-align:center">
+                    <b>
+                        All bills
+                    </b>
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Id
+                    </th>
+                    <th scope="col">
+                        Client
+                    </th>
+                    <th scope="col">
+                        Event
+                    </th>
+                    <th scope="col">
+                        Bill creation date
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                    <th scope="col">
+                        Payed
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+
+            <tr style="text-align:center">
+                {% for client in clients_list %}
+                    {% for bill in unpayed_bills %}
+                        {% if bill.clientUsername.User.username == client.User.username %}
+                            <td>
+                                {{ bill.pk }}
+                            </td>
+                            <td>
+                                {{ bill.clientUsername }}
+                            </td>
+                            <td>
+                                {{ bill.idEvent }}
+                            </td>
+                            <td>
+                                {{ bill.date }}
+                            </td>
+                            <td>
+                                {{ bill.total_price }}
+                            </td>
+                            <td>
+                                {{ bill.payed }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+
+
+    {% endif %}
+
+{% endblock %}

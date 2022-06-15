@@ -1,0 +1,67 @@
+{% extends 'base_aux.html' %}
+
+
+{% block content %}
+
+    <br>
+    {% if user.is_authenticated %}
+                <h1 style="text-align: center">
+                        Bill {{ bill.id }} details
+                    </h1>
+        <table class="table">
+            <thread>
+                <p style="text-align:center">
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Id
+                    </th>
+                    <th scope="col">
+                        Client
+                    </th>
+                    <th scope="col">
+                        Event
+                    </th>
+                    <th scope="col">
+                        Bill creation date
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                    <th scope="col">
+                        Payed
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+                <tr style="text-align:center">
+                <td>
+                    {{ bill.pk }}
+                </td>
+                <td>
+                    {{ bill.clientUsername }}
+                </td>
+                <td>
+                    {{ bill.idEvent }}
+                </td>
+                <td>
+                    {{ bill.date }}
+                </td>
+                <td>
+                    {{ bill.total_price }}
+                </td>
+                <td>
+                    {{ bill.payed }}
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+        <div class="text-center pt-1 mb pb-1">
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="{% url 'monthlyBalance' %}">Return </a>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

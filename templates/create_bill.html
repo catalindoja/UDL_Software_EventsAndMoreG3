@@ -1,0 +1,88 @@
+{% extends 'base_aux4.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+    {% if created == True %}
+        <br><br><br>
+        <h1 style="text-align: center">Oops! Bill already created!</h1>
+        <br>
+        <div class="text-center pt-1 mb-5 pb-1">
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="{% url 'prepareBill' event.pk client.pk %}">Return </a>
+        </div>
+
+    {% else %}
+
+      <p>
+      <h1 style="text-align: center">
+          BILL CREATED!
+      </h1>
+      </p>
+
+        <table class="table">
+            <thread>
+                <br><br>
+                <p style="text-align:center">
+                    <b>
+                        Bill details for client {{ client }} in event {{ event }} during {{ event.fecha_ini }}
+                        - {{ event.fecha_ini }}
+                    </b>
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Id
+                    </th>
+                    <th scope="col">
+                        Client
+                    </th>
+                    <th scope="col">
+                        Event
+                    </th>
+                    <th scope="col">
+                        Bill creation date
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                    <th scope="col">
+                        Payed
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+
+            <tr style="text-align:center">
+                <td>
+                    {{ bill.pk }}
+                </td>
+                <td>
+                    {{ bill.clientUsername }}
+                </td>
+                <td>
+                    {{ bill.idEvent }}
+                </td>
+                <td>
+                    {{ bill.date }}
+                </td>
+                <td>
+                    {{ bill.total_price }}
+                </td>
+                <td>
+                    {{ bill.payed }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+            <br>
+
+        <div class="text-center pt-1 mb-5 pb-1">
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="{% url 'bills'%}">ACCEPT </a>
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="pdf">SAVE PDF </a>
+        </div>
+    {% endif %}
+
+    {% endif %}
+
+{% endblock %}

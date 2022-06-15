@@ -1,0 +1,61 @@
+{% extends 'base_aux2.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated and user.is_deptManagement %}
+        <br>
+        <h1 style="text-align: center">Ticket details</h1>
+
+
+
+         <table class="table">
+            <thread>
+                <p style="text-align:center">
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Ticket price
+                    </th>
+                    <th scope="col">
+                        Event
+                    </th>
+                    <th scope="col">
+                        Purchase date
+                    </th>
+                    <th scope="col">
+                        Quantity
+                    </th>
+                    <th scope="col">
+                        Total price
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+                <tr style="text-align:center">
+                <td>
+                    {{ ticket.PRICE_TICKET }}
+                </td>
+                <td>
+                    {{ ticket.idEvent }}
+                </td>
+                <td>
+                    {{ ticket.Date }}
+                </td>
+                <td>
+                    {{ ticket.Quantity }}
+                </td>
+                <td>
+                    {{ ticket.Price }}
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+        <div class="text-center pt-1 mb pb-1">
+            <a class="btn btn-primary fa-lg gradient-custom-2 mb-3" href="{% url 'monthlyBalance' %}">Return </a>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

@@ -6,17 +6,18 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.contrib.auth.models import User
-from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView
-from .models import *
-from .forms import *
-from django.contrib.auth import login #eto que éh?
-from django.views.generic.edit import CreateView
-from numpy.compat import unicode
 from django.views import View
-from django.contrib.auth import login  # eto que éh?
+from django.views.generic import TemplateView, ListView
+from django.views.generic.edit import CreateView
+from datetime import datetime
+# import datetime
+
+from .forms import *
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.views import View
+from xhtml2pdf import pisa
 
 
 # Create your views here.
@@ -36,6 +37,10 @@ class SignupClientView(TemplateView):
     template_name = 'signup_client.html'
 
 
+class AddServicesSeletionView(TemplateView):
+    template_name = 'select_add.html'
+
+
 class SignupClientView(CreateView):
     model = WebUser
     form_class = ClientSignupForm
@@ -43,6 +48,21 @@ class SignupClientView(CreateView):
 
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'client'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        web_user = form.save()
+        login(self.request, web_user)
+        return redirect('home')
+
+
+class SignupVisitorView(CreateView):
+    model = WebUser
+    form_class = VisitorSignupForm
+    template_name = 'signup_visitor.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'visitor'
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
@@ -257,7 +277,6 @@ def IncidencesView(request):
         formB = FilterIncidences(request.POST)
         formI = SendStandIncidenceForm(request.POST)
         if formI.is_valid():
-
             name = request.user.username
             current_user = WebUser.objects.get(username=name)
             current_client = Cliente.objects.get(User=current_user)
@@ -265,7 +284,7 @@ def IncidencesView(request):
             formI.save()
             formB = FilterIncidences()
             incidences = StandIncidence.objects.all()
-            #redirect('/')
+            return redirect('/')
             context = {
                 'User': request.user.username,
                 'formB': formB,  # añadido pa que no se borre al enviar incidencia
@@ -379,19 +398,19 @@ def peticionDeEvento(request):
         if request.method == "POST":
             form = PeticionEventoform(request.POST)
             if form.is_valid():
-               motivo = form.cleaned_data['motivo']
-               organizador = Organizer.objects.get(User=request.user)
-               form.instance.organizerUsername = organizador
-               form.save()
-               return redirect('Peticion_de_evento')
+                motivo = form.cleaned_data['motivo']
+                organizador = Organizer.objects.get(User=request.user)
+                form.instance.organizerUsername = organizador
+                form.save()
+                return redirect('Peticion_de_evento')
         else:
             form = PeticionEventoform()
             PeticionesDeEvento = PeticionEvento.objects.all()
-            PeticionesDeEvento = PeticionesDeEvento.filter(organizerUsername = Organizer.objects.get(User=request.user))
+            PeticionesDeEvento = PeticionesDeEvento.filter(organizerUsername=Organizer.objects.get(User=request.user))
             context = {'PeticionesDeEvento': PeticionesDeEvento,
                        'form': form
                        }
-            return render(request, "peticion_evento.html",context)
+            return render(request, "peticion_evento.html", context)
     if request.user.is_superuser:
         if request.method == "POST":
             return redirect('/')
@@ -414,7 +433,6 @@ class PeticionServAdicionalClienteView(CreateView):
     model = PeticionServAdicional
     form_class = PeticionServAdicionalClienteForm
     template_name = 'peticion_servicio_adicional_cliente.html'
-
     def form_valid(self, form):
         if self.request.user.is_client:
             client = Cliente.objects.get(User=self.request.user)
@@ -455,12 +473,14 @@ def updatePeticionServAdicionalDepartamento(request, pk):
                 if d.User.username == request.user.username:
                     my_dept = d
             form.instance.deptAdditionalServUsername = my_dept
-            print(my_dept)
+            # print(my_dept)
             if form.is_valid():
                 form.save()
                 return redirect('/lista_eventos_peticion_serv_adicional/')
 
-        context = {'form':form}
+        context = {'form': form}
+        # return render(request, 'peticion_stand_gestor.html', context)
+        # context = {'form':form}
         return render(request, 'peticion_servicio_adicional_departamento.html', context)
     else:
         print("Error el user no es un departamento de servicios adicionales")
@@ -552,7 +572,8 @@ class AdditionalServicesView(View):
             print(row)
             objs.append(
                 AdditionalService(
-                    nombre=row['nombre'], #No se porque pero lee nombre con 'ï»¿' primero, asi que he tenido que apañarlo y poner ï»¿nombre XD
+                    nombre=row['nombre'],
+                    # No se porque pero lee nombre con 'ï»¿' primero, asi que he tenido que apañarlo y poner ï»¿nombre XD
                     descripcion=row['descripcion'],
                     habilitado=bool(row['habilitado']),
                     precio=int(row['precio']),
@@ -572,6 +593,7 @@ class AdditionalServicesView(View):
             returnmsg = {"status_code": 500}
 
         return JsonResponse(returnmsg)
+
 
 '''
 def incidences_for_deptAdditionalServView(request):
@@ -596,7 +618,7 @@ def incidences_for_deptAdditionalServView(request):
         'category_list': category_list,
     }
 
-    return render(request, 'incidences_for_deptAdditionalServ.html', context)
+    return render(request, "incidences_for_deptAdditionalServ.html", context)
 
 
 def Incidences_for_deptAdditionalServ_DetailView(request, pk):
@@ -662,3 +684,481 @@ def send_incidence_additionalServ_client(request):
     }
 
     return render(request, 'incidences_additionalServ.html', context)
+
+
+def billsView(request):
+    event_list = Event.objects.all()
+
+    #    print(f'eventos: {event_list}')
+
+    context = {
+        'event_list': event_list,
+    }
+
+    return render(request, 'bills.html', context)
+
+
+def eventSelectedView(request, pk):
+    client_list = []
+    emptyEvent = False
+
+    assitance_list = PeticionStand.objects.all()
+
+    for assistant in assitance_list:
+
+        if assistant.idEvento.pk == pk and assistant.clientUsername not in client_list:
+            client_list.append(assistant.clientUsername)
+
+    if len(client_list) == 0:
+        emptyEvent = True
+
+    context = {
+        'client_list': client_list,
+        'idEvent': pk,
+        'empty': emptyEvent,
+    }
+
+    return render(request, 'event_selected.html', context)
+
+
+def generatePDFBill(request, pk, pk2):
+    event = Event.objects.get(pk=pk)
+    client = Cliente.objects.get(pk=pk2)
+
+    total_price = 0
+    services_requested = []
+    additional_services_list = PeticionServAdicional.objects.all()
+
+    for additional_service in additional_services_list:
+        if additional_service.clientUsername == client \
+                and additional_service.idEvento == event:
+            services_requested.append(additional_service)
+            total_price += additional_service.idAdditionalService.precio
+            total_price += additional_service.cargoExtra
+
+    stands_requested = []
+    stands_list = PeticionStand.objects.all()
+    for stand in stands_list:
+        if stand.clientUsername == client and stand.idEvento == event:
+            stands_requested.append(stand)
+            total_price += stand.idStand.price
+
+    request.session['price'] = total_price
+
+    context = {
+        'event': event,
+        'client': client,
+        'services_requested': services_requested,
+        'stands_requested': stands_requested,
+        'total_price': total_price,
+    }
+    pdf = render_to_pdf('pdfBills.html', context)
+    return HttpResponse(pdf, content_type='application/pdf')
+
+
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+
+def prepareBillView(request, pk, pk2):
+    event = Event.objects.get(pk=pk)
+    client = Cliente.objects.get(pk=pk2)
+
+    total_price = 0
+    services_requested = []
+    additional_services_list = PeticionServAdicional.objects.all()
+
+    for additional_service in additional_services_list:
+        if additional_service.clientUsername == client \
+                and additional_service.idEvento == event:
+            services_requested.append(additional_service)
+            total_price += additional_service.idAdditionalService.precio
+            total_price += additional_service.cargoExtra
+
+    stands_requested = []
+    stands_list = PeticionStand.objects.all()
+    for stand in stands_list:
+        if stand.clientUsername == client and stand.idEvento == event:
+            stands_requested.append(stand)
+            total_price += stand.idStand.price
+
+    request.session['price'] = total_price
+
+    context = {
+        'event': event,
+        'client': client,
+        'services_requested': services_requested,
+        'stands_requested': stands_requested,
+        'total_price': total_price,
+    }
+    return render(request, 'prepare_bill.html', context)
+
+
+def createBillView(request, pk, pk2):
+    '''
+    ¿Por qué no hacemos la creación de la factura en prepare_bill?
+    Porque quizá el manager quiera ver cómo va a ser la factura, pero todavía no quiere generarla,
+    porque no ha terminado el evento, o porque faltan cosas por añadirse a la lista de cosas a pagar.
+    Also, no lo hago con un CreateView porque se ponen los campos de forma automática,
+    y considero que para eso no hace falta poner un form donde no se tenga que tocar nada.
+    '''
+
+    created = False
+    new_bill = None
+    existing_bill = None
+
+    event = Event.objects.get(pk=pk)
+    client = Cliente.objects.get(pk=pk2)
+    manager = DeptManagement.objects.get(User=request.user)
+    price = request.session['price']
+
+    try:
+        existing_bill = Bill.objects.get(clientUsername=client, idEvent=event)
+        created = True
+    except Bill.DoesNotExist:
+        new_bill = Bill.objects.create(clientUsername=client, managerUsername=manager, idEvent=event, total_price=price)
+
+    context = {
+        'client': client,
+        'event': event,
+        'bill': new_bill,
+        'created': created,
+        'existing_bill': existing_bill,
+    }
+
+    return render(request, 'create_bill.html', context)
+
+
+def BillsSearch(request):
+    if request.method == "POST":
+        formB = BillFilter(request.POST)
+        if formB.is_valid():
+            # objclient = formB.cleaned_data['clientUsername']
+            objevent = formB.cleaned_data['idEvent']
+            # objManager = formB.cleaned_data['managerUsername']
+            # payed = formB.cleaned_data['payed']
+            # date = formB.cleaned_data['date']
+
+            # BillSearch = Bill.objects.all()
+            # BillSearch = BillSearch.filter(clientUsername=objclient)
+            # stand_incidence = objstand.incidencies.filter(Current_Event=objevent)
+            # event_incidence =  objevent.evento.all()
+            # stand_incidence = stand_incidence.filter(Current_Event=event_incidence)
+
+            unpayed_bills = [bill for bill in Bill.objects.all()
+                             if (bill.payed is False and bill.idEvent == objevent)]
+
+            context = {'unpayed_bills': unpayed_bills,
+                       'User': request.user.username,
+                       'formB': formB
+                       }
+            return render(request, 'BillsSearch.html', context)
+    else:
+        formB = BillFilter()
+        template_name = 'incidences.html'
+        context = {
+            'User': request.user.username,
+            'formB': formB,
+        }
+        return render(request, 'BillsSearch.html', context)
+
+
+def listBillsView(request):
+    unpayed_bills = [bill for bill in Bill.objects.all() if
+                     bill.payed is False]
+
+    clients_list = Cliente.objects.all()
+    bills_list = Bill.objects.all()
+
+    context = {
+        'unpayed_bills': unpayed_bills,
+        'bills_list': bills_list,
+        'clients_list': clients_list,
+    }
+    return render(request, 'list_bills.html', context)
+
+
+def monthlyBalanceView(request):
+    final_days = [
+        # TODO: deberia poder ser de cualquier año. hacer algo tipo if month and day is tal, then is final day
+        datetime(2022, 1, 31),
+        datetime(2022, 2, 28),
+        # datetime(2022, 2, 29),
+        datetime(2022, 3, 31),
+        datetime(2022, 4, 30),
+        datetime(2022, 5, 31),
+        datetime(2022, 6, 30),
+        datetime(2022, 7, 31),
+        datetime(2022, 8, 31),
+        datetime(2022, 9, 30),
+        datetime(2022, 10, 31),
+        datetime(2022, 11, 30),
+        datetime(2022, 12, 31),
+    ]
+    bill_incomes = []
+    ticket_incomes = []
+    expenses = []
+    new_balance = None
+    created = False  # para controlar que solo creemos un balance al mes
+
+    today = datetime.today()
+    today = datetime(today.year, today.month, 30)  # TODO: borrar
+
+    empty = False  # Oops! no balances yet.
+    balance_list = Balance.objects.all()
+    if balance_list is []:
+        empty = True
+
+    # miramos si tenemos un balance con la fecha de hoy. Lo hago así por poder usar el mismo tipo de fecha.
+    # si hiciera un objects.get(), tendria que buscar con formato datetime.date, y yo tengo datetime.datetime
+    for existing_balance in balance_list:
+        temp_date = datetime(existing_balance.date.year, existing_balance.date.month, existing_balance.date.day)
+        temp_date = today  # TODO: borrar
+        if temp_date == today:
+            created = True
+
+    if today in final_days and not created:  # si estamos a final de mes:
+
+        first_day = datetime(today.year, today.month, 1)
+        # consideramos que los incomes son las entradas vendidas + facturas pagadas
+        bills = Bill.objects.all()
+        for bill in bills:
+
+            temp_date = datetime(bill.date.year, bill.date.month, bill.date.day)
+            # para poder comparar fechas del mismo tipo.
+            # bill.date es en formato datetime.date, y el resto son datetime.datetime
+
+            if bill.payed and first_day < temp_date < today:
+                # ojo, deberian considerarse diferentes las fechas de emision de factura y la fecha de pago?
+                bill_incomes.append(bill)  # agregamos a la lista de ganancias
+
+        tickets = Entrada.objects.all()
+        for ticket in tickets:
+            temp_date = datetime(ticket.Date.year, ticket.Date.month, ticket.Date.day)
+            if first_day < temp_date < today:
+                ticket_incomes.append(ticket)
+        '''
+        tickets = Ticket.objects.all()
+        for ticket in tickets:
+            temp_date = datetime(ticket.date.year, ticket.date.month, ticket.date.day)
+            if ticket.sold and first_day < temp_date < today:
+                ticket_incomes.append(ticket)
+        '''
+
+        # aqui los gastos dependen mucho.
+        # Vamos a suponer que los gastos es lo que vale el servicio,
+
+        services_petition_list = PeticionServAdicional.objects.all()
+        for service_petition in services_petition_list:
+            temp_date = datetime(service_petition.fecha.year, service_petition.fecha.month, service_petition.fecha.day)
+            if first_day < temp_date < today:
+                expenses.append(service_petition.idAdditionalService)
+
+        # finalmente, creamos el balance
+
+        new_balance = Balance.objects.create()
+
+        total_incomes = 0.0
+        total_expenses = 0.0
+        for bill_income in bill_incomes:
+            total_incomes += bill_income.total_price
+            BalanceIncome.objects.create(idBalance=new_balance, idBill=bill_income, is_bill=True)
+
+        for ticket in ticket_incomes:
+            total_incomes += ticket.PRICE_TICKET * ticket.Quantity
+            ticket.Price = ticket.PRICE_TICKET * ticket.Quantity
+            ticket.save()
+            BalanceIncome.objects.create(idBalance=new_balance, idTicket=ticket, is_ticket=True)
+
+        # for ticket in ticket_incomes:
+        #     total_incomes += ticket.price
+        #     BalanceIncome.objects.create(idBalance=new_balance, idTicket=ticket, is_ticket=True)
+        for expense in expenses:
+            total_expenses += expense.precio
+            BalanceExpense.objects.create(idBalance=new_balance, idService=expense)
+
+        new_balance.incomes = total_incomes
+        new_balance.expenses = total_expenses
+        new_balance.result = total_incomes - total_expenses
+        new_balance.save()
+
+    context = {
+        'balance_list': balance_list,
+        'empty': empty,
+    }
+
+    return render(request, 'monthlyBalance.html', context)
+
+
+def balanceDetailsView(request, pk):
+    balance = Balance.objects.get(id=pk)
+
+    incomes = BalanceIncome.objects.filter(idBalance=balance)
+    expenses = BalanceExpense.objects.filter(idBalance=balance)
+
+    context = {
+        'balance': balance,
+        'incomes': incomes,
+        'expenses': expenses,
+    }
+
+    return render(request, 'balanceDetails.html', context)
+
+
+def ticketDetailsView(request, pk, pk2):
+    ticket = Entrada.objects.get(id=pk2)
+
+    context = {
+        'ticket': ticket,
+    }
+
+    return render(request, 'ticketDetails.html', context)
+
+
+def billDetailsView(request, pk):
+    bill = Bill.objects.get(id=pk)
+
+    context = {
+        'bill': bill,
+    }
+
+    return render(request, 'billDetails.html', context)
+
+
+def clientBillsView(request):
+    empty_bills = False
+    empty_unpaid_bills = False
+
+    client_bills = [bill for bill in Bill.objects.all() if
+                    bill.clientUsername.User.username == request.user.username]
+
+    unpaid_client_bills = [bill for bill in Bill.objects.all() if
+                           bill.clientUsername.User.username == request.user.username and
+                           not bill.payed]
+
+    if not unpaid_client_bills:
+        empty_unpaid_bills = True
+    if not client_bills:
+        empty_bills = True
+
+    context = {
+        'client_bills': client_bills,
+        'unpaid_client_bills': unpaid_client_bills,
+        'empty_unpaid_bills': empty_unpaid_bills,
+        'empty_bills': empty_bills,
+    }
+
+    return render(request, 'clientBills.html', context)
+
+
+def payBillView(request, pk):
+    bill = Bill.objects.get(id=pk)
+
+    if request.method == 'POST':
+        form = PayBillForm(request.POST)
+        if form.is_valid():
+            payment = form.instance.Payment_details
+            name = request.user.username
+            current_user = WebUser.objects.get(username=name)
+            current_client = Cliente.objects.get(User=current_user)
+            current_client.Payment_details = payment
+            current_client.save()
+
+            bill.payed = True
+            bill.save()
+            return redirect('/')
+    else:
+        form = PayBillForm()
+
+    context = {
+        'form': form,
+        'bill': bill,
+    }
+
+    return render(request, 'payBill.html', context)
+
+
+class EncuestaSatisfaccionView(CreateView):
+    model = EncuestaSatisfaccion
+    form_class = EncuestaSatisfaccionForm
+    template_name = 'encuesta_satisfaccion.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_visitor:
+            visitor = Visitor.objects.get(User=self.request.user)
+            form.instance.visitanteUsername = visitor
+            form.save()
+            return redirect('/')
+        else:
+            print("Error, user is not a visitor")
+            return redirect('/')
+
+
+def eventosEncuestaSatisfaccionDeptDireccion(request):
+    if request.user.is_deptManagement:
+        eventos = Event.objects.all()
+        dictionary = {'eventos': eventos}
+        return render(request, 'lista_eventos_encuesta_satisfaccion.html', dictionary)
+    else:
+        print("Error el user no es un departamento de direccion")
+        return redirect('/')
+
+
+# 15/25 * 100
+
+
+def encuestaSatisfaccionDeptDireccionList(request, key):
+    if request.user.is_deptManagement:
+        peticiones = EncuestaSatisfaccion.objects.all()
+        arr_peticiones = []
+        score = 0
+        for peticion in peticiones:
+            if peticion.idEvento == Event.objects.get(id=key):
+                score = (peticion.puntuacion_organizacion_evento
+                         + peticion.puntuacion_personal_evento
+                         + peticion.puntuacion_informacion_previa_evento
+                         + peticion.puntuacion_duracion_evento
+                         + peticion.puntuacion_satisfaccion_evento
+                         + peticion.puntuacion_interactividad_evento
+                         + peticion.puntuacion_organizacion_empresas
+                         + peticion.puntuacion_distribucion_stands
+                         + peticion.puntuacion_calificacion_evento
+                         + peticion.puntuacion_recomendacion_evento)
+                score = score / 50 * 100
+                # print(score)
+                peticion.score = str(score) + "%"
+                arr_peticiones.append(peticion)
+        dictionary = {'peticiones': arr_peticiones}
+        return render(request, 'lista_encuestas_satisfaccion.html', dictionary)
+    else:
+        print("Error el user no es un gestor")
+        return redirect('/')
+
+
+class EntradaView(CreateView):
+    model = Entrada
+    fields = ['idEvent', 'Quantity']
+    template_name = "compra_entrada.html"
+
+    def form_valid(self, form):
+        form.instance.visitor = get_object_or_404(Visitor, User=self.request.user)
+        form.instance.Price = form.instance.Quantity * Entrada.PRICE_TICKET
+        form.instance.Date = datetime.now()
+        form.save()
+        return redirect('home')
+
+
+class AddServicioAdicionalView(CreateView):
+    model = AdditionalService
+    fields = ['nombre', 'descripcion', 'habilitado', 'precio', 'empresa_colaboradora']
+    template_name = "add_additional_service.html"
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('home')

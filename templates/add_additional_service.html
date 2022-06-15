@@ -1,0 +1,75 @@
+{% include 'base.html' %}
+  {% load static %}
+{% block title %}
+    <br>
+    <div>
+        <h1 style="text-align:center">
+            Add a new additional service
+        </h1>
+    </div>
+    <hr>
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+            <div class="row ">
+          <div class="col-lg-7 mx-auto">
+            <div class="card mt-2 mx-auto p-4 bg-light">
+                <i style="text-align: center">*Introduce the new service</i>
+                <div class="card-body bg-light">
+                    <div class = "container">
+                        <form action="" method="post" id="formI">
+                            {% csrf_token %}
+                            <div class="controls">
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Please specify service name</label><br>
+                                                {{form.nombre}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="text-align: center">
+                                        <div class="form-group">
+                                            <label for="form_need">Please specify the service price</label><br>
+                                                {{ form.precio }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Description</label><br>
+                                             {{ form.descripcion }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="text-align: center">
+                                            <label for="form_message">Collaborating company</label><br>
+                                             {{ form.empresa_colaboradora }}
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="row">
+                                    <div class="col-md-12" style="text-align: center">
+                                        <br>
+                                        <label for="form_message">Enabled?</label>  {{ form.habilitado }}
+                                    </div>
+                                    <div class="col-md-12" style="text-align: center">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary btn-send  pt-2 btn-block"> Add service </button>
+                                    </div>
+                                </div>
+                             </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+
+{% endblock content %}

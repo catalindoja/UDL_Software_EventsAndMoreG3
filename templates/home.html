@@ -166,6 +166,76 @@
                                 </a>
                             </div>
                         </div>
+                    {% elif user.is_visitor %}
+                        <ol class="carousel-indicators">
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <a href="{% url 'events' %}">
+                                    <img src="../static/images/events.jpeg" class="d-block w-200" width="1100" height="598"  alt="Slide 1">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Events</b></h5>
+                                        <p><b>Check here for our upcoming events!</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href="{% url 'compra_entrada' %}">
+                                    <img src="../static/images/comprartiquet.png" class="d-block w-200" width="1100" height="598"  alt="Slide 2">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Buy tickets</b></h5>
+                                        <p><b>What are you waiting for to buy your ticket?</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href="{% url 'encuesta_satisfaccion' %}">
+                                    <img src="../static/images/satisfaccion.webp" class="d-block w-200" width="1100" height="598"  alt="Slide 3">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Satisfaction Survey</b></h5>
+                                        <p><b>Tell us how you felt during the event!</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    {% elif user.is_deptManagement %}
+                        <ol class="carousel-indicators">
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+                            <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <a href="{% url 'events' %}">
+                                    <img src="../static/images/events.jpeg" class="d-block w-200" width="1100" height="598"  alt="Slide 1">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5><b>Events</b></h5>
+                                        <p><b>Check here for our upcoming events!</b></p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                    <a href="{% url 'bills' %}">
+                                        <img src="../static/images/factura1.jpeg" class="d-block w-200" width="1100" height="598"  alt="Slide 2">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h5><b>Create bills</b></h5>
+                                            <p><b>Help us with the invoices!</b></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            <div class="carousel-item">
+                                    <a href="{% url 'lista_eventos_encuesta_satisfaccion' %}">
+                                        <img src="../static/images/satisfaccion.webp" class="d-block w-200" width="1100" height="598"  alt="Slide 2">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h5><b>Survey list</b></h5>
+                                            <p><b>What do our customers say?</b></p>
+                                        </div>
+                                    </a>
+                                </div>
+                        </div>
                     {% endif %}
 
                 {% else %}

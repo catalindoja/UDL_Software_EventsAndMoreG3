@@ -1,0 +1,67 @@
+<!-- templates/home.html -->
+
+{% extends 'base.html' %}
+  {% load static %}
+{% block title %}
+    <div>
+        <h1 style="text-align:center">
+            Lista Eventos para encuestas de satisfaccion
+        </h1>
+    </div>
+{% endblock title %}
+
+{% block content %}
+    <br>
+    <h1 style="text-align:center">
+    Event List for Satisfaction Survey
+    </h1>
+
+    <table class="table">
+            <thread>
+                <p style="text-align:center">
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Event Name
+                    </th>
+                    <th scope="col">
+                        Description
+                    </th>
+                    <th scope="col">
+                        Start date
+                    </th>
+                    <th scope="col">
+                        End Date
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+            {% for evento in eventos %}
+                <tr style="text-align:center">
+                <td>
+                    <a href="../lista_encuestas_satisfaccion/{{evento.id}}/">
+                        {{ evento.nombre }}
+                    </a>
+                </td>
+                <td>
+                    <a href="../lista_encuestas_satisfaccion/{{evento.id}}/">
+                        {{ evento.descripcion }}
+                    </a>
+                </td>
+                <td>
+                    <a href="../lista_encuestas_satisfaccion/{{evento.id}}/">
+                        {{ evento.fecha_ini }}
+                    </a>
+                </td>
+                <td>
+                    <a href="../lista_encuestas_satisfaccion/{{evento.id}}/">
+                        {{ evento.fecha_fin }}
+                    </a>
+                </td>
+            {% endfor %}
+                </tr>
+
+            </tbody>
+        </table>
+{% endblock content %}
