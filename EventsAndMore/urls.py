@@ -78,7 +78,7 @@ urlpatterns = [
 
     path('encuesta_satisfaccion/', EncuestaSatisfaccionView.as_view(),
          name='encuesta_satisfaccion'),
-    path('lista_eventos_encuesta_satisfaccion/', views.eventosEncuestaSatisfaccionDeptDireccion,
+    path('lista_eventos_encuesta_satisfaccion/', eventosEncuestaSatisfaccionDeptDireccion,
          name='lista_eventos_encuesta_satisfaccion'),
     path('lista_encuestas_satisfaccion/<str:key>/', views.encuestaSatisfaccionDeptDireccionList,
          name='lista_encuestas_satisfaccion'),

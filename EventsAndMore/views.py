@@ -1075,7 +1075,7 @@ def encuestaSatisfaccionDeptDireccionList(request, key):
                 + peticion.puntuacion_calificacion_evento
                 + peticion.puntuacion_recomendacion_evento)
                 score = score / 50 * 100
-                print(score)
+                # print(score)
                 peticion.score = str(score) + "%"
                 arr_peticiones.append(peticion)
         dictionary = {'peticiones': arr_peticiones}

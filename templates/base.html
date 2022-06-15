@@ -112,7 +112,7 @@
                         </a>
                     </li>
                     <li>
-                    <a class="nav-link active" aria-current="page"
+                        <a class="nav-link active" aria-current="page"
                            href="{% url 'listBills' %}">  <!--Warning-->
                             Ver facturas creadas
                         </a>
@@ -124,7 +124,20 @@
                         </a>
                     </li>
 
+                    <li>
+                        <a class="nav-link active" aria-current="page" href="{% url 'lista_eventos_encuesta_satisfaccion' %}">  <!--Warning-->
+                            lista_eventos_encuesta_satisfaccion
+                        </a>
+                    </li>
 
+                {% endif %}
+
+                {% if user.is_visitor %}
+                    <li>
+                        <a class="nav-link active" aria-current="page" href="{% url 'encuesta_satisfaccion' %}">  <!--Warning-->
+                            Satisfaction Survey
+                        </a>
+                    </li>
 
                 {% endif %}
 
