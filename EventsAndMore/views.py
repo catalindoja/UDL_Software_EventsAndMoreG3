@@ -19,6 +19,7 @@ from django.template.loader import get_template
 from django.views import View
 from xhtml2pdf import pisa
 
+
 # Create your views here.
 class HomePageView(TemplateView):
     template_name = 'home.html'
@@ -684,6 +685,7 @@ def eventSelectedView(request, pk):
 
     return render(request, 'event_selected.html', context)
 
+
 def generatePDFBill(request, pk, pk2):
     event = Event.objects.get(pk=pk)
     client = Cliente.objects.get(pk=pk2)
@@ -697,14 +699,14 @@ def generatePDFBill(request, pk, pk2):
                 and additional_service.idEvento == event:
             services_requested.append(additional_service)
             total_price += additional_service.idAdditionalService.precio
+            total_price += additional_service.cargoExtra
 
     stands_requested = []
     stands_list = PeticionStand.objects.all()
     for stand in stands_list:
         if stand.clientUsername == client and stand.idEvento == event:
             stands_requested.append(stand)
-            # TODO: poner precio al stand
-            # total_price += stand.precio
+            total_price += stand.idStand.price
 
     request.session['price'] = total_price
 
@@ -718,6 +720,7 @@ def generatePDFBill(request, pk, pk2):
     pdf = render_to_pdf('pdfBills.html', context)
     return HttpResponse(pdf, content_type='application/pdf')
 
+
 def render_to_pdf(template_src, context_dict={}):
     template = get_template(template_src)
     html = template.render(context_dict)
@@ -726,6 +729,7 @@ def render_to_pdf(template_src, context_dict={}):
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
+
 
 def prepareBillView(request, pk, pk2):
     event = Event.objects.get(pk=pk)
@@ -795,38 +799,40 @@ def createBillView(request, pk, pk2):
 
     return render(request, 'create_bill.html', context)
 
+
 def BillsSearch(request):
     if request.method == "POST":
         formB = BillFilter(request.POST)
         if formB.is_valid():
-        #objclient = formB.cleaned_data['clientUsername']
+            # objclient = formB.cleaned_data['clientUsername']
             objevent = formB.cleaned_data['idEvent']
-        #objManager = formB.cleaned_data['managerUsername']
-        #payed = formB.cleaned_data['payed']
-        #date = formB.cleaned_data['date']
+            # objManager = formB.cleaned_data['managerUsername']
+            # payed = formB.cleaned_data['payed']
+            # date = formB.cleaned_data['date']
 
-        #BillSearch = Bill.objects.all()
-        #BillSearch = BillSearch.filter(clientUsername=objclient)
+            # BillSearch = Bill.objects.all()
+            # BillSearch = BillSearch.filter(clientUsername=objclient)
             # stand_incidence = objstand.incidencies.filter(Current_Event=objevent)
             # event_incidence =  objevent.evento.all()
             # stand_incidence = stand_incidence.filter(Current_Event=event_incidence)
 
             unpayed_bills = [bill for bill in Bill.objects.all()
-                         if (bill.payed is False and bill.idEvent == objevent)]
+                             if (bill.payed is False and bill.idEvent == objevent)]
 
-            context = { 'unpayed_bills': unpayed_bills,
-                    'User': request.user.username,
-                    'formB': formB
+            context = {'unpayed_bills': unpayed_bills,
+                       'User': request.user.username,
+                       'formB': formB
                        }
             return render(request, 'BillsSearch.html', context)
     else:
         formB = BillFilter()
         template_name = 'incidences.html'
         context = {
-                   'User': request.user.username,
-                   'formB': formB,
-                   }
-        return render(request, 'BillsSearch.html',context)
+            'User': request.user.username,
+            'formB': formB,
+        }
+        return render(request, 'BillsSearch.html', context)
+
 
 def listBillsView(request):
     unpayed_bills = [bill for bill in Bill.objects.all() if
