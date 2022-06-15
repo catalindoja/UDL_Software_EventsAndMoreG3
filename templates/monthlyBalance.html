@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+        {% if empty == True %}
+            Oops! There are no balances generated yet.
+        {% else %}
+            <table class="table">
+                <thread>
+                    <br><br>
+                    <p style="text-align:center">
+                        <b>
+                            DOCUMENTS GENERATED
+                        </b>
+                    </p>
+                    <hr>
+                    <tr style="text-align:center">
+                        <th scope="col">
+                            Number
+                        </th>
+                        <th scope="col">
+                            Month
+                        </th>
+                        <th scope="col">
+                            Result
+                        </th>
+
+                    </tr>
+                </thread>
+                <tbody style="text-align:center">
+                {% for balance in balance_list %}
+
+                    <tr style="text-align:center">
+
+                    <td>
+                        <a href="{% url 'balanceDetails' balance.id %}">
+                            {{ balance.id }}
+                        </a>
+
+                    </td>
+                    <td>
+                        <a href="{% url 'balanceDetails' balance.id %}">
+                            {{ balance.date }}
+                        </a>
+
+                    </td>
+                    <td>
+                        <a href="{% url 'balanceDetails' balance.id %}">
+                            {{ balance.result }}
+                        </a>
+
+                    </td>
+
+
+
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+        {% endif %}
+
+
+
+
+
+    {% endif %}
+
+{% endblock %}

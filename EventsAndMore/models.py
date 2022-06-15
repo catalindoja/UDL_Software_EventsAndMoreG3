@@ -21,11 +21,13 @@ class WebUser(AbstractUser):
     is_gestor = models.BooleanField(default=False)
     is_deptAdditionalServ = models.BooleanField(default=False)
     is_organizer = models.BooleanField(default=False)
+    is_deptManagement = models.BooleanField(default=False)
 
 
 class Cliente(models.Model):  # WebUser
     User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
     CIF = models.CharField(unique=True, max_length=9)
+    Payment_details = models.TextField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return str(self.User)
@@ -46,6 +48,20 @@ class Organizer(models.Model):
 
 
 class DeptAdditionalServ(models.Model):
+    User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return str(self.User)
+
+
+class DeptManagement(models.Model):
+    User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return str(self.User)
+
+
+class Visitor(models.Model):
     User = models.OneToOneField(WebUser, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
@@ -82,6 +98,7 @@ class Stand(models.Model):
     idEvento = models.ForeignKey(Event, on_delete=models.CASCADE)
     occupied = models.BooleanField(blank=False, null=False)
     description = models.CharField(max_length=200, blank=False, null=False)
+    price = models.FloatField(default=0)
 
     def __str__(self):
         return str(self.description)
@@ -134,6 +151,7 @@ class PeticionServAdicional(models.Model):
     idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
     fecha = models.DateField(default=date.today, blank=False, null=False)
     extra = models.BooleanField(default=False)
+    cargoExtra = models.FloatField(default=0.0)
     concedido = models.BooleanField(default=False)
     revisado = models.BooleanField(default=False)
 
@@ -174,7 +192,7 @@ class PeticionEvento(models.Model):
     id = models.AutoField(primary_key=True)
     organizerUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=200, blank=False, null=False)
-    #adminUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE, blank=True, null=True)  # verificar esto
+    # adminUsername = models.ForeignKey(Organizer, on_delete=models.CASCADE, blank=True, null=True)  # verificar esto
     revisado = models.BooleanField(default=False)
     concedido = models.BooleanField(default=False)
     motivo = models.CharField(max_length=200, blank=False, null=False)
@@ -191,4 +209,92 @@ class ListaNegra(models.Model):
 
     def __str__(self):
         return str(self.descripcion)
+
+
+class Bill(models.Model):
+    id = models.AutoField(primary_key=True)
+    clientUsername = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    managerUsername = models.ForeignKey(DeptManagement, on_delete=models.CASCADE)
+    idEvent = models.ForeignKey(Event, on_delete=models.CASCADE)
+    payed = models.BooleanField(default=False)
+    total_price = models.FloatField(editable=False, default=0)
+    date = models.DateField(default=date.today)
+
+    def __str__(self):
+        return f' Client {self.clientUsername} in event {self.idEvent}'
+
+
+class Balance(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateField(default=date.today)
+    incomes = models.FloatField(default=0.0)
+    expenses = models.FloatField(default=0.0)
+    result = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f'{self.date}'
+
+
+class Entrada(models.Model):
+    PRICE_TICKET = 20.0
+
+    id = models.AutoField(primary_key=True)
+    visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    idEvent = models.ForeignKey(Event, on_delete=models.CASCADE)
+    Date = models.DateField(default=date.today)
+    Price = models.FloatField(null=False, blank=False)
+    Quantity = models.IntegerField()
+
+    def __str__(self):
+        return str(self.visitor.User.username + " Ha comprat ticket per l'event " + self.idEvent.nombre)
+
+
+class BalanceIncome(models.Model):
+    id = models.AutoField(primary_key=True)
+    idBalance = models.ForeignKey(Balance, on_delete=models.CASCADE, null=True, blank=True)
+    idTicket = models.ForeignKey(Entrada, on_delete=models.CASCADE, null=True, blank=True)
+    idBill = models.ForeignKey(Bill, on_delete=models.CASCADE, null=True, blank=True)
+    is_ticket = models.BooleanField(default=False)
+    is_bill = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.id}'
+
+
+class BalanceExpense(models.Model):
+    id = models.AutoField(primary_key=True)
+    idBalance = models.ForeignKey(Balance, on_delete=models.CASCADE)
+    idService = models.ForeignKey(AdditionalService, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.id}'
+
+
+class EncuestaSatisfaccion(models.Model):
+    GRADING = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    )
+    id = models.AutoField(primary_key=True)
+    visitanteUsername = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    idEvento = models.ForeignKey(Event, default=1, on_delete=models.CASCADE)
+    puntuacion_organizacion_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_personal_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_informacion_previa_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_duracion_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_satisfaccion_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_interactividad_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_organizacion_empresas = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_distribucion_stands = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_calificacion_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    puntuacion_recomendacion_evento = models.IntegerField(blank=False, null=False, choices=GRADING)
+    comentarios = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.id)
+
+
 

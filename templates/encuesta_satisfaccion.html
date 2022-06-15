@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<br>
+<h4>Encuesta de satisfaccion</h4>
+<h5>Por favor puntue del 1 al 5 las opciones que tiene un desplegable. 5 siendo muy satisfecho, 3 siendo neutral y
+1 siendo muy insatisfecho.</h5>
+<div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">
+            Enviar Peticion
+        </button>
+    </form>
+</div>
+
+{% endblock %}

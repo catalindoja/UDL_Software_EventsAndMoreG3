@@ -1,0 +1,97 @@
+<head>
+    <style>
+        @page {
+            size: a4 portrait;
+            @frame header_frame { /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt;
+            width: 512pt;
+            top: 50pt;
+            height: 40pt;
+        }
+        @frame content_frame {
+            /* Content Frame */
+        left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+        }
+        @frame footer_frame {
+            /* Another static Frame */
+        -pdf-frame-content:footer_content;
+        left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+        }
+    </style>
+</head>
+
+<body>
+<!-- Content for Static Frame 'header_frame' -->
+<div id="header_content">
+    <img src="../static/images/unknown.png" alt="" width="50" height="30">
+    <h3>Events and More</h3>
+</div>
+
+<!-- Content for Static Frame 'footer_frame' -->
+<div id="footer_content">(c) - page
+    <pdf:pagenumber>
+        of
+        <pdf:pagecount>
+</div>
+
+<!-- HTML Content -->
+<table>
+    <tr>
+        <td>Cliente: {{ client }}</td>
+        <td>Evento: {{ event }}</td>
+    </tr>
+    <tr>
+        <td>CIF: {{ client.CIF }}</td>
+        <td>Fecha inici: {{ event.fecha_ini }}</td>
+    </tr>
+    <tr>
+        <td>Email: {{ client }}@gmail.com</td>
+        <td>Fecha final: {{ event.fecha_fin }}</td>
+    </tr>
+    <tr>
+        <td>Telefono: 123456789</td>
+    </tr>
+    <tr>
+        <td>Fax: 123456789</td>
+    </tr>
+</table>
+
+<hr>
+
+<table>
+    <tr style="text-align:center">
+        <th>Product</th>
+        <th>Price</th>
+        <th>Total</th>
+    </tr>
+    {% for stand in stands_requested %}
+        <tr style="text-align:center">
+
+        <td>
+            {{ stand.idStand.description }}
+        </td>
+        <td>
+            {{ stand.idStand.price }}
+        </td>
+
+    {% endfor %}
+    {% for service in services_requested %}
+        <tr style="text-align:center">
+        <td>
+            {{ service.idAdditionalService.nombre }}
+        </td>
+        <td>
+            {{ service.idAdditionalService.precio }} + {{ service.cargoExtra }}
+        </td>
+        <td>
+            {{ total_price }}
+        </td>
+    {% endfor %}
+</table>
+<hr>
+
+<p><strong>Total: {{ total_price }} euros</strong></p>
+</body>
+</html>

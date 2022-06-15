@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    {% if user.is_authenticated and user.is_client and bill.paid == False %}
+
+        <h1>
+            Payment
+        </h1>
+
+        <table class="table">
+            <thread>
+                <br><br>
+                <p style="text-align:center">
+                    <b>
+                        Bill {{ bill.id }} details
+                    </b>
+                </p>
+                <hr>
+                <tr style="text-align:center">
+                    <th scope="col">
+                        Id
+                    </th>
+                    <th scope="col">
+                        Event
+                    </th>
+                    <th scope="col">
+                        Bill creation date
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                </tr>
+            </thread>
+            <tbody style="text-align:center">
+            <tr style="text-align:center">
+                <td>
+                    {{ bill.pk }}
+                </td>
+                <td>
+                    {{ bill.idEvent }}
+                </td>
+                <td>
+                    {{ bill.date }}
+                </td>
+                <td>
+                    {{ bill.total_price }}
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+
+
+        <h1>Please, enter your payment details:</h1>
+
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Pay">
+        </form>
+
+
+
+    {% else %}
+        <h1>Bill already paid!</h1>
+    {% endif %}
+
+{% endblock %}
+

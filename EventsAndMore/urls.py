@@ -38,6 +38,8 @@ urlpatterns = [
     path('lista_peticiones_serv_adicional/<str:key>/', views.peticionServicioAdicionalDepartamentoList,
          name='lista_peticiones_serv_adicional'),
 
+    path('peticion_evento/', peticionDeEvento, name='Peticion_de_evento'),
+    path('peticion_evento/update/<str:pk>/', updatePeticionDeEvento, name='Update_Peticion_deEvento'),
     path('select_request/', SelectRequestView.as_view(), name='select_request'),
 
     path('peticion_evento/',peticionDeEvento, name='Peticion_de_evento'),
@@ -54,6 +56,41 @@ urlpatterns = [
     path('select_incidences/', selectIncidenceView, name='select_incidences'),
     path('send_incidences_additionalServ_client/', send_incidence_additionalServ_client,
          name='send_incidence_additionalServ_client'),
+
+    # management Department, 3rd iteration
+
+    # bill generation
+    path('bills/', billsView, name='bills'),
+    path('bills/eventSelected/<int:pk>/', eventSelectedView, name='eventSelected'),
+    path('bills/eventSelected/<int:pk>/<int:pk2>/', prepareBillView, name='prepareBill'),
+    path('bills/eventSelected/<int:pk>/<int:pk2>/createBill/', createBillView, name='createBill'),
+
+    # monthly balance generation
+    path('monthlyBalance/', monthlyBalanceView, name='monthlyBalance'),
+    path('monthlyBalance/<int:pk>/', balanceDetailsView, name='balanceDetails'),
+    path('monthlyBalance/<int:pk>/<int:pk2>/', ticketDetailsView, name='ticketDetail'),
+    path('monthlyBalance/<int:pk>/<int:pkBill>/', billDetailsView, name='billDetails'),
+
+    # client stuff, 3rd iteration
+
+    path('listBills/', listBillsView, name='listBills'),
+    path('clientBills/', clientBillsView, name='clientBills'),
+    path('clientBills/<int:pk>/', payBillView, name='payBill'),
+
+#TODO: arreglar esta basura en algún momento
+    path('listBills/search', BillsSearch, name='listBillsSearcher'),
+    path('bills/eventSelected/<int:pk>/<int:pk2>/pdf', generatePDFBill, name="generatePdfBill"),
+    path('bills/eventSelected/<int:pk>/<int:pk2>/createBill/pdf', generatePDFBill, name="generatePdfBill"),
+
+    path('encuesta_satisfaccion/', EncuestaSatisfaccionView.as_view(),
+         name='encuesta_satisfaccion'),
+    path('lista_eventos_encuesta_satisfaccion/', eventosEncuestaSatisfaccionDeptDireccion,
+         name='lista_eventos_encuesta_satisfaccion'),
+    path('lista_encuestas_satisfaccion/<str:key>/', views.encuestaSatisfaccionDeptDireccionList,
+         name='lista_encuestas_satisfaccion'),
+    path('compra_entrada/', EntradaView.as_view(), name='compra_entrada'),
+    path('añadir_servicio_adicional/', AddServicioAdicionalView.as_view(), name='añadir_servicio_adicional'),
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()

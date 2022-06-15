@@ -1,66 +1,99 @@
 <!-- templates/home.html -->
 
-{% include 'base_aux2.html' %}
+{% include 'login_base.html' %}
   {% load static %}
 {% block title %}
-    <br>
     <div>
         <h1 style="text-align:center">
-            Additional Services Stand List
+            Lista peticiones de servicios adicionales
         </h1>
     </div>
-    <hr>
 {% endblock title %}
 
 {% block content %}
+    <div>
 
-
-
-
-     <table class="table">
+        <table class="table">
         <thread>
             <br><br>
             <p style="text-align:center">
                 <b>
-                    All event stands
-                </b><br>
-                <i style="text-align: center">*If nothing appears, there is no stands yet</i>
+                    Requests related with Additional Services
+                </b>
             </p>
             <hr>
             <tr style="text-align:center">
                 <th scope="col">
                     Number
                 </th>
-                 <th scope="col">
-                    Client
+                <th scope="col">
+                    Event
+                </th>
+                <th scope="col">
+                    Stand related
+                </th>
+                <th scope="col">
+                    Client name
+                </th>
+                <th scope="col">
+                    Additional Service id
+                </th>
+                <th scope="col">
+                    Extra
                 </th>
                 <th scope="col">
                     Date
                 </th>
+                <th scope="col">
+                    Checked
+                </th>
+                <th scope="col">
+                    Solved
+                </th>
             </tr>
         </thread>
         <tbody style="text-align:center">
-            {% for peticion in peticiones %}
-                    <tr style="text-align:center">
-                        <td>
-                            <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/">{{ peticion.id }}</a>
-                        </td>
-                        <td>
-                            <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/"> {{ peticion.clientUsername }}</a>
+        {% for peticion in peticiones %}
+        <tr style="text-align:center">
+            <td>
+                <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/">
+                    {{ peticion.id }}
+                </a>
 
-                        </td>
-                        <td>
-                            <a href="../../peticion_serv_adicional_dept/{{peticion.id}}/">{{ peticion.fecha }}</a>
-
-                        </td>
-
-                    </tr>
-
-
-            {% endfor %}
+            </td>
+            <td>
+                {{ peticion.idEvento }}
+            </td>
+            <td>
+                {{ peticion.idStand }}
+            </td>
+            <td>
+                {{ peticion.clientUsername }}
+            </td>
+            <td>
+                {{ peticion.idAdditionalService }}
+            </td>
+            <td>
+                {{ peticion.extra }}
+            </td>
+            <td>
+                {{ peticion.fecha }}
+            </td>
+            <td>
+                {{ peticion.revisado }}
+            </td>
+            <td>
+                {{ peticion.concedido }}
+            </td>
+        </tr>
+        {% endfor %}
 
         </tbody>
 
     </table>
 
+
+
+
+    </div>
 {% endblock content %}

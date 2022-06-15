@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+
+
+        <ul>
+            Table of events. Please, select an event to generate the bill for a client
+            <hr>
+            {% for event in event_list %}
+
+                <li>
+                <a href="{% url 'eventSelected' event.pk %}">
+                     {{ event }}
+                </a>
+
+                </li>
+
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+
+{% endblock %}

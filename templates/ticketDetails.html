@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated and user.is_deptManagement %}
+
+
+
+        <ul>
+        <h1>Ticket details:</h1>
+        <li>
+            ticket price: {{ ticket.PRICE_TICKET }}
+        </li>
+        <li>
+            event: {{ ticket.idEvent }}
+        </li>
+        <li>
+            purchase date: {{ ticket.Date }}
+        </li>
+        <li>
+            quantity: {{ ticket.Quantity }}
+        </li>
+        <li>
+            total price: {{ ticket.Price }}
+        </li>
+        </ul>
+
+    {% endif %}
+
+{% endblock %}

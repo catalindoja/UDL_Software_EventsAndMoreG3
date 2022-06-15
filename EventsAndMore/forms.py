@@ -96,13 +96,13 @@ class PeticionServAdicionalDepartamentoForm(forms.ModelForm):
 class PeticionEventoform(forms.ModelForm):
     class Meta:
         model = PeticionEvento
-        exclude = ['organizerUsername','adminUsername','concedido','revisado']
+        exclude = ['organizerUsername', 'adminUsername', 'concedido', 'revisado']
 
 
 class PeticionEventoAdmin(forms.ModelForm):
     class Meta:
         model = PeticionEvento
-        exclude = ['organizerUsername','adminUsername','nombre','motivo','revisado']
+        exclude = ['organizerUsername', 'adminUsername', 'nombre', 'motivo', 'revisado']
 
 
 class IncidenciaServicioDeptForm(forms.ModelForm):
@@ -115,3 +115,21 @@ class SendIncidencesAdditionalServClientForm(forms.ModelForm):
     class Meta:
         model = IncidenciasServAdicional
         exclude = ['deptAdditionalServUsername', 'fecha', 'solucionado', 'checked', 'clientUsername']
+
+
+class BillFilter(forms.ModelForm):
+    class Meta:
+        model = Bill
+        exclude = []
+
+
+class PayBillForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ['Payment_details']
+
+
+class EncuestaSatisfaccionForm(forms.ModelForm):
+    class Meta:
+        model = EncuestaSatisfaccion
+        exclude = ['visitanteUsername']
