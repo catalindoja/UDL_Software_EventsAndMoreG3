@@ -25,6 +25,21 @@ class ClientSignupForm(UserCreationForm):
         return web_user  # web_user
 
 
+class VisitorSignupForm(UserCreationForm):
+
+    class Meta(UserCreationForm.Meta):
+        model = WebUser
+
+    @transaction.atomic
+    def save(self):
+        web_user = super().save(commit=False)
+        web_user.is_visitor = True
+        web_user.save()
+        visitor = Visitor.objects.create(User=web_user)
+        visitor.save()
+        return web_user  # web_user
+
+
 class CreateEvents(forms.ModelForm):
     class Meta:
         model = Event

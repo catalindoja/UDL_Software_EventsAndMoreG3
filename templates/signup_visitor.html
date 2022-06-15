@@ -1,0 +1,62 @@
+{% extends 'login_base.html' %}
+{% load static %}
+{% block content %}
+<body style="background-color: #eee;">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet" >
+<section class="h-100 gradient-form" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10">
+        <div class="card rounded-3 text-black">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div class="card-body p-md-5 mx-md-4">
+                  <div class="text-center">
+                  <img src="../../static/images/unknown.png"
+                    style="width: 185px;" alt="logo">
+                  <h4 class="mt-1 mb-5 pb-1">Sign up</h4>
+                </div>
+                  <div style="text-align: center"> <i>Sign up as a Visitor</i></div>
+                  <form method="post" style="text-align: center">
+                      {% csrf_token %}
+                        {% for field in form %}
+                            <p>
+                                {{ field.label_tag }}<br>
+                                {{ field }}
+                                {% for error in field.errors %}
+                                    <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+                            </p>
+                        {% endfor %}
+
+                        <div class="text-center pt-1 pb-1">
+                            <button class="btn btn-primary btn-block fa-lg gradient-custom-2" type="submit">Sign up</button>
+                         </div>
+                  </form>
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2" style="background: linear-gradient(to right, rgba(48, 207, 208, 0.5), rgba(51, 8, 103, 0.5))">
+                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                  <h3>Remember</h3>
+                    <p class="small mb-0">You are about to create a visitor account.
+                        This type of account is intended to participate in events as a visitor
+                        and to view events, do satisfaction surveys, etc.</p>
+                    <br><br>
+                     <h3>To register</h3>
+                    <h5>Username</h5>
+                    <i class="small mb-0">-> Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</i> <br>
+                    <h5>Password</h5>
+                    <i class="small mb-0">-> Your password can’t be too similar to your other personal information.</i><br>
+                    <i class="small mb-0">-> Your password must contain at least 8 characters.</i><br>
+                    <i class="small mb-0">-> Your password can’t be a commonly used password.</i><br>
+                    <i class="small mb-0">-> Your password can’t be entirely numeric.</i><br>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+{% endblock content %}
