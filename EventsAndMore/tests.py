@@ -8,7 +8,7 @@ class UseryCreationTestCase(TestCase):
         user = WebUser.objects.create_user(username='testuser')
         user.is_client = True
 
-    def test_veterinary_creation_and_retrieval(self):
+    def test_client_creation_and_retrieval(self):
         user = WebUser.objects.get(username='testuser')
         self.assertEqual(user.username, 'testuser')
 
